@@ -1,0 +1,22 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="6" fill="#0d0d18"/>
+  <!-- MK logo scaled and centered: original 280x210 → fit into ~28x21 centered in 32x32 -->
+  <g transform="translate(2, 5.5) scale(0.1)">
+    <g fill="#64FFDA">
+      <!-- M left outer leg -->
+      <polygon points="0,0 28,0 28,210 0,210"/>
+      <!-- M left arm -->
+      <polygon points="48,0 76,0 83,210"/>
+      <!-- M right arm -->
+      <polygon points="90,0 118,0 83,210"/>
+      <!-- M right outer leg -->
+      <polygon points="138,0 166,0 166,210 138,210"/>
+      <!-- K bar -->
+      <polygon points="174,0 202,0 202,210 174,210"/>
+      <!-- K upper arm -->
+      <polygon points="222,0 280,0 280,54 222,98"/>
+      <!-- K lower arm -->
+      <polygon points="222,112 280,156 280,210 222,210"/>
+    </g>
+  </g>
+</svg>
