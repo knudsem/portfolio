@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:claude.ai)",
+      "Bash(npm create:*)",
+      "Bash(npx create-vite@latest . --template react)",
+      "Bash(npm run:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:www.linkedin.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:il.linkedin.com)",
+      "WebFetch(domain:www.projectaudio.com.au)",
+      "WebFetch(domain:exclusiveconstruction.com.au)",
+      "WebFetch(domain:www.project-audio.com)",
+      "WebFetch(domain:trimension.studio)",
+      "Bash(xxd \"C:/Users/knuds/OneDrive/Bureau/Portfolio/.gitignore\")"
+    ]
+  }
+}
