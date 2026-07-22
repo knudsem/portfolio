@@ -62,6 +62,13 @@ export default function App() {
       const scrollTop = mainEl.scrollTop
       const offset = 120
 
+      // If scrolled to the bottom, always activate the last section.
+      // A short final section can never reach its own trigger point otherwise.
+      if (scrollTop + mainEl.clientHeight >= mainEl.scrollHeight - 2) {
+        setActiveSection(SECTIONS[SECTIONS.length - 1])
+        return
+      }
+
       let current = SECTIONS[0]
       for (const id of SECTIONS) {
         const el = document.getElementById(id)
