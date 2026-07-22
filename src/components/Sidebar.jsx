@@ -41,16 +41,16 @@ export default function Sidebar({ t, lang, setLang, activeSection, mainRef }) {
 
         <div className="lang-toggle">
           <button
-            className={lang === 'en' ? 'lang-btn active' : 'lang-btn'}
-            onClick={() => setLang('en')}
-          >
-            EN
-          </button>
-          <button
             className={lang === 'fr' ? 'lang-btn active' : 'lang-btn'}
             onClick={() => setLang('fr')}
           >
             FR
+          </button>
+          <button
+            className={lang === 'en' ? 'lang-btn active' : 'lang-btn'}
+            onClick={() => setLang('en')}
+          >
+            EN
           </button>
         </div>
 

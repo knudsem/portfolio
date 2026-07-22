@@ -9,7 +9,7 @@ import translations from './i18n'
 const SECTIONS = ['about', 'services', 'work', 'contact']
 
 export default function App() {
-  const [lang, setLangState] = useState('en')
+  const [lang, setLangState] = useState('fr')
   const [contentVisible, setContentVisible] = useState(true)
   const [activeSection, setActiveSection] = useState('about')
   const [glowStyle, setGlowStyle] = useState({})
