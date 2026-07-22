@@ -14,19 +14,27 @@ const translations = {
     services: [
       {
         title: 'UI / UX Design',
-        desc: 'Interfaces designed in Figma from wireframe to high fidelity prototype. Every decision is intentional, from the grid to the microinteraction, and everything is documented so the build phase runs smoothly.',
+        desc: 'Interfaces designed in Figma from wireframe to high fidelity prototype. Every decision is intentional, from the grid to the microinteraction, and documented so the build phase runs smoothly.',
       },
       {
         title: 'Frontend Development',
         desc: 'Precise, responsive code in React, TypeScript, and SCSS. Builds that match the design exactly, load fast, and work on every device and screen size.',
       },
       {
+        title: 'Ecommerce & Shopify',
+        desc: 'Custom Shopify themes and B2B portals built to convert, from product pages and promotional campaigns to complex dealer ordering systems. Bespoke Liquid, checkout customisation, and app integration.',
+      },
+      {
+        title: 'Fullstack Development',
+        desc: 'Complete web applications built end to end with Django, PostgreSQL, and React. From database architecture and REST APIs to the interface, one person across the whole stack.',
+      },
+      {
         title: 'Motion & Animation',
         desc: 'Custom JavaScript and SVG animations that give your interface a personality. From smooth page transitions to character driven motion, built from scratch and tuned to feel natural.',
       },
       {
-        title: 'Ecommerce',
-        desc: 'Custom Shopify themes and B2B portals built to convert, from product pages and promotional campaigns to complex dealer ordering systems with admin dashboards.',
+        title: 'Brand & Visual Identity',
+        desc: 'Logos, brand systems, and visual identities crafted from scratch. A coherent look that carries across your product, your site, and your marketing.',
       },
     ],
 
@@ -109,19 +117,27 @@ const translations = {
     services: [
       {
         title: 'UI / UX Design',
-        desc: "Des interfaces conçues dans Figma, du wireframe au prototype haute fidélité. Chaque décision est intentionnelle, de la grille à la microinteraction, avec une documentation claire pour que le développement suive sans accroc.",
+        desc: "Des interfaces concues dans Figma, du wireframe au prototype haute fidelite. Chaque decision est intentionnelle, de la grille a la microinteraction, avec une documentation claire pour que le developpement suive sans accroc.",
       },
       {
-        title: 'Développement Frontend',
-        desc: 'Du code précis et responsive en React, TypeScript et SCSS. Des réalisations qui correspondent exactement au design, qui chargent vite, et qui fonctionnent sur tous les appareils.',
+        title: 'Developpement Frontend',
+        desc: 'Du code precis et responsive en React, TypeScript et SCSS. Des realisations qui correspondent exactement au design, qui chargent vite, et qui fonctionnent sur tous les appareils.',
+      },
+      {
+        title: 'Ecommerce & Shopify',
+        desc: "Themes Shopify sur mesure et portails B2B concus pour convertir, des pages produits et campagnes promotionnelles aux systemes de commande complexes. Liquid sur mesure, personnalisation du checkout et integration d apps.",
+      },
+      {
+        title: 'Developpement Fullstack',
+        desc: "Des applications web completes construites de bout en bout avec Django, PostgreSQL et React. De l architecture de la base de donnees aux API REST jusqu a l interface, une seule personne sur toute la stack.",
       },
       {
         title: 'Motion & Animation',
-        desc: "Des animations JavaScript et SVG sur mesure qui donnent à votre interface une vraie personnalité. Des transitions fluides aux séquences animées complexes, tout est construit de zéro et calibré pour paraître naturel.",
+        desc: "Des animations JavaScript et SVG sur mesure qui donnent a votre interface une vraie personnalite. Des transitions fluides aux sequences animees complexes, tout est construit de zero et calibre pour paraitre naturel.",
       },
       {
-        title: 'Ecommerce',
-        desc: "Thèmes Shopify sur mesure et portails B2B conçus pour convertir, des pages produits et campagnes promotionnelles aux systèmes de commande complets avec interfaces d'administration.",
+        title: 'Identite visuelle',
+        desc: "Logos, systemes de marque et identites visuelles crees de zero. Un univers coherent qui se decline sur votre produit, votre site et votre communication.",
       },
     ],
 
