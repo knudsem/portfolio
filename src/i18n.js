@@ -1,11 +1,11 @@
 const translations = {
   en: {
-    title: 'Frontend Developer & UI/UX Designer',
+    title: 'Fullstack & Shopify Developer, UI/UX Designer',
     tagline: 'I build interfaces that move. From pixel to production.',
     nav: ['About', 'Services', 'Work', 'Contact'],
     available: 'Open to freelance projects',
 
-    about_1: "I'm a frontend developer and UI/UX designer based in Toulouse, France, trilingual in Danish, French, and English. I hold a bachelor's in web design and completed the Le Wagon intensive bootcamp in 2019, where I added Ruby, Rails, and a deeper command of JavaScript to a design education that started in 2015. For the past two years I've been working independently, taking on projects I genuinely care about.",
+    about_1: "I'm a frontend developer and UI/UX designer based in Toulouse, France, trilingual in Danish, French, and English. I hold a bachelor's in web design and completed the Le Wagon intensive bootcamp in 2019, where I added Ruby, Rails, and a deeper command of JavaScript to a design education that started in 2015. I work independently on projects I genuinely care about, ranging from complex B2B portals to bespoke ecommerce builds.",
     about_2: "I work at the intersection of design and code. I design in Figma and build in React, TypeScript, Django, and Shopify. My particular focus is <em>motion</em>. The way an interface moves says as much as how it looks, and I carry that obsession into everything, whether it's a Shopify campaign, a B2B ordering system, or a letter animation library I built from scratch because the idea wouldn't leave me alone.",
     about_3: "Working with me means one person fluent in both worlds. No gap between design and build, no detail lost in the handoff. Just intentional work, finished to a high standard, for clients across Europe, Australia, and beyond.",
 
@@ -32,14 +32,21 @@ const translations = {
 
     projects: [
       {
-        year: '2024',
+        year: '2026',
+        title: 'AccessEU, Accessibility Compliance App',
+        desc: 'A commercial Shopify app that audits storefronts against WCAG 2.1 AA and the European Accessibility Act. Built with React Router v7, TypeScript, Prisma, and a Playwright plus axe-core scanning engine running 100 rules across desktop and mobile viewports.',
+        tags: ['React Router', 'TypeScript', 'Prisma', 'Playwright', 'PostgreSQL'],
+        link: null,
+      },
+      {
+        year: '2024 - Present',
         title: 'Dealer Portal, Interdyn',
         desc: 'A full stack B2B ecommerce platform for a European audio equipment distributor. Custom product catalog, complex checkout flow, add on management, and a full admin order system built with Django, React, HTMX, and PostgreSQL.',
         tags: ['Django', 'React', 'HTMX', 'Tailwind', 'PostgreSQL'],
         link: null,
       },
       {
-        year: '2024',
+        year: '2024 - Present',
         title: 'Pro Ject Audio Australia',
         desc: 'Custom Shopify theme for the official Australian distributor of Pro Ject turntables and hi fi components. Product pages, landing pages, seasonal campaigns, and a full Black Friday promotional experience, hand coded from a bespoke Figma design.',
         tags: ['Shopify', 'Liquid', 'JavaScript', 'CSS'],
@@ -88,12 +95,12 @@ const translations = {
   },
 
   fr: {
-    title: 'Développeur Frontend & Designer UI/UX',
+    title: 'Développeur Fullstack & Shopify, Designer UI/UX',
     tagline: 'Je crée des interfaces qui bougent. Du pixel à la production.',
     nav: ['À propos', 'Services', 'Projets', 'Contact'],
     available: 'Disponible pour des missions freelance',
 
-    about_1: "Je suis développeur frontend et designer UI/UX basé à Toulouse, trilingue en danois, français et anglais. Titulaire d'un bachelor en web design et diplômé du bootcamp intensif Le Wagon en 2019, j'ai ajouté Ruby, Rails et une maîtrise approfondie de JavaScript à une formation en design commencée en 2015. Depuis deux ans, je travaille en indépendant sur des projets qui m'intéressent vraiment.",
+    about_1: "Je suis développeur frontend et designer UI/UX basé à Toulouse, trilingue en danois, français et anglais. Titulaire d'un bachelor en web design et diplômé du bootcamp intensif Le Wagon en 2019, j'ai ajouté Ruby, Rails et une maîtrise approfondie de JavaScript à une formation en design commencée en 2015. Je travaille en indépendant sur des projets qui m'intéressent vraiment, du portail B2B complexe au e-commerce sur mesure.",
     about_2: "Je travaille à la croisée du design et du code. Je conçois dans Figma et je développe en React, TypeScript, Django et Shopify. Ma spécialité, c'est le <em>mouvement</em>. La façon dont une interface s'anime est aussi révélatrice que son apparence, et j'apporte cette obsession à chaque projet, qu'il s'agisse d'une campagne Shopify, d'une plateforme B2B, ou d'une bibliothèque d'animation que j'ai construite de zéro parce que l'idée ne me lâchait pas.",
     about_3: "Travailler avec moi, c'est avoir une seule personne fluente dans les deux univers. Pas de fossé entre le design et le développement, pas de détail perdu entre les deux. Juste un travail intentionnel, livré avec soin, pour des clients en Europe, en Australie, et au delà.",
 
@@ -120,14 +127,21 @@ const translations = {
 
     projects: [
       {
-        year: '2024',
+        year: '2026',
+        title: 'AccessEU, App de conformité accessibilité',
+        desc: "Une app Shopify commerciale qui audite les boutiques selon les normes WCAG 2.1 AA et l'European Accessibility Act. Développée avec React Router v7, TypeScript, Prisma, et un moteur de scan Playwright plus axe-core exécutant 100 règles sur les viewports desktop et mobile.",
+        tags: ['React Router', 'TypeScript', 'Prisma', 'Playwright', 'PostgreSQL'],
+        link: null,
+      },
+      {
+        year: '2024 - présent',
         title: 'Dealer Portal, Interdyn',
         desc: "Une plateforme ecommerce B2B full stack pour un distributeur européen d'équipements audio. Catalogue produit sur mesure, tunnel de commande complexe, gestion des options et système de commandes admin complet, développé avec Django, React, HTMX et PostgreSQL.",
         tags: ['Django', 'React', 'HTMX', 'Tailwind', 'PostgreSQL'],
         link: null,
       },
       {
-        year: '2024',
+        year: '2024 - présent',
         title: 'Pro Ject Audio Australia',
         desc: "Thème Shopify sur mesure pour le distributeur officiel australien de platines et composants hi fi Pro Ject. Pages produits, pages d'atterrissage, campagnes saisonnières et expérience Black Friday complète, codées à partir d'une maquette Figma sur mesure.",
         tags: ['Shopify', 'Liquid', 'JavaScript', 'CSS'],
