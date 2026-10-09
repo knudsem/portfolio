@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 
 const IconArrow = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
@@ -7,29 +7,73 @@ const IconArrow = () => (
   </svg>
 )
 
-// The highlighted word rises in letter by letter, then waves when hovered.
-// Screen readers get the plain word, the animated letters are hidden from them.
+// The highlighted word rises in letter by letter on load. Once it has
+// settled it reacts to the visitor:
+// - pointer arriving on it (or a finger tapping it): the letters jump one
+//   after the other, squashing and stretching, and the underline redraws
+// - mouse moving over it: the letters follow the pointer, the closest one
+//   lifting the most
+// Screen readers get the plain word, the animated letters are hidden from
+// them. With "reduce motion" the load animation never runs, so none of
+// this is switched on.
 function AnimatedWord({ word }) {
   const [entered, setEntered] = useState(false)
-  const [waving, setWaving] = useState(false)
+  const [jumping, setJumping] = useState(false)
+  const letterRefs = useRef([])
+  const frame = useRef(0)
   const letters = [...word]
 
+  useEffect(() => () => cancelAnimationFrame(frame.current), [])
+
   const handleAnimationEnd = (e) => {
-    if (!e.target.classList.contains('word-letter') || Number(e.target.dataset.index) !== letters.length - 1) return
-    if (e.animationName === 'letter-rise') setEntered(true)
-    if (e.animationName === 'letter-wave') setWaving(false)
+    // The underline is the last thing to finish on load.
+    if (e.animationName === 'underline-draw') setEntered(true)
+    if (e.animationName === 'letter-jump' && Number(e.target.dataset.index) === letters.length - 1) setJumping(false)
+  }
+
+  const jump = () => {
+    if (entered && !jumping) setJumping(true)
+  }
+
+  const handlePointerMove = (e) => {
+    if (!entered || e.pointerType !== 'mouse') return
+    const x = e.clientX
+    cancelAnimationFrame(frame.current)
+    frame.current = requestAnimationFrame(() => {
+      for (const el of letterRefs.current) {
+        if (!el) continue
+        const rect = el.getBoundingClientRect()
+        const distance = Math.abs(x - (rect.left + rect.width / 2)) / rect.height
+        el.style.setProperty('--lift', Math.max(0, 1 - distance * 1.2).toFixed(3))
+      }
+    })
+  }
+
+  const handlePointerLeave = () => {
+    cancelAnimationFrame(frame.current)
+    for (const el of letterRefs.current) el?.style.setProperty('--lift', '0')
   }
 
   return (
     <span
-      className={`animated-word${entered ? ' is-entered' : ''}${waving ? ' is-waving' : ''}`}
-      onMouseEnter={() => entered && setWaving(true)}
+      className={`animated-word${entered ? ' is-entered' : ''}${jumping ? ' is-jumping' : ''}`}
+      onPointerEnter={jump}
+      onPointerDown={jump}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
       onAnimationEnd={handleAnimationEnd}
     >
       <span className="sr-only">{word}</span>
       <span aria-hidden="true">
         {letters.map((letter, i) => (
-          <span key={i} className="word-letter" data-index={i} style={{ '--i': i }}>{letter}</span>
+          <span
+            key={i}
+            ref={(el) => { letterRefs.current[i] = el }}
+            className="word-letter"
+            style={{ '--i': i, '--tilt': i % 2 ? '-7deg' : '7deg' }}
+          >
+            <span className="word-letter-inner" data-index={i}>{letter}</span>
+          </span>
         ))}
       </span>
       <svg className="word-underline" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true" focusable="false">
