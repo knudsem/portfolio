@@ -1,23 +1,20 @@
 export default function About({ t }) {
   return (
     <section id="about">
-      <h2 className="section-label">{t.nav[0]}</h2>
-
-      <div className="availability-badge">
-        <span className="pulse-dot" />
-        {t.available}
+      <div className="section-head" data-reveal>
+        <h2 className="section-title">{t.nav.about}</h2>
       </div>
 
-      <div className="about-body">
+      <div className="about-body" data-reveal>
         <p dangerouslySetInnerHTML={{ __html: t.about_1 }} />
         <p dangerouslySetInnerHTML={{ __html: t.about_2 }} />
       </div>
 
-      <div className="skill-tags">
+      <ul className="skill-tags" data-reveal>
         {t.skills.map((skill) => (
-          <span key={skill} className="skill-tag">{skill}</span>
+          <li key={skill} className="skill-tag">{skill}</li>
         ))}
-      </div>
+      </ul>
     </section>
   )
 }

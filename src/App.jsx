@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Sidebar from './components/Sidebar'
 import MobileBar from './components/MobileBar'
+import Hero from './components/Hero'
 import About from './components/About'
-import Services from './components/Services'
 import Work from './components/Work'
+import Services from './components/Services'
 import Contact from './components/Contact'
+import Footer from './components/Footer'
 import translations from './i18n'
 import { detectLanguage, saveLanguage } from './language'
 
-const SECTIONS = ['about', 'services', 'work', 'contact']
+const SECTIONS = ['about', 'work', 'services', 'contact']
 
 export default function App() {
   const [lang, setLangState] = useState(detectLanguage)
@@ -83,6 +85,23 @@ export default function App() {
     }
   }, [])
 
+  // Blocks fade in as they scroll into view. main.jsx only turns this on
+  // when the visitor has not asked to reduce motion. Runs again after a
+  // language change to pick up anything not revealed yet.
+  useEffect(() => {
+    if (!document.documentElement.classList.contains('reveal-ready')) return
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.dataset.visible = 'true'
+          observer.unobserve(entry.target)
+        }
+      }
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.08 })
+    document.querySelectorAll('[data-reveal]:not([data-visible])').forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [lang])
+
   // Scroll spy
   useEffect(() => {
     let frame = 0
@@ -135,18 +154,22 @@ export default function App() {
         activeSection={activeSection}
       />
 
-      <main
-        className="main-content"
+      <div
+        className="content"
         style={{
           opacity: contentVisible ? 1 : 0,
           transition: 'opacity 220ms ease',
         }}
       >
-        <About t={t} />
-        <Services t={t} />
-        <Work t={t} />
-        <Contact t={t} />
-      </main>
+        <main className="main-content">
+          <Hero t={t} />
+          <About t={t} />
+          <Work t={t} />
+          <Services t={t} />
+          <Contact t={t} />
+        </main>
+        <Footer t={t} />
+      </div>
     </div>
   )
 }
