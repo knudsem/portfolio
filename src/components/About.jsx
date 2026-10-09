@@ -1,7 +1,7 @@
 export default function About({ t }) {
   return (
     <section id="about">
-      <div className="section-label">{t.nav[0]}</div>
+      <h2 className="section-label">{t.nav[0]}</h2>
 
       <div className="availability-badge">
         <span className="pulse-dot" />
@@ -11,7 +11,6 @@ export default function About({ t }) {
       <div className="about-body">
         <p dangerouslySetInnerHTML={{ __html: t.about_1 }} />
         <p dangerouslySetInnerHTML={{ __html: t.about_2 }} />
-        <p dangerouslySetInnerHTML={{ __html: t.about_3 }} />
       </div>
 
       <div className="skill-tags">

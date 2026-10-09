@@ -1,5 +1,5 @@
 const IconArrow = () => (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }} aria-hidden="true" focusable="false">
     <line x1="7" y1="17" x2="17" y2="7" />
     <polyline points="7 7 17 7 17 17" />
   </svg>
@@ -8,7 +8,7 @@ const IconArrow = () => (
 export default function Work({ t }) {
   return (
     <section id="work">
-      <div className="section-label">{t.nav[2]}</div>
+      <h2 className="section-label">{t.nav[2]}</h2>
 
       <div className="projects-list">
         {t.projects.map((project) => {
@@ -28,6 +28,7 @@ export default function Work({ t }) {
                 <h3 className="project-title">
                   {project.title}
                   {project.link && <IconArrow />}
+                  {project.link && <span className="sr-only">{t.new_tab}</span>}
                 </h3>
                 <p className="project-desc">{project.desc}</p>
                 <div className="project-tags">
