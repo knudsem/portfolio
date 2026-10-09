@@ -134,9 +134,11 @@ export default function Contact({ t }) {
 
   return (
     <section id="contact">
-      <h2 className="section-label">{t.nav[3]}</h2>
+      <div className="section-head" data-reveal>
+        <h2 className="section-title">{t.contact_title}</h2>
+      </div>
 
-      <div className="contact-layout">
+      <div className="contact-layout" data-reveal>
 
         {/* Left column */}
         <div className="contact-left">
