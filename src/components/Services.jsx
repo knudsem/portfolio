@@ -38,12 +38,12 @@ const icons = [
 export default function Services({ t }) {
   return (
     <section id="services">
-      <div className="section-label">{t.nav[1]}</div>
+      <h2 className="section-label">{t.nav[1]}</h2>
 
       <div className="services-list">
         {t.services.map((service, i) => (
           <div key={service.title} className="service-card">
-            <div className="service-icon">
+            <div className="service-icon" aria-hidden="true">
               {icons[i]}
             </div>
             <div className="service-content">

@@ -1,5 +1,6 @@
-// MK monogram — paths from MK.svg, white fill on dark background.
+// MK monogram, paths from MK.svg, white fill on dark background.
 // Uses `fill` so you can pass any color or use CSS currentColor.
+// Decorative: the name is always written next to it.
 export default function MKLogo({ size = 48, color = '#ffffff', className = '' }) {
   const h = size * (105 / 199)
 
@@ -10,7 +11,8 @@ export default function MKLogo({ size = 48, color = '#ffffff', className = '' })
       height={h}
       fill={color}
       className={className}
-      aria-label="MK"
+      aria-hidden="true"
+      focusable="false"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path d="M 108.5,-0.5 C 109.5,-0.5 110.5,-0.5 111.5,-0.5C 111.5,34.5 111.5,69.5 111.5,104.5C 109.5,104.5 107.5,104.5 105.5,104.5C 105.667,73.1649 105.5,41.8316 105,10.5C 88.3583,32.6423 71.525,54.6423 54.5,76.5C 52.8513,75.3523 51.3513,74.019 50,72.5C 34.7173,51.5495 19.0506,30.8828 3,10.5C 2.50002,41.8316 2.33335,73.1649 2.5,104.5C 1.5,104.5 0.5,104.5 -0.5,104.5C -0.5,69.8333 -0.5,35.1667 -0.5,0.5C 18.1862,23.6966 36.3528,47.3633 54,71.5C 71.9989,47.3396 90.1655,23.3396 108.5,-0.5 Z"/>
