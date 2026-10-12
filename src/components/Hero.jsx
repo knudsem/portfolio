@@ -40,11 +40,11 @@ export default function Hero({ t }) {
       <div className="hero-bottom">
         <p className="hero-text">{h.text}</p>
         <div className="hero-actions">
-          <a href="#work" className="btn btn-primary">
+          <a href="#work" className="btn btn-primary" data-magnetic>
             {h.cta_work}
             <IconArrow />
           </a>
-          <a href="#contact" className="btn btn-secondary">{h.cta_contact}</a>
+          <a href="#contact" className="btn btn-secondary" data-magnetic>{h.cta_contact}</a>
         </div>
       </div>
     </div>

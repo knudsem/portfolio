@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
-import { isValidEmail, suggestEmail } from '../email'
+import { isValidEmail, suggestEmail, CONTACT_EMAIL as EMAIL } from '../email'
 
-const EMAIL = 'mathiasknudsen31@gmail.com'
 const ENDPOINT = `https://formsubmit.co/ajax/${EMAIL}`
 const FIELDS = ['name', 'email', 'message']
 const EMPTY_FIELDS = { name: '', email: '', message: '' }
@@ -260,7 +259,7 @@ export default function Contact({ t }) {
                 </p>
               )}
 
-              <button type="submit" className="form-submit" disabled={sending}>
+              <button type="submit" className="form-submit" data-magnetic disabled={sending}>
                 {sending ? f.sending : f.send}
               </button>
             </form>

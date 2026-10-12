@@ -134,6 +134,17 @@ em {
   transition: opacity 0.4s ease;
 }
 
+/* A dot grid, only visible in a circle around the cursor */
+.glow-layer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1.6px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(240px circle at var(--glow-x, 50%) var(--glow-y, 50%), #000, transparent);
+  mask-image: radial-gradient(240px circle at var(--glow-x, 50%) var(--glow-y, 50%), #000, transparent);
+}
+
 .content {
   position: relative;
   z-index: 1;
@@ -865,6 +876,446 @@ section {
   transform: translate(3px, -3px);
 }
 
+/* Project covers (drawings in ProjectCovers.jsx). Still by default. They
+   play while the card is hovered or focused, and for a few seconds when the
+   cover first comes into view (Work.jsx sets data-playing). */
+.project-card {
+  --pad-y: 28px;
+  --pad-x: 28px;
+  padding: var(--pad-y) var(--pad-x);
+}
+
+.project-cover {
+  --play: paused;
+  position: relative;
+  aspect-ratio: 20 / 9;
+  margin: calc(-1 * var(--pad-y)) calc(-1 * var(--pad-x)) 24px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
+  background:
+    radial-gradient(90% 120% at 50% 0%, rgba(var(--accent-rgb), 0.07), transparent 65%),
+    #0e0e15;
+  container-type: inline-size;
+}
+
+.project-card:hover .project-cover,
+.project-card:focus-within .project-cover,
+.project-card[data-playing] .project-cover {
+  --play: running;
+}
+
+.project-cover svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cv-window {
+  fill: #15151e;
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.cv-stroke {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1;
+}
+
+.cv-stroke-accent {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.cv-fill-low { fill: rgba(255, 255, 255, 0.05); }
+.cv-fill-dim { fill: rgba(255, 255, 255, 0.1); }
+.cv-fill-mid { fill: rgba(255, 255, 255, 0.2); }
+.cv-fill-accent { fill: var(--accent); }
+.cv-dim-accent { opacity: 0.8; }
+
+/* AccessEU: the scan line sweeps the page, issues turn into checks */
+.cv-issue {
+  fill: rgba(255, 122, 122, 0.12);
+  stroke: var(--error);
+  stroke-width: 1.5;
+}
+
+.cv-issue-mark {
+  fill: none;
+  stroke: var(--error);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.cv-check {
+  fill: none;
+  stroke: var(--accent-ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Starts 1.1 s in, so the still cover shows a scan halfway through */
+.cv-scan {
+  opacity: 0;
+  animation: cv-scan 2.4s linear -1.1s infinite;
+  animation-play-state: var(--play);
+}
+
+@keyframes cv-scan {
+  0% { transform: translateY(0); opacity: 0; }
+  4% { opacity: 1; }
+  83.3% { transform: translateY(128px); opacity: 1; }
+  90%, 100% { transform: translateY(128px); opacity: 0; }
+}
+
+/* Each check pops at the moment the scan line reaches it */
+.cv-badge {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cv-badge 2.4s linear calc(var(--d) - 1.1s) infinite backwards;
+  animation-play-state: var(--play);
+}
+
+@keyframes cv-badge {
+  0% { transform: scale(0.3); opacity: 0; }
+  6% { transform: scale(1.2); opacity: 1; }
+  12% { transform: scale(1); }
+  88% { transform: scale(1); opacity: 1; }
+  94%, 100% { transform: scale(0.5); opacity: 0; }
+}
+
+/* Interdyn: figures and order statuses keep changing */
+.cv-bar {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: cv-bar 2.8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.45s);
+  animation-play-state: var(--play);
+}
+
+@keyframes cv-bar {
+  0%, 100% { transform: scaleY(1); }
+  33% { transform: scaleY(var(--a)); }
+  66% { transform: scaleY(var(--b)); }
+}
+
+.cv-pill {
+  fill: rgba(255, 255, 255, 0.08);
+  animation: cv-pill 3.6s linear infinite;
+  animation-delay: calc(var(--i) * -1.2s);
+  animation-play-state: var(--play);
+}
+
+@keyframes cv-pill {
+  0%, 45% { fill: rgba(255, 255, 255, 0.08); }
+  52%, 92% { fill: var(--accent); }
+  100% { fill: rgba(255, 255, 255, 0.08); }
+}
+
+/* Pro-Ject Australia: the arm drops and the record turns at 33 1/3 rpm */
+.cv-plinth {
+  fill: #101017;
+  stroke: var(--border);
+}
+
+.cv-record {
+  fill: #08080c;
+  stroke: var(--border-strong);
+}
+
+.cv-groove {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.07);
+}
+
+.cv-label-mark {
+  fill: none;
+  stroke: var(--accent-ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.cv-label-soft {
+  opacity: 0.5;
+}
+
+.cv-shine {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.cv-shine-soft {
+  opacity: 0.5;
+}
+
+.cv-spindle {
+  fill: #d4d4dc;
+}
+
+.cv-platter {
+  transform-origin: 168px 91px;
+  animation: cv-spin 1.8s linear infinite;
+  animation-play-state: var(--play);
+}
+
+@keyframes cv-spin {
+  to { transform: rotate(360deg); }
+}
+
+.cv-arm {
+  transform-origin: 292px 40px;
+  transition: transform 0.9s var(--ease-out);
+}
+
+.project-card:hover .cv-arm,
+.project-card:focus-within .cv-arm,
+.project-card[data-playing] .cv-arm {
+  transform: rotate(28deg);
+}
+
+.cv-pivot,
+.cv-knob {
+  fill: #1c1c26;
+  stroke: var(--border-strong);
+}
+
+.cv-tonearm {
+  fill: none;
+  stroke: #c9c9d3;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Pro-Ject Audio Systems: the globe turns, languages light up in turn */
+.cv-globe {
+  fill: #101019;
+}
+
+.cv-globe-rim {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 1.5;
+}
+
+.cv-orbit {
+  fill: none;
+  stroke: rgba(var(--accent-rgb), 0.5);
+  stroke-width: 1.2;
+  stroke-dasharray: 2 3;
+  animation: cv-orbit 2.4s linear infinite;
+  animation-play-state: var(--play);
+}
+
+@keyframes cv-orbit {
+  to { stroke-dashoffset: -10; }
+}
+
+.cv-meridian {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  transform: scaleX(var(--sx));
+  opacity: var(--o);
+  animation: cv-meridian 12s linear infinite;
+  animation-delay: calc(var(--p) * -1.5s);
+  animation-play-state: var(--play);
+}
+
+.cv-meridian.is-accent {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+/* Width follows the cosine of the angle across the front half of a turn,
+   then the meridian is on the far side and hidden */
+@keyframes cv-meridian {
+  0% { transform: scaleX(1); opacity: 1; }
+  6.25% { transform: scaleX(0.924); }
+  12.5% { transform: scaleX(0.707); }
+  18.75% { transform: scaleX(0.383); }
+  25% { transform: scaleX(0.01); }
+  31.25% { transform: scaleX(-0.383); }
+  37.5% { transform: scaleX(-0.707); }
+  43.75% { transform: scaleX(-0.924); }
+  50% { transform: scaleX(-1); opacity: 1; }
+  50.1%, 100% { transform: scaleX(-1); opacity: 0; }
+}
+
+.cv-lang-chip {
+  fill: rgba(255, 255, 255, 0.05);
+  stroke: var(--border-strong);
+}
+
+.cv-lang-text {
+  fill: var(--text-2);
+  font: 600 10px var(--font-body);
+  letter-spacing: 0.06em;
+}
+
+.cv-lang-chip.is-current {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+.cv-lang-text.is-current {
+  fill: var(--accent-ink);
+}
+
+.cv-lang-chip,
+.cv-lang-text {
+  animation: 3s linear infinite;
+  animation-delay: calc(var(--i) * 0.6s - 1.2s);
+  animation-play-state: var(--play);
+}
+
+.cv-lang-chip { animation-name: cv-chip; }
+.cv-lang-text { animation-name: cv-chip-text; }
+
+/* Quick switches rather than slow fades, so a paused globe never shows
+   two languages half lit */
+@keyframes cv-chip {
+  0%, 19% { fill: var(--accent); stroke: var(--accent); }
+  20%, 99% { fill: rgba(255, 255, 255, 0.05); stroke: var(--border-strong); }
+  100% { fill: var(--accent); stroke: var(--accent); }
+}
+
+@keyframes cv-chip-text {
+  0%, 19% { fill: var(--accent-ink); }
+  20%, 99% { fill: var(--text-2); }
+  100% { fill: var(--accent-ink); }
+}
+
+/* Exclusive Construction: the elevation redraws itself, line by line */
+.cv-bp-grid {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 1;
+}
+
+.cv-bp-sheet {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.cv-bp {
+  fill: none;
+  stroke: rgba(var(--accent-rgb), 0.85);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 0;
+}
+
+.project-card:hover .cv-bp,
+.project-card:focus-within .cv-bp,
+.project-card[data-playing] .cv-bp {
+  animation: cv-draw 1.1s var(--ease-out) var(--d) backwards;
+}
+
+@keyframes cv-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Trimension: a wireframe cube turning over a horizon, in real CSS 3D */
+.cv-scene {
+  --s: 19cqi;
+  position: absolute;
+  inset: 0;
+  perspective: 700px;
+}
+
+.cv-floor {
+  position: absolute;
+  inset: 0;
+}
+
+.cv-horizon,
+.cv-grid-line {
+  fill: none;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.cv-horizon {
+  stroke: rgba(var(--accent-rgb), 0.5);
+}
+
+.cv-grid-line {
+  stroke: rgba(var(--accent-rgb), 0.13);
+}
+
+.cv-shadow {
+  position: absolute;
+  left: 50%;
+  top: 74%;
+  width: calc(var(--s) * 1.7);
+  height: calc(var(--s) * 0.32);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.3), transparent);
+  transform: translate(-50%, -50%);
+}
+
+.cv-cube {
+  --half: calc(var(--s) / 2);
+  position: absolute;
+  left: calc(50% - var(--s) / 2);
+  top: calc(42% - var(--s) / 2);
+  width: var(--s);
+  height: var(--s);
+  transform-style: preserve-3d;
+  transform: rotateX(-24deg) rotateY(35deg);
+  animation: cv-cube 10s linear infinite;
+  animation-play-state: var(--play);
+}
+
+.cv-cube.cv-cube-inner {
+  --half: calc(var(--s) / 5);
+  left: 30%;
+  top: 30%;
+  width: 40%;
+  height: 40%;
+  transform: rotateX(35deg) rotateY(0deg);
+  animation: cv-cube-inner 6s linear infinite;
+  animation-play-state: var(--play);
+}
+
+@keyframes cv-cube {
+  from { transform: rotateX(-24deg) rotateY(35deg); }
+  to { transform: rotateX(-24deg) rotateY(395deg); }
+}
+
+@keyframes cv-cube-inner {
+  from { transform: rotateX(35deg) rotateY(0deg); }
+  to { transform: rotateX(35deg) rotateY(-360deg); }
+}
+
+.cv-face {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgba(var(--accent-rgb), 0.9);
+  background: rgba(var(--accent-rgb), 0.05);
+}
+
+.cv-cube-inner .cv-face {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.3);
+}
+
+.cv-front { transform: translateZ(var(--half)); }
+.cv-back { transform: rotateY(180deg) translateZ(var(--half)); }
+.cv-right { transform: rotateY(90deg) translateZ(var(--half)); }
+.cv-left { transform: rotateY(-90deg) translateZ(var(--half)); }
+.cv-top { transform: rotateX(90deg) translateZ(var(--half)); }
+.cv-bottom { transform: rotateX(-90deg) translateZ(var(--half)); }
+
 .service-icon {
   display: grid;
   place-items: center;
@@ -915,6 +1366,7 @@ section {
 }
 
 .proof-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1011,6 +1463,11 @@ section {
 .proof-button {
   align-self: flex-start;
   margin-top: auto;
+}
+
+.proof-button[aria-disabled="true"] {
+  opacity: 0.6;
+  cursor: progress;
 }
 
 .proof-big {
@@ -1306,6 +1763,333 @@ section {
   color: var(--text-2);
 }
 
+/* Pointer effects (pointerEffects.js turns on .fx-pointer for a mouse or
+   trackpad, never with reduce motion) */
+.project-card::before,
+.service-card::before,
+.proof-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--accent-rgb), 0.75), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.fx-pointer .project-card:hover::before,
+.fx-pointer .service-card:hover::before,
+.fx-pointer .proof-card:hover::before {
+  opacity: 1;
+}
+
+.fx-pointer .project-card:hover,
+.fx-pointer .service-card:hover,
+.fx-pointer .proof-card:hover {
+  background-image: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--accent-rgb), 0.045), transparent 45%);
+}
+
+/* Magnetic buttons: pulled with the translate property, so their own
+   transforms (hover arrow and so on) keep working */
+.fx-pointer [data-magnetic] {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, opacity 0.2s ease, transform 0.25s var(--ease-out), translate 0.35s var(--ease-out);
+}
+
+/* Reading progress under the header, where the browser can draw it from
+   the scroll position alone (no script) */
+.scroll-progress {
+  display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-progress {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(var(--accent-rgb), 0.25), var(--accent));
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+      pointer-events: none;
+      animation: scroll-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+
+@keyframes scroll-progress {
+  to { transform: scaleX(1); }
+}
+
+/* Command menu (CommandPalette.jsx) */
+.cmdk-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-2);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.cmdk-trigger:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.cmdk-trigger kbd,
+.cmdk kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1;
+  color: inherit;
+}
+
+.cmdk {
+  width: min(620px, calc(100% - 32px));
+  max-width: none;
+  max-height: min(560px, calc(100% - 24vh));
+  margin: 12vh auto auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  background: #111118;
+  color: var(--text-2);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+}
+
+.cmdk[open] {
+  display: flex;
+  flex-direction: column;
+  animation: cmdk-in 0.22s var(--ease-out);
+}
+
+.cmdk::backdrop {
+  background: rgba(5, 5, 9, 0.62);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.cmdk[open]::backdrop {
+  animation: cmdk-fade 0.22s ease;
+}
+
+@keyframes cmdk-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+}
+
+@keyframes cmdk-fade {
+  from { opacity: 0; }
+}
+
+.cmdk-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px 0 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cmdk-search {
+  flex-shrink: 0;
+  color: var(--text-3);
+}
+
+.cmdk-input {
+  flex: 1;
+  min-width: 0;
+  height: 60px;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 17px;
+  color: var(--text);
+}
+
+.cmdk-input::placeholder {
+  color: var(--text-3);
+  opacity: 1;
+}
+
+/* The field is the only thing typed into: the whole dialog shows focus */
+.cmdk-input:focus-visible {
+  outline: none;
+}
+
+.cmdk:has(.cmdk-input:focus-visible) {
+  border-color: rgba(var(--accent-rgb), 0.55);
+}
+
+.cmdk-close {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  min-width: 40px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.cmdk-close:hover {
+  color: var(--text);
+}
+
+.cmdk-close-icon {
+  display: none;
+}
+
+@media (hover: none) {
+  .cmdk-close-text,
+  .cmdk-foot { display: none; }
+  .cmdk-close-icon { display: block; }
+}
+
+.cmdk-list {
+  flex: 1;
+  min-height: 0;
+  padding: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.cmdk-list:focus {
+  outline: none;
+}
+
+.cmdk-group + .cmdk-group {
+  margin-top: 6px;
+}
+
+.cmdk-group-label {
+  padding: 10px 12px 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.cmdk-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 15px;
+  color: var(--text-2);
+  cursor: pointer;
+}
+
+.cmdk-option.is-active {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+
+.cmdk-icon {
+  flex-shrink: 0;
+  color: var(--text-3);
+}
+
+.cmdk-option.is-active .cmdk-icon {
+  color: var(--accent);
+}
+
+.cmdk-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.cmdk-hint {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.cmdk-empty {
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--text-2);
+}
+
+.cmdk-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px;
+  color: var(--text-3);
+}
+
+.cmdk-foot span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cmdk-foot kbd {
+  min-width: 20px;
+  height: 20px;
+  margin-right: 2px;
+  font-size: 11px;
+}
+
+/* Confirmation messages */
+.toast-region {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 40;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.toast {
+  padding: 12px 18px;
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+  border-radius: 12px;
+  background: #15151d;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--text);
+  overflow-wrap: anywhere;
+  animation: toast-in 0.3s var(--ease-out);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
 /* Footer */
 .site-footer {
   display: flex;
@@ -1355,7 +2139,8 @@ section {
 
 /* Smaller screens */
 @media (max-width: 1079px) {
-  .header-nav {
+  .header-nav,
+  .cmdk-trigger {
     display: none;
   }
 
@@ -1417,6 +2202,11 @@ section {
   .proof-card {
     padding: 24px 22px;
   }
+
+  .project-card {
+    --pad-y: 24px;
+    --pad-x: 22px;
+  }
 }
 
 /* Visitors who asked their system to reduce motion */
@@ -1440,6 +2230,16 @@ section {
   .project-card.is-link:hover,
   .project-card.is-link:focus-within {
     transform: none;
+  }
+
+  /* Covers stay still, on their resting drawing */
+  .project-cover * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .project-cover .cv-arm {
+    transform: none !important;
   }
 }
 
