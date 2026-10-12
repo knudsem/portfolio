@@ -11,11 +11,12 @@ const fill = (template, values) => template.replace(/\{(\w+)\}/g, (_, key) => va
 // "Accessibilité" is found by typing "accessibilite", and so on.
 const fold = (text) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
 
-const GROUPS = ['go', 'actions']
+const GROUPS = ['go', 'projects', 'actions']
 
 const ICON_PATHS = {
   arrow: <path d="M5 12h14M13 6l6 6-6 6" />,
   top: <path d="M12 19V5M6 11l6-6 6 6" />,
+  project: <><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18" /></>,
   message: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></>,
   audit: <><circle cx="12" cy="12" r="9" /><path d="m8 12 3 3 5-6" /></>,
   copy: <><rect x="8" y="8" width="13" height="13" rx="2" /><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" /></>,
@@ -174,7 +175,7 @@ export default function CommandPalette({ t, lang, open, onClose, commands }) {
             return (
               <div key={group} role="group" aria-labelledby={labelId} className="cmdk-group">
                 <div id={labelId} role="presentation" className="cmdk-group-label">
-                  {group === 'go' ? p.group_go : p.group_actions}
+                  {p[`group_${group}`]}
                 </div>
                 {items.map((cmd) => (
                   // Options are picked with the arrows from the text field,

@@ -11,5 +11,8 @@
       "source": "/fonts/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }]
     }
+  ],
+  "rewrites": [
+    { "source": "/projects/:slug", "destination": "/projects/:slug/index.html" }
   ]
 }

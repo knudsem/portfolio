@@ -28,7 +28,7 @@ function LangToggle({ t, lang, setLang }) {
   )
 }
 
-export default function Header({ t, lang, setLang, activeSection, menuOpen, setMenuOpen, shortcut, onOpenPalette }) {
+export default function Header({ t, lang, setLang, activeSection, menuOpen, setMenuOpen, shortcut, onOpenPalette, home }) {
   const [scrolled, setScrolled] = useState(false)
   const menuButtonRef = useRef(null)
   const firstLinkRef = useRef(null)
@@ -64,11 +64,13 @@ export default function Header({ t, lang, setLang, activeSection, menuOpen, setM
   }, [setMenuOpen])
 
   const closeMenu = () => setMenuOpen(false)
+  // Section links lead back to the home page from a project page
+  const base = home ? '' : '/'
 
   return (
     <header className={`site-header${scrolled ? ' is-scrolled' : ''}${menuOpen ? ' is-menu-open' : ''}`}>
       <div className="header-inner">
-        <a href="#top" className="brand" onClick={closeMenu}>
+        <a href={home ? '#top' : '/'} className="brand" onClick={closeMenu}>
           <MKLogo size={38} color="#fff" />
           <span className="brand-name">Mathias Knudsen</span>
         </a>
@@ -77,7 +79,7 @@ export default function Header({ t, lang, setLang, activeSection, menuOpen, setM
           {NAV_IDS.map((id) => (
             <a
               key={id}
-              href={`#${id}`}
+              href={`${base}#${id}`}
               className={`header-link${activeSection === id ? ' active' : ''}`}
               aria-current={activeSection === id ? 'true' : undefined}
             >
@@ -100,7 +102,7 @@ export default function Header({ t, lang, setLang, activeSection, menuOpen, setM
             <kbd>{shortcut[0]}</kbd> <kbd>{shortcut[1]}</kbd>
           </button>
           <LangToggle t={t} lang={lang} setLang={setLang} />
-          <a href="#contact" className="btn btn-primary btn-small header-cta" data-magnetic onClick={closeMenu}>
+          <a href={`${base}#contact`} className="btn btn-primary btn-small header-cta" data-magnetic onClick={closeMenu}>
             {t.hero.cta_contact}
           </a>
           <button
@@ -127,7 +129,7 @@ export default function Header({ t, lang, setLang, activeSection, menuOpen, setM
               <li key={id} style={{ '--i': i }}>
                 <a
                   ref={i === 0 ? firstLinkRef : undefined}
-                  href={`#${id}`}
+                  href={`${base}#${id}`}
                   className={`mobile-menu-link${activeSection === id ? ' active' : ''}`}
                   aria-current={activeSection === id ? 'true' : undefined}
                   onClick={closeMenu}

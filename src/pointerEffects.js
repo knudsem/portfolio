@@ -5,7 +5,7 @@
 //   drawing is in App.css, "Pointer effects").
 // - Buttons marked data-magnetic lean towards the pointer when it is close.
 
-const CARDS = '.project-card, .service-card, .proof-card'
+const CARDS = '.project-card, .service-card, .proof-card, .case-next-link, .case-details'
 const MAGNET_PULL = 0.3
 const MAGNET_MAX = 8
 const MAGNET_REACH = 14
