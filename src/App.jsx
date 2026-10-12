@@ -1,21 +1,23 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import Sidebar from './components/Sidebar'
-import MobileBar from './components/MobileBar'
+import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
 import Work from './components/Work'
 import Services from './components/Services'
+import Proof from './components/Proof'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import translations from './i18n'
-import { detectLanguage, saveLanguage } from './language'
+import { detectLanguage, saveLanguage, isLanguageChosen } from './language'
 
-const SECTIONS = ['about', 'work', 'services', 'contact']
+const SECTIONS = ['about', 'work', 'services', 'proof', 'contact']
 
 export default function App() {
   const [lang, setLangState] = useState(detectLanguage)
   const [contentVisible, setContentVisible] = useState(true)
-  const [activeSection, setActiveSection] = useState('about')
+  const [activeSection, setActiveSection] = useState(null)
+  const [langChosen, setLangChosen] = useState(isLanguageChosen)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const glowRef = useRef(null)
   const pendingLang = useRef(null)
@@ -33,6 +35,7 @@ export default function App() {
   // motion). A visitor's own choice is remembered.
   const setLang = useCallback((newLang) => {
     saveLanguage(newLang)
+    setLangChosen(true)
     if (newLang === lang) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setLangState(newLang)
@@ -52,6 +55,12 @@ export default function App() {
       return () => clearTimeout(timer)
     }
   }, [contentVisible])
+
+  // While the phone menu is open the page behind it does not scroll.
+  useEffect(() => {
+    document.documentElement.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.documentElement.style.overflow = '' }
+  }, [menuOpen])
 
   // Mouse glow effect. Moves through CSS variables, so the page is not
   // re-rendered on every mouse movement. Off for touch screens and for
@@ -117,7 +126,8 @@ export default function App() {
         return
       }
 
-      let current = SECTIONS[0]
+      // Nothing is highlighted while the hero is on screen.
+      let current = null
       for (const id of SECTIONS) {
         const el = document.getElementById(id)
         if (el && el.getBoundingClientRect().top - offset <= 0) {
@@ -143,29 +153,34 @@ export default function App() {
 
   return (
     <div className="page-container">
+      <a href="#main" className="skip-link">{t.skip}</a>
       <div className="glow-layer" ref={glowRef} aria-hidden="true" />
 
-      <MobileBar t={t} activeSection={activeSection} />
-
-      <Sidebar
+      <Header
         t={t}
         lang={lang}
         setLang={setLang}
         activeSection={activeSection}
+        menuOpen={menuOpen}
+        setMenuOpen={setMenuOpen}
       />
 
+      {/* inert: while the phone menu is open, the page behind it cannot be
+          reached with the keyboard or a screen reader */}
       <div
         className="content"
+        inert={menuOpen ? '' : undefined}
         style={{
           opacity: contentVisible ? 1 : 0,
           transition: 'opacity 220ms ease',
         }}
       >
-        <main className="main-content">
+        <main id="main" className="main-content" tabIndex={-1}>
           <Hero t={t} />
           <About t={t} />
           <Work t={t} />
           <Services t={t} />
+          <Proof t={t} lang={lang} langChosen={langChosen} />
           <Contact t={t} />
         </main>
         <Footer t={t} />

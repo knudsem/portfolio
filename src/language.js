@@ -29,6 +29,11 @@ function savedLanguage() {
   }
 }
 
+// True once the visitor has picked a language with the FR/EN buttons.
+export function isLanguageChosen() {
+  return savedLanguage() !== null
+}
+
 export function saveLanguage(lang) {
   try {
     localStorage.setItem(STORAGE_KEY, lang)
