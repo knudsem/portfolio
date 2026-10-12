@@ -28,7 +28,7 @@ function LangToggle({ t, lang, setLang }) {
   )
 }
 
-export default function Header({ t, lang, setLang, activeSection, menuOpen, setMenuOpen }) {
+export default function Header({ t, lang, setLang, activeSection, menuOpen, setMenuOpen, shortcut, onOpenPalette }) {
   const [scrolled, setScrolled] = useState(false)
   const menuButtonRef = useRef(null)
   const firstLinkRef = useRef(null)
@@ -87,8 +87,20 @@ export default function Header({ t, lang, setLang, activeSection, menuOpen, setM
         </nav>
 
         <div className="header-actions">
+          {/* Only shown on wide screens, where a keyboard is likely */}
+          <button
+            type="button"
+            className="cmdk-trigger"
+            aria-haspopup="dialog"
+            aria-keyshortcuts={shortcut[0] === 'Ctrl' ? 'Control+K' : 'Meta+K'}
+            title={`${t.palette.open} (${shortcut.join(' ')})`}
+            onClick={onOpenPalette}
+          >
+            <span className="sr-only">{t.palette.open}, </span>
+            <kbd>{shortcut[0]}</kbd> <kbd>{shortcut[1]}</kbd>
+          </button>
           <LangToggle t={t} lang={lang} setLang={setLang} />
-          <a href="#contact" className="btn btn-primary btn-small header-cta" onClick={closeMenu}>
+          <a href="#contact" className="btn btn-primary btn-small header-cta" data-magnetic onClick={closeMenu}>
             {t.hero.cta_contact}
           </a>
           <button
@@ -104,6 +116,9 @@ export default function Header({ t, lang, setLang, activeSection, menuOpen, setM
           </button>
         </div>
       </div>
+
+      {/* Reading progress, drawn by the browser from the scroll position */}
+      <span className="scroll-progress" aria-hidden="true" />
 
       {menuOpen && (
         <nav id="mobile-menu" className="mobile-menu" aria-label={t.nav_label}>

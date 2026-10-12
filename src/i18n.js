@@ -177,6 +177,33 @@ const translations = {
     },
 
     footer: 'Designed and built in Toulouse.',
+
+    palette: {
+      open: 'Command menu',
+      label: 'Command menu',
+      input: 'Search commands',
+      placeholder: 'Type a command or search',
+      close: 'Close',
+      group_go: 'Go to',
+      group_actions: 'Actions',
+      empty: 'No command matches “{q}”.',
+      count_one: '{n} command',
+      count_other: '{n} commands',
+      hint_move: 'move',
+      hint_run: 'select',
+      hint_close: 'close',
+      top: 'Back to top',
+      audit: 'Run the accessibility audit',
+      message: 'Write me a message',
+      email: 'Copy my email address',
+      link: 'Copy the link to this site',
+      lang: 'Passer en français',
+    },
+    toast: {
+      email: 'Email address copied.',
+      link: 'Link copied.',
+      failed: 'Copying is blocked here. Here it is: {text}',
+    },
   },
 
   fr: {
@@ -357,6 +384,33 @@ const translations = {
     },
 
     footer: 'Conçu et développé à Toulouse.',
+
+    palette: {
+      open: 'Menu de commandes',
+      label: 'Menu de commandes',
+      input: 'Rechercher une commande',
+      placeholder: 'Tapez une commande ou cherchez',
+      close: 'Fermer',
+      group_go: 'Aller à',
+      group_actions: 'Actions',
+      empty: 'Aucune commande ne correspond à «\u00a0{q}\u00a0».',
+      count_one: '{n} commande',
+      count_other: '{n} commandes',
+      hint_move: 'naviguer',
+      hint_run: 'valider',
+      hint_close: 'fermer',
+      top: 'Retour en haut',
+      audit: "Lancer l'audit d'accessibilité",
+      message: "M'écrire un message",
+      email: 'Copier mon adresse email',
+      link: 'Copier le lien du site',
+      lang: 'Switch to English',
+    },
+    toast: {
+      email: 'Adresse email copiée.',
+      link: 'Lien copié.',
+      failed: 'La copie est bloquée ici. La voici : {text}',
+    },
   },
 }
 

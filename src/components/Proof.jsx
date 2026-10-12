@@ -59,7 +59,7 @@ function CountUp({ value, format }) {
   )
 }
 
-export default function Proof({ t, lang, langChosen }) {
+export default function Proof({ t, lang, langChosen, auditRequest }) {
   const p = t.proof
   const [audit, setAudit] = useState({ status: 'idle' })
   const [perf, setPerf] = useState(null)
@@ -73,6 +73,7 @@ export default function Proof({ t, lang, langChosen }) {
   }, [])
 
   const runAudit = async () => {
+    if (audit.status === 'running') return
     setAudit({ status: 'running' })
     try {
       // axe-core is only downloaded when someone asks for the audit.
@@ -92,6 +93,13 @@ export default function Proof({ t, lang, langChosen }) {
       setAudit({ status: 'error' })
     }
   }
+
+  // The command menu can ask for an audit (App counts the requests).
+  const runAuditRef = useRef(runAudit)
+  runAuditRef.current = runAudit
+  useEffect(() => {
+    if (auditRequest) runAuditRef.current()
+  }, [auditRequest])
 
   const number = (value, digits = 0) =>
     new Intl.NumberFormat(lang, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value)
@@ -135,7 +143,9 @@ export default function Proof({ t, lang, langChosen }) {
             type="button"
             className="btn btn-primary btn-small proof-button"
             onClick={runAudit}
-            disabled={audit.status === 'running'}
+            // aria-disabled rather than disabled: a disabled button would
+            // drop keyboard focus while the audit runs
+            aria-disabled={audit.status === 'running' || undefined}
           >
             {audit.status === 'done' ? p.a11y_again : p.a11y_button}
           </button>

@@ -1,3 +1,6 @@
+// Where messages from the site go (contact form, "copy my email" command).
+export const CONTACT_EMAIL = 'mathiasknudsen31@gmail.com'
+
 // Something@something.tld, with no spaces and no empty parts.
 const EMAIL_PATTERN = /^[^\s@]+@(?:[^\s@.]+\.)+[^\s@.]{2,}$/
 
