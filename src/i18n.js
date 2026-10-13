@@ -1,3 +1,69 @@
+// Code shown on the Trimension project page (same in both languages).
+// Excerpts from the site's source, lightly simplified for reading.
+const TRIMENSION_HAND_JS = `const rightHand = document.querySelector('.right-hand')
+const spacer = document.querySelector('.spacer')
+const maxTranslateY = 33 // % of its height
+const maxTranslateX = 4 // %
+const maxRotate = 6 // degrees
+let isTranslationSet = false
+
+const updateTranslation = () => {
+  const progress = window.scrollY / (document.body.scrollHeight - window.innerHeight)
+  const y = Math.min(progress * maxTranslateY, maxTranslateY)
+  rightHand.style.transform =
+    \`translate(\${maxTranslateX * progress}%, \${y}%) rotate(\${maxRotate * progress}deg)\`
+}
+
+// Only while the section is on screen
+const observer = new IntersectionObserver(([entry]) => {
+  if (entry.isIntersecting && !isTranslationSet) {
+    requestAnimationFrame(updateTranslation)
+    isTranslationSet = true
+  } else if (!entry.isIntersecting && isTranslationSet) {
+    rightHand.style.transform = 'translate(0, 0) rotate(0deg)'
+    isTranslationSet = false
+  }
+}, { threshold: 0.5 })
+
+observer.observe(spacer)
+window.addEventListener('scroll', () => {
+  if (isTranslationSet) updateTranslation()
+})`
+
+const TRIMENSION_FRAGMENTS_CSS = `/* Each fragment of the shattered world floats on its own */
+.pos-1 {
+  animation: custom-transform1 2.85s linear infinite alternate;
+}
+
+@keyframes custom-transform1 {
+  from { transform: translate(5%, -75%) scale(0.7) rotate(0deg); }
+  to { transform: translate(5%, -78%) scale(0.7) rotate(2deg); }
+}
+
+.pos-3 {
+  animation: custom-transform3 1.15s linear infinite alternate;
+}
+
+/* Phones get their own, smaller moves */
+@media screen and (max-width: 768px) {
+  .pos-1 {
+    animation: custom-transform1-mobile 2.85s linear infinite alternate;
+  }
+}`
+
+const TRIMENSION_MEDIA = [
+  { src: '/media/trimension/home-eons.webp', width: 1440, height: 900 },
+  { src: '/media/trimension/home-godsent.webp', width: 1440, height: 900 },
+  { src: '/media/trimension/eons-page.webp', width: 1440, height: 900 },
+  { src: '/media/trimension/eons-fragments.webp', width: 1440, height: 900 },
+  { src: '/media/trimension/eons-hand.webp', width: 1440, height: 900 },
+  { src: '/media/trimension/phone-home.webp', width: 780, height: 1688, phone: true },
+  { src: '/media/trimension/phone-eons.webp', width: 780, height: 1688, phone: true },
+]
+
+// Pairs the shared media with the text of one language
+const withText = (media, texts) => media.map((item, i) => ({ ...item, ...texts[i] }))
+
 const translations = {
   en: {
     page_title: 'Mathias Knudsen | Fullstack & Shopify Developer, UI/UX Designer',
@@ -153,12 +219,37 @@ const translations = {
         year: '2023',
         type: 'Brand website',
         title: 'Trimension Studio',
-        desc: 'Brand website for an immersive VR gaming studio. A dark, cinematic experience on a single page, with smooth scroll animations and custom motion, built to reflect the visual intensity of their game titles Eons and Godsent.',
-        summary: 'Brand website for an immersive VR gaming studio.',
+        desc: 'Brand website for an immersive VR gaming studio. Full-screen game videos, a page per game with scroll-driven motion, and a dark, cinematic look built to match the visual intensity of their titles Eons and Godsent.',
+        summary: "Brand website for an immersive VR gaming studio, which I designed and built as the studio's art director.",
+        story: [
+          'Trimension makes virtual reality games. Its site had to introduce the studio and its two titles, Eons and Godsent, to players and to future recruits.',
+          'The idea: let the games speak. The home page is a series of full-screen game videos that scrolling snaps between, and each game gets its own page and mood. Eons tells its story as you scroll, in a world breaking apart; Godsent shows off its arsenal and its monsters.',
+        ],
         did: [
-          'A dark, cinematic experience on a single page',
-          'Smooth scroll animations and custom motion',
-          'Built to reflect the visual intensity of their game titles Eons and Godsent',
+          'Design and development, in plain HTML, CSS and JavaScript, no framework',
+          'A home page made of full-screen game videos, with scroll snapping',
+          'A page per game: Eons, with scroll-driven animation, and Godsent',
+          'Team and careers pages, with application forms',
+          'Responsive, with animations tuned for phones',
+        ],
+        highlights: [
+          { title: 'Full-screen video, snapping scroll', text: 'Each home section is a looping, muted game video filling the screen. CSS scroll snapping lands every scroll on a complete scene, and the arrows glide to the next one.' },
+          { title: 'A menu without JavaScript', text: 'The side menu opens with a hidden checkbox and CSS alone, and its links slide in one after another. The header hides as you scroll down and comes back as soon as you scroll up.' },
+          { title: 'A world in pieces', text: 'On the Eons page, ten fragments of the shattered world float in the air. Each has its own keyframes, with durations from 1.15 s to 3.85 s, so the scene never moves as one block. Phones get their own versions.' },
+          { title: 'A hand that follows the scroll', text: "Agent Steve's hand slides and turns as the page scrolls. An Intersection Observer switches the effect on only while the section is on screen, and puts the hand back when it leaves." },
+        ],
+        gallery: withText(TRIMENSION_MEDIA, [
+          { alt: 'Trimension home page: a pastel castle on a floating island, with a Discover Eons button', caption: 'The home page: every section is a full-screen game video.' },
+          { alt: 'Second home section: a monster with glowing eyes in blue smoke, with a Discover Godsent button', caption: "Scroll once more and the page snaps to Godsent's world." },
+          { alt: 'Eons page: a dark creature with tentacles next to the story of the Nebulites and a newsletter field', caption: 'The Eons page introduces the game and its characters.' },
+          { alt: 'Fragments of terracotta rock floating around a paragraph, under the title The world is shattering', caption: 'Fragments of the world float, each on its own rhythm. The logo\'s eye stands in for the letter\u00a0o.' },
+          { alt: 'A low poly hand wearing a glowing gadget, under the title Become Agent Steve', caption: "Agent Steve's hand follows the scroll." },
+          { alt: 'The home page on a phone', caption: 'On phones.' },
+          { alt: 'The Eons page on a phone', caption: '' },
+        ]),
+        code: [
+          { file: 'js/scrollarm.js', lang: 'js', caption: 'The hand that follows the scroll. Excerpt, lightly simplified.', source: TRIMENSION_HAND_JS },
+          { file: 'style/eons.css', lang: 'css', caption: 'Two of the ten floating fragments, and their phone version. Excerpt.', source: TRIMENSION_FRAGMENTS_CSS },
         ],
         tags: ['JavaScript', 'HTML', 'CSS', 'SVG'],
         link: null,
@@ -221,7 +312,13 @@ const translations = {
     case: {
       back: 'All projects',
       title: '{title} | Mathias Knudsen',
+      story: 'The project',
       did: 'What I did',
+      highlights: 'Details that matter',
+      gallery: 'Screens',
+      code: 'In the code',
+      copy: 'Copy',
+      copied: 'Copied',
       details: 'Details',
       type: 'Type',
       year: 'Year',
@@ -420,12 +517,37 @@ const translations = {
         year: '2023',
         type: 'Site vitrine',
         title: 'Trimension Studio',
-        desc: "Site vitrine pour un studio de jeux VR immersifs. Une expérience cinématique en une seule page avec animations au scroll et motion sur mesure, conçue pour refléter l'intensité visuelle de leurs titres Eons et Godsent.",
-        summary: 'Site vitrine pour un studio de jeux VR immersifs.',
+        desc: "Site vitrine pour un studio de jeux VR immersifs. Vidéos de jeu en plein écran, une page par jeu avec des animations au défilement, et une ambiance sombre et cinématique, à la hauteur de l'intensité visuelle de leurs titres Eons et Godsent.",
+        summary: "Site vitrine pour un studio de jeux VR immersifs, que j'ai conçu et développé en tant que directeur artistique du studio.",
+        story: [
+          'Trimension crée des jeux en réalité virtuelle. Son site devait présenter le studio et ses deux titres, Eons et Godsent, aux joueurs comme aux futurs talents.',
+          "Le parti pris : laisser parler les jeux. L'accueil enchaîne des vidéos de jeu en plein écran, sur lesquelles le défilement s'aimante, et chaque jeu a sa propre page et sa propre ambiance. Eons raconte son histoire au fil du défilement, dans un monde qui se brise ; Godsent montre son arsenal et ses monstres.",
+        ],
         did: [
-          'Une expérience sombre et cinématique en une seule page',
-          'Animations au scroll et motion sur mesure',
-          "Conçu pour refléter l'intensité visuelle de leurs titres Eons et Godsent",
+          'Design et développement, en HTML, CSS et JavaScript, sans framework',
+          'Un accueil fait de vidéos de jeu en plein écran, avec défilement aimanté',
+          'Une page par jeu : Eons, avec des animations au défilement, et Godsent',
+          'Pages équipe et carrières, avec formulaires de candidature',
+          'Responsive, avec des animations adaptées au téléphone',
+        ],
+        highlights: [
+          { title: 'Vidéo plein écran, défilement aimanté', text: "Chaque section de l'accueil est une vidéo de jeu en boucle, sans son, qui remplit l'écran. Le scroll snapping en CSS fait atterrir chaque défilement sur une scène complète, et les flèches glissent jusqu'à la suivante." },
+          { title: 'Un menu sans JavaScript', text: "Le menu latéral s'ouvre grâce à une case à cocher cachée et du CSS seul, et ses liens arrivent l'un après l'autre. L'en-tête se cache quand on descend et revient dès qu'on remonte." },
+          { title: 'Un monde en morceaux', text: 'Sur la page Eons, dix fragments du monde brisé flottent dans les airs. Chacun a sa propre animation, sur des durées de 1,15 s à 3,85 s, pour que la scène ne bouge jamais d\'un bloc. Le téléphone a ses propres versions.' },
+          { title: 'Une main qui suit le défilement', text: "La main de l'agent Steve glisse et pivote au rythme du défilement. Un Intersection Observer n'active l'effet que lorsque la section est à l'écran, et remet la main en place quand elle en sort." },
+        ],
+        gallery: withText(TRIMENSION_MEDIA, [
+          { alt: "Accueil de Trimension : un château pastel sur une île flottante, avec un bouton Discover Eons", caption: "L'accueil : chaque section est une vidéo de jeu en plein écran." },
+          { alt: "Deuxième section de l'accueil : un monstre aux yeux lumineux dans une fumée bleue, avec un bouton Discover Godsent", caption: "Un défilement de plus, et la page s'aimante sur l'univers de Godsent." },
+          { alt: "Page Eons : une créature sombre à tentacules à côté de l'histoire des Nebulites et d'un champ d'inscription à la newsletter", caption: 'La page Eons présente le jeu et ses personnages.' },
+          { alt: 'Des fragments de roche terre cuite flottent autour d\'un paragraphe, sous le titre The world is shattering', caption: "Les fragments du monde flottent, chacun à son rythme. L'œil du logo remplace la lettre\u00a0o." },
+          { alt: "Une main low poly portant un gadget lumineux, sous le titre Become Agent Steve", caption: "La main de l'agent Steve suit le défilement." },
+          { alt: "L'accueil sur téléphone", caption: 'Sur téléphone.' },
+          { alt: 'La page Eons sur téléphone', caption: '' },
+        ]),
+        code: [
+          { file: 'js/scrollarm.js', lang: 'js', caption: 'La main qui suit le défilement. Extrait, légèrement simplifié.', source: TRIMENSION_HAND_JS },
+          { file: 'style/eons.css', lang: 'css', caption: 'Deux des dix fragments flottants, et leur version téléphone. Extrait.', source: TRIMENSION_FRAGMENTS_CSS },
         ],
         tags: ['JavaScript', 'HTML', 'CSS', 'SVG'],
         link: null,
@@ -488,7 +610,13 @@ const translations = {
     case: {
       back: 'Tous les projets',
       title: '{title} | Mathias Knudsen',
+      story: 'Le projet',
       did: "Ce que j'ai fait",
+      highlights: 'Les détails qui comptent',
+      gallery: 'En images',
+      code: 'Dans le code',
+      copy: 'Copier',
+      copied: 'Copié',
       details: 'En bref',
       type: 'Type',
       year: 'Année',
