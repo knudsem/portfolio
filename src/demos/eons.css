@@ -63,8 +63,8 @@
   align-items: center;
 }
 
-/* The shattered world: each fragment only sets where it sits and how it
-   moves (custom properties); every fragment shares the same keyframes. */
+/* The shattered world: each fragment only sets where it sits, how deep it
+   is and its rhythm (custom properties); all ten share the same keyframes. */
 .shatter {
   container-type: inline-size;
   position: relative;
@@ -78,7 +78,9 @@
   --x: var(--xl);
   --y: var(--yl);
   --s: var(--sl);
-  --ky: 0.5625; /* 1% of the height, in cqi */
+  --parallax: 12cqi;
+  --wander: 1;
+  --sway: 3;
   position: absolute;
   left: calc(var(--x) * 1%);
   top: calc(var(--y) * 1%);
@@ -86,40 +88,59 @@
   translate: -50% -50%;
 }
 
+/* The two big rocks are cut flat on one side in the artwork: they stand
+   against the edge of the frame, the cut just beyond it. They only rise and
+   fall, and sway a little on their cut side, so it never comes into view. */
+.frag[data-side] {
+  --wander: 0;
+  --sway: 1.2;
+  translate: 0 -50%;
+}
+
+.frag[data-side='left'] { left: -2cqi; }
+.frag[data-side='right'] { left: auto; right: -2cqi; }
+.frag[data-side='left'] img { transform-origin: 0% 50%; }
+.frag[data-side='right'] img { transform-origin: 100% 50%; }
+
 /* excerpt:fragments */
-/* Scroll: the fragments burst out of the centre, then drift apart */
+/* Scroll: depth. Near fragments drift faster than the page, far ones lag
+   behind, as things floating at different distances do */
 .frag-move {
-  --from-x: calc((50 - var(--x)) * 0.8cqi);
-  --from-y: calc((50 - var(--y)) * 0.8cqi * var(--ky));
-  --to-x: calc((var(--x) - 50) * 0.14cqi * var(--depth));
-  --to-y: calc(((var(--y) - 50) * 0.1 - 7) * 1cqi * var(--depth));
-  animation: frag-burst 1s linear both;
+  --drift: calc((var(--depth) - 0.5) * var(--parallax));
+  animation: frag-drift 1s linear both;
 }
 
-/* Held together until the scene's centre is on screen, then the burst */
-@keyframes frag-burst {
-  0%, 20% {
-    transform: translate(var(--from-x), var(--from-y)) rotate(calc(var(--spin) * 1deg)) scale(0.5);
-    opacity: 0;
-    animation-timing-function: cubic-bezier(0.2, 0.75, 0.25, 1);
-  }
-  26% { opacity: 1; }
-  46% { transform: translate(0, 0) rotate(0deg) scale(1); }
-  100% { transform: translate(var(--to-x), var(--to-y)) rotate(calc(var(--spin) * -0.1deg)) scale(1); }
+@keyframes frag-drift {
+  from { translate: 0 var(--drift); }
+  to { translate: 0 calc(var(--drift) * -1); }
 }
 
-/* Time: an organic float, its size set by the depth */
+/* Time: the float. Three slow motions with unrelated periods (rise and
+   fall, a sideways wander, a sway), so the path never visibly repeats */
 .frag img {
   display: block;
   width: 100%;
   height: auto;
   rotate: calc(var(--rot) * 1deg);
-  animation: frag-float calc(var(--dur) * 1s) ease-in-out calc(var(--delay) * -1s) infinite alternate;
+  animation:
+    frag-rise calc(var(--dur) * 1s) ease-in-out calc(var(--delay) * -1s) infinite alternate,
+    frag-wander calc(var(--dur) * 1.37s) ease-in-out calc(var(--delay) * -1.9s) infinite alternate,
+    frag-sway calc(var(--dur) * 1.71s) ease-in-out calc(var(--delay) * -1.3s) infinite alternate;
 }
 
-@keyframes frag-float {
-  from { transform: translateY(calc(var(--depth) * -0.9cqi)) rotate(-2.5deg); }
-  to { transform: translateY(calc(var(--depth) * 0.9cqi)) rotate(2.5deg); }
+@keyframes frag-rise {
+  from { translate: 0 calc(var(--depth) * -1.3cqi); }
+  to { translate: 0 calc(var(--depth) * 1.3cqi); }
+}
+
+@keyframes frag-wander {
+  from { transform: translateX(calc(var(--depth) * var(--wander) * -0.8cqi)); }
+  to { transform: translateX(calc(var(--depth) * var(--wander) * 0.8cqi)); }
+}
+
+@keyframes frag-sway {
+  from { rotate: calc((var(--rot) - var(--sway)) * 1deg); }
+  to { rotate: calc((var(--rot) + var(--sway)) * 1deg); }
 }
 /* /excerpt */
 
@@ -136,14 +157,14 @@
 /* Three layouts, from the space the scene actually has */
 @container eons (max-width: 899px) {
   .shatter { aspect-ratio: 4 / 3; }
-  .frag { --x: var(--xm); --y: var(--ym); --s: var(--sm); --ky: 0.75; }
+  .frag { --x: var(--xm); --y: var(--ym); --s: var(--sm); }
 }
 
 /* Small screens: a band for the fragments above the text and one below,
    the scene grows with the text, so they can never meet */
 @container eons (max-width: 599px) {
-  .shatter { aspect-ratio: auto; padding-block: 46% 38%; }
-  .frag { --x: var(--xs); --y: var(--ys); --s: var(--ss); --ky: 1.8; top: calc(var(--edge) * 1cqi); }
+  .shatter { aspect-ratio: auto; padding-block: 50% 38%; }
+  .frag { --x: var(--xs); --y: var(--ys); --s: var(--ss); --parallax: 8cqi; top: calc(var(--edge) * 1cqi); }
   .frag[data-edge='bottom'] { top: calc(100% - var(--edge) * 1cqi); }
   .frag[data-small='hide'] { display: none; }
 }
@@ -160,9 +181,10 @@
 @container eons (max-width: 899px) { .shatter-copy { width: 56cqi; } }
 @container eons (max-width: 599px) { .shatter-copy { width: 84cqi; } }
 
+/* The text arrives as the scene comes up from the bottom of the screen */
 @keyframes shatter-copy {
-  0%, 30% { opacity: 0; transform: translateY(24px); }
-  50%, 100% { opacity: 1; transform: none; }
+  0%, 8% { opacity: 0; transform: translateY(24px); }
+  28%, 100% { opacity: 1; transform: none; }
 }
 
 /* excerpt:fragments */
