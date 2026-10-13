@@ -62,8 +62,33 @@ const translations = {
     work_intro: 'From B2B platforms to Shopify stores, a few recent projects.',
     view_project: 'View project',
 
+    clients_label: 'Brands I have built for',
+
     services_title: 'What I do',
     services_intro: 'From the first sketch to launch day, one person to talk to.',
+    service_proof: 'See it in {name}',
+    service_lab: 'See it in the lab',
+
+    process_title: 'How I work',
+    process_intro: 'Four steps, one person from start to finish, and something you can click at every stage.',
+    process: [
+      { title: 'Understand', text: 'A call about your goals, your users and your constraints, then a short written summary of what we will build, and of what we will not.' },
+      { title: 'Design', text: 'Wireframes, then a clickable prototype in Figma. We test the idea together before a single line of code.' },
+      { title: 'Build', text: 'Clean, tested code, with a link to the work in progress at every step: you see the product grow, not a status report.' },
+      { title: 'Launch and follow up', text: 'Speed and accessibility checked before launch, then a follow-up to measure what works and improve it.' },
+    ],
+
+    teaser_title: 'The lab and the blog',
+    teaser_intro: 'Where I try things out, and where I write down what I learn.',
+    teaser_lab_count: '{n} animations',
+    teaser_lab_title: 'The lab',
+    teaser_lab_text: 'Buttons, scroll cues, loaders, text effects: interface animations made by hand, each one live, with its code.',
+    teaser_lab_cta: 'Open the lab',
+    teaser_lab_pill: 'Get started',
+    teaser_blog_count: '{n} posts',
+    teaser_blog_latest: 'Latest post',
+    teaser_blog_cta: 'Read the post',
+    teaser_blog_all: 'All posts',
 
     services: [
       {
@@ -458,8 +483,33 @@ const translations = {
     work_intro: 'Des plateformes B2B aux boutiques Shopify, quelques projets récents.',
     view_project: 'Voir le projet',
 
+    clients_label: "Des marques pour lesquelles j'ai travaillé",
+
     services_title: 'Ce que je fais',
     services_intro: 'Du premier croquis à la mise en ligne, un seul interlocuteur.',
+    service_proof: 'À voir dans {name}',
+    service_lab: 'À voir dans le lab',
+
+    process_title: 'Comment je travaille',
+    process_intro: "Quatre étapes, un seul interlocuteur du début à la fin, et quelque chose à cliquer à chaque étape.",
+    process: [
+      { title: 'Comprendre', text: "Un appel sur vos objectifs, vos utilisateurs et vos contraintes, puis un court résumé écrit de ce que nous allons construire, et de ce que nous ne ferons pas." },
+      { title: 'Concevoir', text: "Des maquettes, puis un prototype cliquable dans Figma. On teste l'idée ensemble avant la moindre ligne de code." },
+      { title: 'Développer', text: "Un code propre et testé, avec un lien vers le travail en cours à chaque étape : vous voyez le produit grandir, pas un compte rendu." },
+      { title: 'Lancer et suivre', text: "Vitesse et accessibilité vérifiées avant le lancement, puis un suivi pour mesurer ce qui marche et l'améliorer." },
+    ],
+
+    teaser_title: 'Le lab et le blog',
+    teaser_intro: "Là où j'essaie des choses, et où j'écris ce que j'en apprends.",
+    teaser_lab_count: '{n} animations',
+    teaser_lab_title: 'Le lab',
+    teaser_lab_text: "Boutons, indicateurs de défilement, chargements, effets de texte : des animations d'interface faites main, chacune en direct, avec son code.",
+    teaser_lab_cta: 'Ouvrir le lab',
+    teaser_lab_pill: 'Commencer',
+    teaser_blog_count: '{n} articles',
+    teaser_blog_latest: 'Dernier article',
+    teaser_blog_cta: "Lire l'article",
+    teaser_blog_all: 'Tous les articles',
 
     services: [
       {

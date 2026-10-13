@@ -1,18 +1,14 @@
-// The blog's posts, in both languages. Plain data (no JSX), so the build can
-// read titles and descriptions for each post's own page (scripts/prerender.mjs).
-// A body is a list of blocks: ['p', text], ['h2', text], ['ul', [items]],
-// ['code', lang, source, caption?]. Text may hold `code`, **bold** and
-// [links](/path).
+// The blog's posts, in both languages: their metadata (meta.js) and their
+// bodies. Plain data (no JSX), so the build can read each post for its own
+// page (scripts/prerender.mjs). A body is a list of blocks: ['p', text],
+// ['h2', text], ['ul', [items]], ['code', lang, source, caption?]. Text may
+// hold `code`, **bold** and [links](/path).
+import { POST_META } from './meta.js'
 
-export const POSTS = [
+const BODIES = [
   {
     slug: 'motion-that-serves',
-    date: '2026-10-13',
-    tags: ['Animation', 'CSS', 'Accessibility'],
-    related: { href: '/lab', en: 'Open the lab: 33 animations that follow these rules', fr: 'Ouvrir le lab : 33 animations qui suivent ces règles' },
     en: {
-      title: 'Motion that serves: eight rules for interface animation',
-      description: 'The eight rules I check every interface animation against: purpose, timing, easing, performance, reduced motion, pausing, resting off screen, and never hiding the content.',
       body: [
         ['p', 'Animation is the part of an interface people feel before they notice it. Done well, it explains: where something came from, what just changed, what is still on its way. Done badly, it slows everyone down, and makes some people feel sick. These are the eight rules I check every animation against, with examples from [the lab](/lab).'],
         ['h2', '1. Every animation answers a question'],
@@ -56,8 +52,6 @@ document.querySelectorAll('.demo').forEach((el) => observer.observe(el))`],
       ],
     },
     fr: {
-      title: 'Un mouvement qui sert : huit règles pour animer une interface',
-      description: "Les huit règles auxquelles je confronte chaque animation d'interface : utilité, durée, courbes, performance, mouvement réduit, pause, repos hors écran, et ne jamais cacher le contenu.",
       body: [
         ['p', "L'animation est la partie d'une interface qu'on ressent avant de la remarquer. Bien faite, elle explique : d'où vient un élément, ce qui vient de changer, ce qui est encore en route. Mal faite, elle ralentit tout le monde, et donne la nausée à certains. Voici les huit règles auxquelles je confronte chaque animation, avec des exemples tirés du [lab](/lab)."],
         ['h2', '1. Chaque animation répond à une question'],
@@ -103,12 +97,7 @@ document.querySelectorAll('.demo').forEach((el) => observer.observe(el))`],
   },
   {
     slug: 'scroll-driven-animations',
-    date: '2026-10-13',
-    tags: ['CSS', 'Animation', 'Performance'],
-    related: { href: '/projects/trimension-studio', en: 'See both animations live on the Trimension page', fr: 'Voir les deux animations en direct sur la page Trimension' },
     en: {
-      title: 'Scroll-driven animations: rebuilding a 2023 effect with today\'s CSS',
-      description: 'How I rebuilt two scroll animations from 2023 with view timelines: no scroll listener, the browser plays the keyframes from the scroll position, and a few lines of fallback for the rest.',
       body: [
         ['p', 'In 2023 I built the Eons page for Trimension, a virtual reality game studio: a hand that follows the scroll and presses a gadget, and fragments of a shattered world floating around the text. In 2026 I reviewed that code and rebuilt both effects. The new version has no scroll listener at all.'],
         ['h2', 'What the old code did'],
@@ -154,8 +143,6 @@ document.querySelectorAll('.demo').forEach((el) => observer.observe(el))`],
       ],
     },
     fr: {
-      title: "Animations pilotées par le défilement : refaire un effet de 2023 avec le CSS d'aujourd'hui",
-      description: "Comment j'ai refait deux animations au défilement de 2023 avec des view timelines : aucun écouteur de défilement, le navigateur joue les keyframes à partir de la position, et quelques lignes de secours pour les autres.",
       body: [
         ['p', "En 2023, j'ai réalisé la page Eons pour Trimension, un studio de jeux en réalité virtuelle : une main qui suit le défilement et appuie sur un gadget, et les fragments d'un monde brisé qui flottent autour du texte. En 2026, j'ai relu ce code et refait les deux effets. La nouvelle version n'a plus aucun écouteur de défilement."],
         ['h2', "Ce que faisait l'ancien code"],
@@ -203,12 +190,7 @@ document.querySelectorAll('.demo').forEach((el) => observer.observe(el))`],
   },
   {
     slug: 'ai-suggests-people-decide',
-    date: '2026-10-13',
-    tags: ['AI', 'Accessibility', 'Product design'],
-    related: { href: '/projects/accesseu', en: 'Read the AccessEU case study', fr: "Lire l'étude de cas AccessEU" },
     en: {
-      title: 'AI suggests, people decide: designing an AI feature you can trust',
-      description: 'AccessEU uses AI in one place: describing product photos for screen reader users. Why the model never writes to the store itself, and the five rules behind that choice.',
       body: [
         ['p', 'AccessEU, my Shopify app for the European Accessibility Act, uses AI in exactly one place: describing product photos for people who use a screen reader. It would be easy to let a model write those descriptions straight into the store. I chose not to, and the reasons apply to most AI features.'],
         ['h2', 'Why photos need words'],
@@ -234,8 +216,6 @@ prices or opinions.`, 'An extract of the instructions the model receives with ev
       ],
     },
     fr: {
-      title: "L'IA propose, l'humain décide : concevoir une fonction d'IA digne de confiance",
-      description: "AccessEU utilise l'IA à un seul endroit : décrire les photos produit pour les personnes qui utilisent un lecteur d'écran. Pourquoi le modèle n'écrit jamais lui-même dans la boutique, et les cinq règles derrière ce choix.",
       body: [
         ['p', "AccessEU, mon app Shopify pour l'European Accessibility Act, utilise l'IA à un seul endroit : décrire les photos produit pour les personnes qui utilisent un lecteur d'écran. Il serait facile de laisser un modèle écrire ces descriptions directement dans la boutique. J'ai choisi de ne pas le faire, et les raisons valent pour la plupart des fonctions d'IA."],
         ['h2', 'Pourquoi les photos ont besoin de mots'],
@@ -262,6 +242,11 @@ prices or opinions.`, "Un extrait des consignes que le modèle reçoit avec chaq
     },
   },
 ]
+
+export const POSTS = POST_META.map((meta) => {
+  const { en, fr } = BODIES.find((post) => post.slug === meta.slug)
+  return { ...meta, en: { ...meta.en, body: en.body }, fr: { ...meta.fr, body: fr.body } }
+})
 
 export const postBySlug = (slug) => POSTS.find((post) => post.slug === slug)
 

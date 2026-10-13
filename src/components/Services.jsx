@@ -1,3 +1,5 @@
+import { LAB_PATH, projectPath } from '../projects'
+
 const iconProps = {
   width: 20,
   height: 20,
@@ -53,7 +55,26 @@ const icons = {
   ),
 }
 
+// The project (or the lab) that shows each service in practice
+const PROOF = {
+  design: 'trimension',
+  frontend: 'project-global',
+  shopify: 'project-au',
+  fullstack: 'interdyn',
+  motion: 'lab',
+}
+
+const fill = (template, values) => template.replace(/\{(\w+)\}/g, (_, key) => values[key])
+
 export default function Services({ t }) {
+  const proofLink = (id) => {
+    const target = PROOF[id]
+    if (!target) return null
+    if (target === 'lab') return { href: LAB_PATH, label: t.service_lab }
+    const project = t.projects.find((p) => p.id === target)
+    return { href: projectPath(target), label: fill(t.service_proof, { name: project.title }) }
+  }
+
   return (
     <section id="services">
       <div className="section-head" data-reveal>
@@ -62,20 +83,31 @@ export default function Services({ t }) {
       </div>
 
       <ul className="card-grid">
-        {t.services.map((service, i) => (
-          <li
-            key={service.id}
-            className="service-card"
-            data-reveal
-            style={{ '--reveal-delay': `${(i % 2) * 90}ms` }}
-          >
-            <div className="service-icon" aria-hidden="true">
-              {icons[service.id]}
-            </div>
-            <h3 className="service-title">{service.title}</h3>
-            <p className="service-desc">{service.desc}</p>
-          </li>
-        ))}
+        {t.services.map((service, i) => {
+          const proof = proofLink(service.id)
+          return (
+            <li
+              key={service.id}
+              className="service-card"
+              data-reveal
+              style={{ '--reveal-delay': `${(i % 2) * 90}ms` }}
+            >
+              <div className="service-icon" aria-hidden="true">
+                {icons[service.id]}
+              </div>
+              <h3 className="service-title">{service.title}</h3>
+              <p className="service-desc">{service.desc}</p>
+              {proof && (
+                <a href={proof.href} className="service-proof">
+                  {proof.label}
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </a>
+              )}
+            </li>
+          )
+        })}
       </ul>
     </section>
   )
