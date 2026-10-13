@@ -2127,7 +2127,29 @@ section {
   color: var(--accent);
 }
 
-.case-highlights h3 {
+.case-section-intro {
+  max-width: 44rem;
+  margin: -6px 0 32px;
+  font-size: 17.5px;
+  line-height: 1.7;
+}
+
+.eons-demos {
+  display: grid;
+  gap: 48px;
+}
+
+.case-h3 {
+  margin: 64px 0 24px;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 1.1rem + 0.5vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.case-highlights h3,
+.case-highlights h4 {
   margin-bottom: 10px;
   font-family: var(--font-display);
   font-size: 1.2rem;
@@ -2317,8 +2339,9 @@ section {
   padding-top: 96px;
 }
 
-/* Text arrives just after the page; the cover and the title morph in from
-   the card instead (below) */
+/* Text settles in just after the page; the cover and the title morph in
+   from the card instead (below). It is readable from the first frame, never
+   hidden, so the browser counts it as shown at once (LCP). */
 @media (prefers-reduced-motion: no-preference) {
   .case-in {
     animation: case-in 0.7s var(--ease-out) var(--d, 0ms) backwards;
@@ -2326,7 +2349,7 @@ section {
 }
 
 @keyframes case-in {
-  from { opacity: 0; transform: translateY(14px); }
+  from { opacity: 0.35; transform: translateY(12px); }
 }
 
 /* Page transitions: from a card to its project page and back, the browser

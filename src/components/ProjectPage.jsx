@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import ProjectCover from './ProjectCovers'
 import { projectPath } from '../projects'
 import { nameFrom, isPlainClick, backToHome } from '../viewTransitions'
 import { highlight, LANGUAGE_NAMES } from '../highlight'
+import { EXCERPTS } from '../demos/excerpts'
+import EonsDemos from './EonsDemos'
 
 const Icon = ({ children, size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
@@ -11,10 +13,26 @@ const Icon = ({ children, size = 16 }) => (
 )
 
 // A code excerpt, coloured by highlight.js, with a copy button. Long lines
-// wrap, so the block never needs sideways scrolling.
+// wrap, so the block never needs sideways scrolling. The colours (hundreds
+// of spans) wait until the block comes near the screen: the text is the
+// same, only the first paint is lighter.
 function CodeBlock({ c, code }) {
-  const tokens = useMemo(() => highlight(code.source, code.lang), [code])
+  const source = code.source ?? EXCERPTS[code.excerpt]
+  const preRef = useRef(null)
+  const [near, setNear] = useState(false)
+  const tokens = useMemo(() => (near ? highlight(source, code.lang) : null), [near, source, code.lang])
   const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setNear(true)
+        observer.disconnect()
+      }
+    }, { rootMargin: '50% 0px' })
+    observer.observe(preRef.current)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     if (!copied) return undefined
@@ -23,7 +41,7 @@ function CodeBlock({ c, code }) {
   }, [copied])
 
   const copy = () => {
-    navigator.clipboard?.writeText(code.source).then(() => setCopied(true), () => {})
+    navigator.clipboard?.writeText(source).then(() => setCopied(true), () => {})
   }
 
   return (
@@ -36,10 +54,10 @@ function CodeBlock({ c, code }) {
           <span className="sr-only"> {code.file}</span>
         </button>
       </div>
-      <pre className="case-code-body"><code>
-        {tokens.map((token, i) => (token.type === 'plain'
+      <pre className="case-code-body" ref={preRef}><code>
+        {tokens ? tokens.map((token, i) => (token.type === 'plain'
           ? token.text
-          : <span key={i} className={`tok-${token.type}`}>{token.text}</span>))}
+          : <span key={i} className={`tok-${token.type}`}>{token.text}</span>)) : source}
       </code></pre>
       <figcaption>{code.caption}</figcaption>
       <p className="sr-only" role="status">{copied ? c.copied : ''}</p>
@@ -175,6 +193,23 @@ export default function ProjectPage({ t, id }) {
             {project.highlights.map((item) => (
               <li key={item.title}>
                 <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {project.revisited && (
+        <section className="case-section" aria-labelledby="case-revisited">
+          <h2 id="case-revisited" className="case-h2">{c.revisited}</h2>
+          <p className="case-section-intro">{project.revisited.intro}</p>
+          <EonsDemos r={project.revisited} />
+          <h3 className="case-h3">{c.changes}</h3>
+          <ul className="case-highlights case-changes">
+            {project.revisited.changes.map((item) => (
+              <li key={item.title}>
+                <h4>{item.title}</h4>
                 <p>{item.text}</p>
               </li>
             ))}
