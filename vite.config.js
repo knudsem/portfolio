@@ -10,9 +10,10 @@ const vercelLikePreview = {
     const dist = new URL('./dist/', import.meta.url)
     server.middlewares.use((req, res, next) => {
       const { pathname } = new URL(req.url, 'http://localhost')
-      const project = pathname.match(/^\/projects\/([^/]+)\/?$/)
-      if (project && fs.existsSync(new URL(`projects/${project[1]}/index.html`, dist))) {
-        req.url = `/projects/${project[1]}/index.html`
+      // A page written by scripts/prerender.mjs: /lab, /blog/a-post, /projects/a-project
+      const page = pathname.match(/^\/((?:projects\/|blog\/)?[a-z0-9-]+)\/?$/)
+      if (page && fs.existsSync(new URL(`${page[1]}/index.html`, dist))) {
+        req.url = `/${page[1]}/index.html`
         return next()
       }
       const known = pathname === '/' || pathname === '/index.html' || fs.existsSync(new URL(`.${decodeURIComponent(pathname)}`, dist))

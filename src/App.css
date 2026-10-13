@@ -1813,6 +1813,12 @@ section {
   padding: 32px 0 96px;
 }
 
+/* While a page's own code is still on its way (the lab): holds the footer
+   down, so nothing jumps when the page arrives */
+.page-wait {
+  min-height: 100vh;
+}
+
 /* Sections here are parts of one page, not the home page's big sections */
 .case,
 .case section {

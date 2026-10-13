@@ -13,6 +13,9 @@
     }
   ],
   "rewrites": [
-    { "source": "/projects/:slug", "destination": "/projects/:slug/index.html" }
+    { "source": "/projects/:slug", "destination": "/projects/:slug/index.html" },
+    { "source": "/lab", "destination": "/lab/index.html" },
+    { "source": "/blog", "destination": "/blog/index.html" },
+    { "source": "/blog/:slug", "destination": "/blog/:slug/index.html" }
   ]
 }

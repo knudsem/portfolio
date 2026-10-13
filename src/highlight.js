@@ -1,6 +1,6 @@
-// A small syntax highlighter for the code excerpts on project pages, for
-// JavaScript and CSS. It returns tokens ({ type, text }) that the page draws
-// as spans, so no HTML is ever built from strings.
+// A small syntax highlighter for the code excerpts on project pages and in
+// the lab, for JavaScript, CSS and HTML. It returns tokens ({ type, text })
+// that the page draws as spans, so no HTML is ever built from strings.
 
 const RULES = {
   js: [
@@ -10,6 +10,15 @@ const RULES = {
     ['number', /\b\d+(?:\.\d+)?\b/y],
     ['function', /\b[A-Za-z_$][\w$]*(?=\s*\()/y],
     ['property', /(?<=\.)[A-Za-z_$][\w$]*/y],
+  ],
+  html: [
+    ['comment', /<!--[\s\S]*?-->/y],
+    // A tag name, after its opening bracket
+    ['keyword', /(?<=<\/?)[a-zA-Z][\w-]*/y],
+    // An attribute value (only after an equals sign: text can hold quotes)
+    ['string', /(?<==\s*)(?:"[^"]*"|'[^']*')/y],
+    // An attribute name, before its equals sign or on its own inside a tag
+    ['property', /[a-zA-Z_:][\w:.-]*(?=\s*=)/y],
   ],
   css: [
     ['comment', /\/\*[\s\S]*?\*\//y],
@@ -22,7 +31,7 @@ const RULES = {
   ],
 }
 
-export const LANGUAGE_NAMES = { js: 'JavaScript', css: 'CSS' }
+export const LANGUAGE_NAMES = { js: 'JavaScript', css: 'CSS', html: 'HTML' }
 
 export function highlight(source, lang) {
   const rules = RULES[lang] || []

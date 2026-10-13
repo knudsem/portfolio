@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import MKLogo from './MKLogo'
 
 const NAV_IDS = ['about', 'work', 'services', 'proof']
+// Pages of their own, after the sections of the home page
+const NAV_PAGES = [{ id: 'lab', href: '/lab' }]
 
 const LANGUAGES = [
   { code: 'fr', short: 'FR', name: 'Français' },
@@ -28,7 +30,7 @@ function LangToggle({ t, lang, setLang }) {
   )
 }
 
-export default function Header({ t, lang, setLang, activeSection, menuOpen, setMenuOpen, shortcut, onOpenPalette, home }) {
+export default function Header({ t, lang, setLang, activeSection, menuOpen, setMenuOpen, shortcut, onOpenPalette, home, page }) {
   const [scrolled, setScrolled] = useState(false)
   const menuButtonRef = useRef(null)
   const firstLinkRef = useRef(null)
@@ -86,6 +88,16 @@ export default function Header({ t, lang, setLang, activeSection, menuOpen, setM
               {t.nav[id]}
             </a>
           ))}
+          {NAV_PAGES.map(({ id, href }) => (
+            <a
+              key={id}
+              href={href}
+              className={`header-link${page === id ? ' active' : ''}`}
+              aria-current={page === id ? 'page' : undefined}
+            >
+              {t.nav[id]}
+            </a>
+          ))}
         </nav>
 
         <div className="header-actions">
@@ -125,13 +137,17 @@ export default function Header({ t, lang, setLang, activeSection, menuOpen, setM
       {menuOpen && (
         <nav id="mobile-menu" className="mobile-menu" aria-label={t.nav_label}>
           <ul>
-            {[...NAV_IDS, 'contact'].map((id, i) => (
+            {[
+              ...NAV_IDS.map((id) => ({ id, href: `${base}#${id}`, current: activeSection === id, kind: 'true' })),
+              ...NAV_PAGES.map(({ id, href }) => ({ id, href, current: page === id, kind: 'page' })),
+              { id: 'contact', href: `${base}#contact`, current: activeSection === 'contact', kind: 'true' },
+            ].map(({ id, href, current, kind }, i) => (
               <li key={id} style={{ '--i': i }}>
                 <a
                   ref={i === 0 ? firstLinkRef : undefined}
-                  href={`${base}#${id}`}
-                  className={`mobile-menu-link${activeSection === id ? ' active' : ''}`}
-                  aria-current={activeSection === id ? 'true' : undefined}
+                  href={href}
+                  className={`mobile-menu-link${current ? ' active' : ''}`}
+                  aria-current={current ? kind : undefined}
                   onClick={closeMenu}
                 >
                   {t.nav[id]}

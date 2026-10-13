@@ -2,12 +2,12 @@
 // project address opens directly and shows its own title and link preview
 // (LinkedIn, WhatsApp, Slack, search results). The page itself is drawn by
 // the same app script as the home page.
-// Also writes 404.html (any unknown address) and sitemap.xml.
+// Also writes the lab's page, 404.html (any unknown address) and sitemap.xml.
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import translations from '../src/i18n.js'
-import { PROJECT_SLUGS, SITE_URL, projectPath } from '../src/projects.js'
+import { PROJECT_SLUGS, SITE_URL, projectPath, LAB_PATH } from '../src/projects.js'
 
 const DIST = fileURLToPath(new URL('../dist', import.meta.url))
 const template = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8')
@@ -68,6 +68,14 @@ for (const project of en.projects) {
   }))
   urls.push(url)
 }
+
+// The lab
+write(path.join(DIST, LAB_PATH.slice(1), 'index.html'), page({
+  title: en.lab.title,
+  description: en.lab.meta,
+  url: `${SITE_URL}${LAB_PATH}`,
+}))
+urls.push(`${SITE_URL}${LAB_PATH}`)
 
 write(path.join(DIST, '404.html'), page({
   title: en.case.title.replace('{title}', en.case.not_found_title),

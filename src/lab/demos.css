@@ -1,0 +1,1692 @@
+/* The lab's demos. Each one is self-contained between its markers: the lab
+   shows that region as the demo's CSS, so what you copy is what runs. Every
+   demo has a calm version for visitors who ask their device to reduce
+   motion. */
+
+/* Buttons */
+
+/* demo:btn-shine */
+.lb-shine {
+  position: relative;
+  overflow: hidden;
+  padding: 14px 30px;
+  border: 0;
+  border-radius: 999px;
+  background: #c5f04a;
+  color: #0b0b10;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: translate 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.3s ease;
+}
+
+/* A streak of light crosses the button now and then */
+.lb-shine::after {
+  content: '';
+  position: absolute;
+  inset: -30% auto -30% 0;
+  width: 35%;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.8), transparent);
+  translate: -150% 0;
+  rotate: 12deg;
+  animation: lb-shine 3.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.lb-shine:hover,
+.lb-shine:focus-visible {
+  translate: 0 -2px;
+  box-shadow: 0 10px 30px -10px rgb(197 240 74 / 0.7);
+}
+
+.lb-shine:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@keyframes lb-shine {
+  0%, 55% { translate: -150% 0; }
+  85%, 100% { translate: 400% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-shine,
+  .lb-shine::after { animation: none; transition: none; }
+}
+/* /demo */
+
+/* demo:btn-border */
+/* The angle is a typed custom property, so the gradient can turn smoothly */
+@property --lb-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.lb-border {
+  position: relative;
+  isolation: isolate;
+  padding: 2px;
+  border: 0;
+  border-radius: 999px;
+  background: conic-gradient(from var(--lb-angle), #c5f04a, #4ae0d2, #8f6bff, #c5f04a);
+  font: inherit;
+  cursor: pointer;
+  animation: lb-border-turn 4s linear infinite;
+}
+
+/* The same light, blurred, glows behind */
+.lb-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: inherit;
+  filter: blur(14px);
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.lb-border span {
+  display: block;
+  padding: 13px 28px;
+  border-radius: inherit;
+  background: #0b0b10;
+  color: #ececf1;
+  font-weight: 600;
+}
+
+.lb-border:hover::before,
+.lb-border:focus-visible::before {
+  opacity: 0.85;
+}
+
+.lb-border:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 4px;
+}
+
+@keyframes lb-border-turn {
+  to { --lb-angle: 360deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-border { animation: none; }
+}
+/* /demo */
+
+/* demo:btn-fill */
+/* The fill grows from where the pointer comes in, and leaves the same way
+   (scripts.js sets --x and --y) */
+.lb-fill {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 14px 30px;
+  border: 1.5px solid #c5f04a;
+  border-radius: 999px;
+  background: transparent;
+  color: #c5f04a;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.4s ease;
+}
+
+.lb-fill::before {
+  content: '';
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  z-index: -1;
+  width: 0;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #c5f04a;
+  translate: -50% -50%;
+  transition: width 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.lb-fill:hover,
+.lb-fill:focus-visible {
+  color: #0b0b10;
+}
+
+.lb-fill:hover::before,
+.lb-fill:focus-visible::before {
+  width: 250%;
+}
+
+.lb-fill:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-fill::before { transition: none; }
+}
+/* /demo */
+
+/* demo:btn-magnetic */
+/* The button leans towards the pointer, its label a little further, and
+   springs back when the pointer leaves (scripts.js sets --mx and --my) */
+.lb-magnet-zone {
+  display: grid;
+  place-items: center;
+  padding: 36px 48px;
+}
+
+.lb-magnet {
+  --mx: 0px;
+  --my: 0px;
+  padding: 16px 32px;
+  border: 0;
+  border-radius: 999px;
+  background: #ececf1;
+  color: #0b0b10;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  translate: var(--mx) var(--my);
+  transition: translate 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.4);
+}
+
+.lb-magnet span {
+  display: block;
+  translate: calc(var(--mx) * 0.4) calc(var(--my) * 0.4);
+  transition: inherit;
+}
+
+.lb-magnet:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+/* /demo */
+
+/* demo:btn-send */
+.lb-send {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  min-width: 150px;
+  padding: 14px 26px;
+  border: 0;
+  border-radius: 14px;
+  background: #6d4ae6;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.lb-send svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.lb-send-label,
+.lb-send-done {
+  grid-area: 1 / 2;
+  transition: translate 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.3s ease;
+}
+
+.lb-send-done {
+  translate: 0 140%;
+  opacity: 0;
+}
+
+/* Sending: the plane takes off, the label goes */
+.lb-send[data-state='sending'] .lb-send-plane {
+  animation: lb-send-fly 0.8s cubic-bezier(0.5, 0, 0.75, 0) forwards;
+}
+
+.lb-send[data-state='sending'] .lb-send-label,
+.lb-send[data-state='sent'] .lb-send-label {
+  translate: 0 -140%;
+  opacity: 0;
+}
+
+/* Sent: the confirmation rises, the plane is gone */
+.lb-send[data-state='sent'] {
+  background: #1f9d6a;
+  color: #0b0b10;
+}
+
+.lb-send[data-state='sent'] .lb-send-plane {
+  opacity: 0;
+}
+
+.lb-send[data-state='sent'] .lb-send-done {
+  translate: 0 0;
+  opacity: 1;
+}
+
+/* Read by screen readers, not shown */
+.lb-send-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.lb-send:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@keyframes lb-send-fly {
+  30% { translate: -4px 2px; rotate: -12deg; }
+  100% { translate: 120px -60px; rotate: 8deg; scale: 0.6; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-send-label,
+  .lb-send-done { transition: none; }
+  .lb-send[data-state='sending'] .lb-send-plane { animation: none; opacity: 0; }
+}
+/* /demo */
+
+/* demo:btn-like */
+.lb-like {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid #34343f;
+  border-radius: 50%;
+  background: #17171f;
+  color: #a1a1b3;
+  cursor: pointer;
+}
+
+.lb-like svg {
+  width: 30px;
+  height: 30px;
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+  transition: fill 0.2s ease, stroke 0.2s ease;
+}
+
+.lb-like[aria-pressed='true'] {
+  color: #ff4d6d;
+}
+
+.lb-like[aria-pressed='true'] svg {
+  fill: currentColor;
+  animation: lb-like-pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.5);
+}
+
+/* A ring and eight sparks, only when the heart is switched on */
+.lb-like-burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lb-like-burst::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 2px solid #ff4d6d;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.lb-like-burst i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px;
+  border-radius: 50%;
+  background: hsl(calc(var(--i) * 40 + 320) 90% 65%);
+  opacity: 0;
+}
+
+.lb-like[aria-pressed='true'] .lb-like-burst::before {
+  animation: lb-like-ring 0.5s ease-out;
+}
+
+.lb-like[aria-pressed='true'] .lb-like-burst i {
+  animation: lb-like-spark 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.lb-like:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@keyframes lb-like-pop {
+  0% { scale: 0.6; }
+  60% { scale: 1.25; }
+  100% { scale: 1; }
+}
+
+@keyframes lb-like-ring {
+  from { scale: 0.4; opacity: 1; }
+  to { scale: 1.6; opacity: 0; border-width: 0; }
+}
+
+@keyframes lb-like-spark {
+  0% { transform: rotate(calc(var(--i) * 45deg)) translateY(0); opacity: 1; }
+  100% { transform: rotate(calc(var(--i) * 45deg)) translateY(-44px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-like[aria-pressed='true'] svg,
+  .lb-like[aria-pressed='true'] .lb-like-burst::before,
+  .lb-like[aria-pressed='true'] .lb-like-burst i { animation: none; }
+}
+/* /demo */
+
+/* demo:btn-download */
+.lb-dl {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-width: 190px;
+  padding: 14px 26px;
+  border: 1px solid #34343f;
+  border-radius: 12px;
+  background: #17171f;
+  color: #ececf1;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* The bar fills the button while it works, faint enough for the label to
+   stay readable over it */
+.lb-dl-bar {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgb(74 224 210 / 0.3), rgb(197 240 74 / 0.3));
+  transform-origin: left;
+  scale: 0 1;
+}
+
+.lb-dl-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lb-dl svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lb-dl[data-state='loading'] {
+  cursor: progress;
+}
+
+.lb-dl[data-state='loading'] .lb-dl-bar {
+  animation: lb-dl-fill 1.8s cubic-bezier(0.6, 0.1, 0.3, 1) forwards;
+}
+
+.lb-dl[data-state='done'] {
+  border-color: #c5f04a;
+  color: #0b0b10;
+}
+
+.lb-dl[data-state='done'] .lb-dl-bar {
+  scale: 1 1;
+  background: #c5f04a;
+}
+
+/* The tick draws itself */
+.lb-dl[data-state='done'] svg path {
+  stroke-dasharray: 1;
+  animation: lb-dl-tick 0.4s ease-out both;
+}
+
+.lb-dl:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@keyframes lb-dl-fill {
+  to { scale: 1 1; }
+}
+
+@keyframes lb-dl-tick {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-dl[data-state='loading'] .lb-dl-bar { animation: none; scale: 1 1; opacity: 0.6; }
+  .lb-dl[data-state='done'] svg path { animation: none; }
+}
+/* /demo */
+
+/* demo:btn-roll */
+/* Each letter has a copy under it (text-shadow); on hover the letters roll
+   up one after another */
+.lb-roll {
+  padding: 14px 28px;
+  border: 1px solid #ececf1;
+  border-radius: 999px;
+  background: transparent;
+  color: #ececf1;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.lb-roll-text {
+  display: inline-flex;
+  overflow: hidden;
+  line-height: 1.3;
+}
+
+.lb-roll-text span {
+  display: inline-block;
+  white-space: pre;
+  text-shadow: 0 1.3em currentColor;
+  transition: translate 0.45s cubic-bezier(0.7, 0, 0.2, 1);
+  transition-delay: calc(var(--i) * 22ms);
+}
+
+.lb-roll:hover,
+.lb-roll:focus-visible {
+  background: #ececf1;
+  color: #0b0b10;
+}
+
+.lb-roll:hover .lb-roll-text span,
+.lb-roll:focus-visible .lb-roll-text span {
+  translate: 0 -1.3em;
+}
+
+.lb-roll:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-roll-text span { transition: none; }
+}
+/* /demo */
+
+/* Scroll cues */
+
+/* demo:scroll-mouse */
+.lb-mouse {
+  position: relative;
+  width: 28px;
+  height: 46px;
+  border: 2px solid #ececf1;
+  border-radius: 16px;
+}
+
+/* The wheel rolls down and fades, again and again */
+.lb-mouse::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  width: 4px;
+  height: 9px;
+  margin-left: -2px;
+  border-radius: 2px;
+  background: #c5f04a;
+  animation: lb-mouse-wheel 1.8s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+}
+
+@keyframes lb-mouse-wheel {
+  0% { translate: 0 0; opacity: 0; }
+  20% { opacity: 1; }
+  70% { translate: 0 14px; opacity: 0; }
+  100% { translate: 0 14px; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-mouse::before { animation: none; }
+}
+/* /demo */
+
+/* demo:scroll-chevrons */
+.lb-chevrons {
+  display: grid;
+  justify-items: center;
+}
+
+.lb-chevrons span {
+  width: 18px;
+  height: 18px;
+  margin-top: -6px;
+  border-right: 3px solid #c5f04a;
+  border-bottom: 3px solid #c5f04a;
+  rotate: 45deg;
+  opacity: 0;
+  animation: lb-chevron 1.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.18s);
+}
+
+@keyframes lb-chevron {
+  0% { opacity: 0; translate: 0 -8px; }
+  40% { opacity: 1; }
+  80%, 100% { opacity: 0; translate: 0 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-chevrons span { animation: none; opacity: calc(1 - var(--i) * 0.3); }
+}
+/* /demo */
+
+/* demo:scroll-line */
+.lb-line {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  color: #a1a1b3;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+/* A drop of light runs down the line */
+.lb-line span {
+  position: relative;
+  overflow: hidden;
+  width: 1px;
+  height: 72px;
+  background: #34343f;
+}
+
+.lb-line span::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent, #c5f04a);
+  translate: 0 -100%;
+  animation: lb-line-drop 2s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+}
+
+@keyframes lb-line-drop {
+  to { translate: 0 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-line span::after { animation: none; translate: 0 0; }
+}
+/* /demo */
+
+/* demo:scroll-circle */
+.lb-circle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 120px;
+  height: 120px;
+}
+
+.lb-circle-text {
+  position: absolute;
+  inset: 0;
+  fill: #ececf1;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  animation: lb-circle-turn 14s linear infinite;
+}
+
+.lb-circle-arrow {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: #c5f04a;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: lb-circle-bob 1.8s ease-in-out infinite;
+}
+
+@keyframes lb-circle-turn {
+  to { rotate: 360deg; }
+}
+
+@keyframes lb-circle-bob {
+  50% { translate: 0 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-circle-text,
+  .lb-circle-arrow { animation: none; }
+}
+/* /demo */
+
+/* demo:scroll-progress */
+/* A reading bar drawn by the browser from the scroll of its own box: a
+   scroll-driven animation, no script (scripts.js only helps browsers that
+   cannot play it yet) */
+.lb-read {
+  width: min(280px, 100%);
+  height: 170px;
+  overflow-y: auto;
+  border: 1px solid #34343f;
+  border-radius: 12px;
+  background: #121219;
+  scroll-timeline: --lb-read block;
+}
+
+.lb-read-bar {
+  position: sticky;
+  top: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #4ae0d2, #c5f04a);
+  transform-origin: left;
+  scale: var(--p, 0) 1;
+}
+
+@supports (animation-timeline: scroll()) {
+  .lb-read-bar {
+    animation: lb-read linear both;
+    animation-timeline: --lb-read;
+  }
+}
+
+.lb-read p {
+  margin: 0;
+  padding: 12px 16px 0;
+  color: #a1a1b3;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.lb-read p:last-child {
+  padding-bottom: 16px;
+}
+
+@keyframes lb-read {
+  from { scale: 0 1; }
+  to { scale: 1 1; }
+}
+/* /demo */
+
+/* Loaders */
+
+/* demo:loader-dots */
+.lb-dots {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  height: 40px;
+}
+
+/* Each dot falls, squashes on landing, and bounces back */
+.lb-dots span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #c5f04a;
+  animation: lb-dot 0.9s cubic-bezier(0.5, 0, 0.5, 1) infinite alternate;
+  animation-delay: calc(var(--i) * -0.3s);
+  transform-origin: bottom;
+}
+
+@keyframes lb-dot {
+  0% { translate: 0 -24px; scale: 0.9 1.1; }
+  80% { scale: 1 1; }
+  100% { translate: 0 0; scale: 1.3 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-dots span { animation: lb-dot-calm 1.4s ease-in-out infinite alternate; animation-delay: calc(var(--i) * -0.45s); }
+  @keyframes lb-dot-calm { from { opacity: 0.35; } to { opacity: 1; } }
+}
+/* /demo */
+
+/* demo:loader-orbit */
+.lb-orbit {
+  position: relative;
+  width: 72px;
+  height: 72px;
+}
+
+/* Three rings of the same dot, each turning at its own speed */
+.lb-orbit span {
+  position: absolute;
+  inset: calc(var(--i) * 12px);
+  border-radius: 50%;
+  animation: lb-orbit calc(0.9s + var(--i) * 0.45s) linear infinite;
+}
+
+.lb-orbit span::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: hsl(calc(75 + var(--i) * 70) 85% 62%);
+  box-shadow: 0 0 12px currentColor;
+  color: hsl(calc(75 + var(--i) * 70) 85% 62%);
+}
+
+@keyframes lb-orbit {
+  to { rotate: 360deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-orbit span { animation-duration: 6s; }
+}
+/* /demo */
+
+/* demo:loader-bars */
+/* Five bars, five unrelated rhythms: it never looks like a loop */
+.lb-bars {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  height: 48px;
+}
+
+.lb-bars span {
+  width: 8px;
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(#c5f04a, #4ae0d2);
+  transform-origin: bottom;
+  animation: lb-bar calc(0.6s + var(--i) * 0.17s) ease-in-out infinite alternate;
+}
+
+@keyframes lb-bar {
+  from { scale: 1 0.2; }
+  to { scale: 1 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-bars span { animation: none; scale: 1 calc(0.35 + var(--i) * 0.15); }
+}
+/* /demo */
+
+/* demo:loader-morph */
+.lb-morph {
+  width: 54px;
+  height: 54px;
+  background: #8f6bff;
+  animation: lb-morph 2.4s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+}
+
+@keyframes lb-morph {
+  0%, 100% { border-radius: 12px; rotate: 0deg; background: #8f6bff; }
+  33% { border-radius: 50%; rotate: 180deg; background: #4ae0d2; }
+  66% { border-radius: 50% 12px; rotate: 270deg; background: #c5f04a; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-morph { animation: none; border-radius: 50%; }
+}
+/* /demo */
+
+/* demo:loader-draw */
+/* A path drawn and wiped, end to end: pathLength="1" makes the dash
+   lengths simple fractions */
+.lb-draw {
+  width: 150px;
+  height: 60px;
+  fill: none;
+  stroke: #c5f04a;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.lb-draw path {
+  stroke-dasharray: 1 1;
+  animation: lb-draw 2.6s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+}
+
+@keyframes lb-draw {
+  0% { stroke-dashoffset: 1; }
+  50% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-draw path { animation: none; stroke-dashoffset: 0; }
+}
+/* /demo */
+
+/* Text */
+
+/* demo:text-rise */
+/* Letters rise out of a mask, one after another */
+.lb-rise {
+  margin: 0;
+  text-align: center;
+  color: #ececf1;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.lb-rise-word {
+  display: inline-flex;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+.lb-rise-word span {
+  display: inline-block;
+  animation: lb-rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: calc(var(--i) * 35ms);
+}
+
+.lb-rise-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes lb-rise {
+  from { translate: 0 110%; rotate: 6deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-rise-word span { animation: none; }
+}
+/* /demo */
+
+/* demo:text-scramble */
+/* scripts.js scrambles and settles the letters; the real words stay in a
+   hidden copy for screen readers */
+.lb-scramble {
+  margin: 0;
+  color: #c5f04a;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.lb-scramble [aria-hidden] span {
+  color: #4ae0d2;
+}
+
+.lb-scramble-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+/* /demo */
+
+/* demo:text-gradient */
+.lb-gradient-text {
+  margin: 0;
+  background: linear-gradient(90deg, #c5f04a, #4ae0d2, #8f6bff, #ff7ab8, #c5f04a) 0 0 / 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 30px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  animation: lb-gradient-text 6s linear infinite;
+}
+
+@keyframes lb-gradient-text {
+  to { background-position: 150% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-gradient-text { animation: none; }
+}
+/* /demo */
+
+/* demo:text-type */
+/* Typed, held, erased: the width grows in steps of one character (ch) */
+.lb-type {
+  --chars: 22;
+  margin: 0;
+  overflow: hidden;
+  width: calc(var(--chars) * 1ch + 4px);
+  border-right: 3px solid #c5f04a;
+  color: #ececf1;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 18px;
+  white-space: nowrap;
+  animation:
+    lb-type 5s steps(var(--chars)) infinite,
+    lb-caret 0.7s step-end infinite;
+}
+
+@keyframes lb-type {
+  0% { width: 0; }
+  45%, 70% { width: calc(var(--chars) * 1ch + 4px); }
+  100% { width: 0; }
+}
+
+@keyframes lb-caret {
+  50% { border-color: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-type { animation: none; }
+}
+/* /demo */
+
+/* demo:text-marker */
+/* A highlighter stroke sweeps under each marked word, in turn */
+.lb-marker {
+  max-width: 300px;
+  margin: 0;
+  color: #ececf1;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.lb-marker mark {
+  margin: 0 -0.06em;
+  padding: 0 0.06em;
+  background: linear-gradient(#c5f04a, #c5f04a) 0 85% / 0% 40% no-repeat;
+  color: inherit;
+  animation: lb-marker 0.9s cubic-bezier(0.6, 0, 0.3, 1) forwards;
+  animation-delay: calc(0.4s + var(--i) * 0.6s);
+}
+
+@keyframes lb-marker {
+  to { background-size: 100% 40%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-marker mark { animation: none; background-size: 100% 40%; }
+}
+/* /demo */
+
+/* Cards */
+
+/* demo:card-tilt */
+/* scripts.js turns the card towards the pointer (--rx, --ry) and moves the
+   glare (--gx, --gy) */
+.lb-tilt {
+  --rx: 0deg;
+  --ry: 0deg;
+  --gx: 50%;
+  --gy: 50%;
+  perspective: 700px;
+}
+
+.lb-tilt-card {
+  position: relative;
+  display: grid;
+  align-content: end;
+  width: 200px;
+  height: 140px;
+  padding: 16px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: radial-gradient(120% 120% at 0% 0%, #8f6bff, transparent 60%), radial-gradient(120% 120% at 100% 100%, #4ae0d2, transparent 55%), #17171f;
+  color: #fff;
+  font-weight: 700;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.lb-tilt-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--gx) var(--gy), rgb(255 255 255 / 0.35), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lb-tilt:hover .lb-tilt-card {
+  transition-duration: 0.12s;
+}
+
+.lb-tilt:hover .lb-tilt-card::after {
+  opacity: 1;
+}
+/* /demo */
+
+/* demo:card-spotlight */
+/* The border lights up where the pointer is (scripts.js sets --x, --y);
+   the mask keeps the light on the border only */
+.lb-spot {
+  --x: 50%;
+  --y: 0%;
+  position: relative;
+  width: 230px;
+  padding: 22px;
+  border-radius: 16px;
+  background: #121219;
+  box-shadow: inset 0 0 0 1px #2a2a35;
+  color: #a1a1b3;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.lb-spot strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #ececf1;
+  font-size: 16px;
+}
+
+.lb-spot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: radial-gradient(180px circle at var(--x) var(--y), #c5f04a, transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.lb-spot:hover::before {
+  opacity: 1;
+}
+/* /demo */
+
+/* demo:card-flip */
+.lb-flip {
+  width: 200px;
+  height: 130px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  perspective: 800px;
+}
+
+.lb-flip-inner {
+  position: relative;
+  display: block;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.3, 0.9, 0.3, 1.1);
+}
+
+.lb-flip-front,
+.lb-flip-back {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  font-weight: 700;
+}
+
+.lb-flip-front {
+  background: #c5f04a;
+  color: #0b0b10;
+}
+
+.lb-flip-back {
+  background: #8f6bff;
+  color: #0b0b10;
+  transform: rotateY(180deg);
+}
+
+.lb-flip[aria-pressed='true'] .lb-flip-inner {
+  transform: rotateY(180deg);
+}
+
+/* On hover it only leans, as a hint that it turns */
+@media (hover: hover) {
+  .lb-flip:hover .lb-flip-inner { transform: rotateY(14deg); }
+  .lb-flip[aria-pressed='true']:hover .lb-flip-inner { transform: rotateY(166deg); }
+}
+
+.lb-flip:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 4px;
+  border-radius: 16px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-flip-inner { transition: none; }
+}
+/* /demo */
+
+/* demo:card-reveal */
+/* The picture opens like a curtain, the caption slides in after it */
+.lb-reveal {
+  position: relative;
+  margin: 0;
+  width: 220px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #17171f;
+}
+
+.lb-reveal-picture {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 80% at 30% 30%, #ff7ab8, transparent 60%),
+    radial-gradient(70% 90% at 80% 70%, #4ae0d2, transparent 60%),
+    linear-gradient(135deg, #8f6bff, #1b1b45);
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+.lb-reveal-caption {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 1px 10px rgb(0 0 0 / 0.7);
+  translate: 0 140%;
+  transition: translate 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s;
+}
+
+.lb-reveal-hint {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #a1a1b3;
+  font-size: 13px;
+}
+
+.lb-reveal:hover .lb-reveal-picture,
+.lb-reveal:focus-within .lb-reveal-picture,
+.lb-reveal:focus .lb-reveal-picture {
+  clip-path: inset(0 0 0 0);
+}
+
+.lb-reveal:hover .lb-reveal-caption,
+.lb-reveal:focus .lb-reveal-caption {
+  translate: 0 0;
+}
+
+.lb-reveal:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-reveal-picture,
+  .lb-reveal-caption { transition: none; }
+}
+/* /demo */
+
+/* Inputs and toggles */
+
+/* demo:toggle-daynight */
+/* A real switch (role="switch"): the sun slides over and becomes the moon,
+   the sky turns, the stars come out */
+.lb-dn {
+  position: relative;
+  width: 96px;
+  height: 48px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(#68b8ff, #a7d8ff);
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+
+.lb-dn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(#141a3d, #2b2363);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.lb-dn-knob {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffd84a;
+  box-shadow: 0 0 18px #ffd84a;
+  transition: translate 0.55s cubic-bezier(0.5, 0, 0.2, 1.3), background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* The moon's shadow, slid off the sun until night */
+.lb-dn-knob::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset -10px -4px 0 0 #2b2363;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.lb-dn-stars {
+  position: absolute;
+  inset: 0;
+}
+
+.lb-dn-stars i {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  translate: 0 8px;
+  transition: opacity 0.4s ease, translate 0.5s ease;
+  transition-delay: calc(var(--i) * 70ms);
+}
+
+.lb-dn-stars i:nth-child(1) { left: 16px; top: 12px; }
+.lb-dn-stars i:nth-child(2) { left: 28px; top: 30px; }
+.lb-dn-stars i:nth-child(3) { left: 40px; top: 16px; }
+
+.lb-dn[aria-checked='true']::before {
+  opacity: 1;
+}
+
+.lb-dn[aria-checked='true'] .lb-dn-knob {
+  translate: 48px 0;
+  background: #e8e6ff;
+  box-shadow: 0 0 14px rgb(232 230 255 / 0.6);
+}
+
+.lb-dn[aria-checked='true'] .lb-dn-knob::after {
+  opacity: 1;
+}
+
+.lb-dn[aria-checked='true'] .lb-dn-stars i {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.lb-dn:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-dn,
+  .lb-dn::before,
+  .lb-dn-knob,
+  .lb-dn-knob::after,
+  .lb-dn-stars i { transition: none; }
+}
+/* /demo */
+
+/* demo:input-float */
+/* The label sits in the field, and floats up once it is focused or filled
+   (the placeholder is a single space, so :placeholder-shown means empty) */
+.lb-float {
+  position: relative;
+  display: block;
+  width: min(260px, 100%);
+}
+
+.lb-float input {
+  width: 100%;
+  padding: 22px 2px 8px;
+  border: 0;
+  border-bottom: 1.5px solid #6a6a7e;
+  background: transparent;
+  color: #ececf1;
+  font: inherit;
+  outline: none;
+}
+
+.lb-float span {
+  position: absolute;
+  left: 2px;
+  top: 22px;
+  color: #a1a1b3;
+  pointer-events: none;
+  transform-origin: left top;
+  transition: translate 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), scale 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), color 0.25s ease;
+}
+
+/* The underline grows from the middle */
+.lb-float::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: #c5f04a;
+  scale: 0 1;
+  transition: scale 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.lb-float input:focus + span,
+.lb-float input:not(:placeholder-shown) + span {
+  translate: 0 -18px;
+  scale: 0.78;
+}
+
+.lb-float input:focus + span {
+  color: #c5f04a;
+}
+
+.lb-float:focus-within::after {
+  scale: 1 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-float span,
+  .lb-float::after { transition: none; }
+}
+/* /demo */
+
+/* demo:checkbox-draw */
+/* A real checkbox, hidden but focusable; the box pops and the tick draws */
+.lb-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #ececf1;
+  cursor: pointer;
+}
+
+.lb-check input {
+  position: absolute;
+  opacity: 0;
+}
+
+.lb-check svg {
+  width: 28px;
+  height: 28px;
+  overflow: visible;
+}
+
+.lb-check rect {
+  fill: transparent;
+  stroke: #6a6a7e;
+  stroke-width: 2;
+  transition: fill 0.25s ease, stroke 0.25s ease;
+}
+
+.lb-check path {
+  fill: none;
+  stroke: #0b0b10;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.35s cubic-bezier(0.6, 0, 0.3, 1) 0.1s;
+}
+
+.lb-check input:checked + svg rect {
+  fill: #c5f04a;
+  stroke: #c5f04a;
+}
+
+.lb-check input:checked + svg {
+  animation: lb-check-pop 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.5);
+}
+
+.lb-check input:checked + svg path {
+  stroke-dashoffset: 0;
+}
+
+.lb-check input:focus-visible + svg rect {
+  stroke: #c5f04a;
+  stroke-width: 3;
+}
+
+@keyframes lb-check-pop {
+  50% { scale: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-check rect,
+  .lb-check path { transition: none; }
+  .lb-check input:checked + svg { animation: none; }
+}
+/* /demo */
+
+/* Feedback */
+
+/* demo:toast */
+/* In, a few seconds of reading (the bar), out */
+.lb-toast {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  width: min(280px, 100%);
+  padding: 14px 16px 18px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid #34343f;
+  border-radius: 14px;
+  background: #17171f;
+  box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.8);
+  animation: lb-toast 4.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.lb-toast svg {
+  grid-row: span 2;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #c5f04a;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lb-toast strong {
+  color: #ececf1;
+  font-size: 15px;
+}
+
+.lb-toast span {
+  color: #a1a1b3;
+  font-size: 13.5px;
+}
+
+.lb-toast::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: #c5f04a;
+  transform-origin: left;
+  animation: lb-toast-time 3.6s linear 0.5s both;
+}
+
+@keyframes lb-toast {
+  0% { translate: 0 30px; scale: 0.92; opacity: 0; }
+  10%, 88% { translate: 0 0; scale: 1; opacity: 1; }
+  100% { translate: 40px 0; opacity: 0; }
+}
+
+@keyframes lb-toast-time {
+  from { scale: 1 1; }
+  to { scale: 0 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-toast { animation: none; }
+  .lb-toast::after { animation: none; scale: 0 1; }
+}
+/* /demo */
+
+/* demo:success */
+/* The circle draws, the tick follows, sparks pop */
+.lb-success {
+  position: relative;
+  width: 96px;
+  height: 96px;
+}
+
+.lb-success svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lb-success circle {
+  stroke: #c5f04a;
+  stroke-width: 3;
+  stroke-dasharray: 1;
+  rotate: -90deg;
+  transform-origin: center;
+  animation: lb-success-draw 0.7s cubic-bezier(0.6, 0, 0.3, 1) both;
+}
+
+.lb-success path {
+  stroke: #ececf1;
+  stroke-width: 4;
+  stroke-dasharray: 1;
+  animation: lb-success-draw 0.45s cubic-bezier(0.6, 0, 0.3, 1) 0.6s both;
+}
+
+.lb-success i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px;
+  border-radius: 2px;
+  background: hsl(calc(var(--i) * 52 + 70) 85% 62%);
+  opacity: 0;
+  animation: lb-success-spark 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.9s;
+}
+
+@keyframes lb-success-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes lb-success-spark {
+  0% { transform: rotate(calc(var(--i) * 51deg)) translateY(-40px) scale(0.4); opacity: 1; }
+  100% { transform: rotate(calc(var(--i) * 51deg + 20deg)) translateY(-68px) scale(1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-success circle,
+  .lb-success path { animation: none; }
+  .lb-success i { animation: none; }
+}
+/* /demo */
+
+/* demo:envelope */
+/* From the archive: the flap opens, the letter rises out of the envelope.
+   Layers: back, letter (1), pocket (2), flap (3, then 0 once open) */
+.lb-envelope {
+  position: relative;
+  width: 200px;
+  height: 130px;
+  margin-top: 60px;
+  perspective: 600px;
+}
+
+.lb-envelope-back,
+.lb-envelope-front {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+}
+
+.lb-envelope-back {
+  background: #8f6bff;
+}
+
+.lb-envelope-letter {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  height: 110px;
+  padding: 14px;
+  border-radius: 6px;
+  z-index: 1;
+  background: #ececf1;
+  color: #0b0b10;
+  font-size: 14px;
+  font-weight: 700;
+  animation: lb-envelope-letter 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.7s both;
+}
+
+/* The pocket in front of the letter: two side folds and the bottom */
+.lb-envelope-front {
+  z-index: 2;
+  background:
+    linear-gradient(to top right, #7a57f0 50%, transparent 50.5%) left bottom / 51% 100% no-repeat,
+    linear-gradient(to top left, #7a57f0 50%, transparent 50.5%) right bottom / 51% 100% no-repeat,
+    linear-gradient(to top, #6c4ae3 45%, transparent 45.5%);
+}
+
+.lb-envelope-flap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 70px;
+  background: #a68bff;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  animation: lb-envelope-flap 0.7s cubic-bezier(0.6, 0, 0.3, 1) both;
+}
+
+@keyframes lb-envelope-flap {
+  from { transform: rotateX(0deg); z-index: 3; }
+  to { transform: rotateX(180deg); z-index: 0; }
+}
+
+@keyframes lb-envelope-letter {
+  from { translate: 0 0; }
+  to { translate: 0 -70px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-envelope-flap { animation: none; transform: rotateX(180deg); z-index: 0; }
+  .lb-envelope-letter { animation: none; translate: 0 -70px; }
+}
+/* /demo */
