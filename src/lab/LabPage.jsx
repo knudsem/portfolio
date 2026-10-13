@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import CodeBlock from '../components/CodeBlock'
 import { CATEGORIES, DEMOS } from './demos'
 import { SCRIPTS } from './scripts'
+import { typeset } from '../typeset'
 import './demos.css'
 import './lab.css'
 
@@ -20,7 +21,7 @@ function DemoCard({ demo, lang, l, onCode }) {
   const cardRef = useRef(null)
   const stageRef = useRef(null)
   const [run, setRun] = useState(0)
-  const name = demo.title[lang]
+  const name = typeset(demo.title[lang], lang)
 
   useEffect(() => SCRIPTS[demo.id]?.(stageRef.current), [demo.id, run])
 
@@ -37,7 +38,7 @@ function DemoCard({ demo, lang, l, onCode }) {
       <div key={run} ref={stageRef} className="lab-stage" dangerouslySetInnerHTML={{ __html: demo.html }} />
       <div className="lab-card-body">
         <h2 className="lab-card-title">{name}</h2>
-        <p className="lab-card-note">{demo.note[lang]}</p>
+        <p className="lab-card-note">{typeset(demo.note[lang], lang)}</p>
         <div className="lab-card-foot">
           <ul className="lab-tech">
             {demo.tech.map((tech) => <li key={tech}>{tech}</li>)}
@@ -86,7 +87,7 @@ function CodeDialog({ demo, lang, l, onClose }) {
     >
       <div className="lab-dialog-content">
         <div className="lab-dialog-head">
-          <h2 id="lab-dialog-title" className="lab-dialog-title">{fill(l.code_of, { name: demo.title[lang] })}</h2>
+          <h2 id="lab-dialog-title" className="lab-dialog-title">{fill(l.code_of, { name: typeset(demo.title[lang], lang) })}</h2>
           <button type="button" className="lab-dialog-close" aria-label={l.close} onClick={() => ref.current.close()}>
             <Icon><path d="M6 6l12 12M18 6 6 18" /></Icon>
           </button>

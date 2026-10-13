@@ -3,6 +3,7 @@ import CodeBlock from '../components/CodeBlock'
 import { NotFound } from '../components/ProjectPage'
 import { POSTS, postBySlug, readingMinutes } from './posts'
 import { BLOG_PATH, postPath } from '../projects'
+import { typeset } from '../typeset'
 import './blog.css'
 
 const fill = (template, values) => template.replace(/\{(\w+)\}/g, (_, key) => values[key])
@@ -13,10 +14,6 @@ const Icon = ({ children }) => (
     {children}
   </svg>
 )
-
-// French typography: a no-break space before : ; ? ! % and », after «, so a
-// sign never starts a line on its own
-const typeset = (text, lang) => (lang === 'fr' ? text.replace(/ ([:;?!%»])/g, '\u00a0$1').replace(/« /g, '«\u00a0') : text)
 
 const formatDate = (date, lang) => new Intl.DateTimeFormat(lang === 'fr' ? 'fr-FR' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${date}T12:00:00`))
 
@@ -104,8 +101,8 @@ function Post({ t, lang, post }) {
   const c = { copy: b.copy, copied: b.copied }
 
   useEffect(() => {
-    document.title = fill(t.case.title, { title: text.title })
-  }, [t, text])
+    document.title = fill(t.case.title, { title: typeset(text.title, lang) })
+  }, [t, text, lang])
 
   return (
     <article className="case post">

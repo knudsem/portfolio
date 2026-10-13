@@ -883,6 +883,336 @@ section {
   transform: translateX(4px);
 }
 
+/* Brands I have built for: one quiet line under the hero */
+.clients {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px 28px;
+  margin-top: -56px;
+  margin-bottom: 120px;
+  padding: 22px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.clients-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.clients-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 32px;
+  list-style: none;
+}
+
+.clients-link {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-2);
+  transition: color 0.2s ease;
+}
+
+.clients-link:hover {
+  color: var(--text);
+}
+
+/* Each service points to the work that shows it */
+.service-proof {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  margin-top: 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.service-proof svg {
+  transition: transform 0.3s var(--ease-out);
+}
+
+.service-proof:hover svg {
+  transform: translateX(3px);
+}
+
+/* How I work */
+.process {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  list-style: none;
+}
+
+@container (min-width: 560px) {
+  .process {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container (min-width: 1100px) {
+  .process {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.process-step {
+  position: relative;
+  padding: 26px 24px 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.process-num {
+  display: block;
+  margin-bottom: 18px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.process-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.process-text {
+  margin-top: 10px;
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--text-2);
+}
+
+/* The lab and the latest post */
+.teaser {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+@container (min-width: 820px) {
+  .teaser {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+}
+
+.teaser-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  transition: transform 0.4s var(--ease-out), border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.teaser-card:hover,
+.teaser-card:focus-within {
+  transform: translateY(-4px);
+  border-color: rgba(var(--accent-rgb), 0.45);
+  background: var(--surface-2);
+}
+
+.teaser-kicker {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.teaser-title {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 1.15rem + 0.5vw, 1.6rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+
+/* The title's link covers the whole card */
+.teaser-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+}
+
+.teaser-link:focus-visible {
+  outline: none;
+}
+
+.teaser-link:focus-visible::after {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.teaser-text {
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-2);
+}
+
+.teaser-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 22px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.teaser-cta svg {
+  transition: transform 0.3s var(--ease-out);
+}
+
+.teaser-card:hover .teaser-cta svg {
+  transform: translateX(4px);
+}
+
+/* A second link inside a card whose title link covers it: lifted above */
+.teaser-all {
+  position: relative;
+  z-index: 1;
+  align-self: flex-start;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.teaser-all:hover {
+  color: var(--text);
+}
+
+/* Three small animations from the lab, still until the card is pointed at */
+.teaser-demos {
+  --play: paused;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 5cqi, 44px);
+  margin: -28px -28px 24px;
+  padding: 34px 20px;
+  border-bottom: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0;
+  background: radial-gradient(70% 120% at 50% 0%, rgba(var(--accent-rgb), 0.06), transparent 70%), #0e0e15;
+  container-type: inline-size;
+}
+
+.teaser-card:hover .teaser-demos,
+.teaser-card:focus-within .teaser-demos {
+  --play: running;
+}
+
+.tz-pill {
+  position: relative;
+  overflow: hidden;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tz-pill::after {
+  content: '';
+  position: absolute;
+  inset: -30% auto -30% 0;
+  width: 35%;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.8), transparent);
+  translate: -150% 0;
+  rotate: 12deg;
+  animation: tz-shine 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-play-state: var(--play);
+}
+
+.tz-dots {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  height: 26px;
+}
+
+.tz-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform-origin: bottom;
+  animation: tz-dot 0.9s cubic-bezier(0.5, 0, 0.5, 1) infinite alternate;
+  animation-play-state: var(--play);
+}
+
+.tz-dots i:nth-child(2) { animation-delay: -0.3s; }
+.tz-dots i:nth-child(3) { animation-delay: -0.6s; }
+
+.tz-chevrons {
+  display: grid;
+  justify-items: center;
+}
+
+.tz-chevrons i {
+  width: 11px;
+  height: 11px;
+  margin-top: -4px;
+  border-right: 2.5px solid var(--accent);
+  border-bottom: 2.5px solid var(--accent);
+  rotate: 45deg;
+  opacity: 0.3;
+  animation: tz-chevron 1.6s ease-in-out infinite;
+  animation-play-state: var(--play);
+}
+
+.tz-chevrons i:nth-child(2) { animation-delay: 0.18s; }
+.tz-chevrons i:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes tz-shine {
+  0%, 40% { translate: -150% 0; }
+  80%, 100% { translate: 400% 0; }
+}
+
+@keyframes tz-dot {
+  from { translate: 0 -12px; scale: 0.9 1.1; }
+  to { translate: 0 0; scale: 1.3 0.7; }
+}
+
+@keyframes tz-chevron {
+  0%, 100% { opacity: 0.25; }
+  40% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tz-pill::after,
+  .tz-dots i,
+  .tz-chevrons i {
+    animation: none;
+  }
+}
+
 /* Project covers (drawings in ProjectCovers.jsx). Still by default; they
    play while the card is hovered or focused. On the cards they stay a quiet
    accent, the project comes first: a low band, the drawing small and faint
@@ -1905,6 +2235,50 @@ section {
   margin-top: 48px;
 }
 
+/* The real product leading the page, in a window frame */
+.case-hero {
+  margin: 48px 0 0;
+}
+
+.case-hero-window {
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  box-shadow: 0 40px 80px -40px rgb(0 0 0 / 0.8), 0 0 0 1px rgb(255 255 255 / 0.02);
+}
+
+.case-hero-bar {
+  display: flex;
+  gap: 7px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.case-hero-bar span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.case-hero-bar span:first-child {
+  background: rgba(var(--accent-rgb), 0.7);
+}
+
+.case-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.case-hero figcaption {
+  margin-top: 12px;
+  font-size: 14.5px;
+  color: var(--text-2);
+}
+
 .case-cover .project-cover,
 .case-next-link .project-cover {
   margin: 0;
@@ -2758,6 +3132,23 @@ section {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 16px;
+}
+
+.site-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
+}
+
+/* a comfortable target for a finger: 24px tall at least */
+.site-footer-nav a {
+  padding: 4px 0;
+  color: var(--text-2);
+  transition: color 0.2s ease;
+}
+
+.site-footer-nav a:hover {
+  color: var(--accent);
 }
 
 .site-footer-top {

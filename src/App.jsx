@@ -4,6 +4,9 @@ import Hero from './components/Hero'
 import About from './components/About'
 import Work from './components/Work'
 import Services from './components/Services'
+import Clients from './components/Clients'
+import Process from './components/Process'
+import Teaser from './components/Teaser'
 import Proof from './components/Proof'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
@@ -366,9 +369,12 @@ export default function App() {
           {ROUTE.name === 'home' && (
             <>
               <Hero t={t} />
+              <Clients t={t} />
               <About t={t} />
               <Work t={t} />
+              <Teaser t={t} lang={lang} />
               <Services t={t} />
+              <Process t={t} />
               <Proof t={t} lang={lang} langChosen={langChosen} auditRequest={auditRequest} />
               <Contact t={t} />
             </>

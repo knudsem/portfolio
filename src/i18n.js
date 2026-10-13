@@ -1,3 +1,5 @@
+import { typesetAll } from './typeset.js'
+
 const TRIMENSION_MEDIA = [
   { src: '/media/trimension/home-eons.webp', width: 1440, height: 900 },
   { src: '/media/trimension/home-godsent.webp', width: 1440, height: 900 },
@@ -16,6 +18,13 @@ const ACCESSEU_MEDIA = [
   { src: '/media/accesseu/report-theme-change.webp', width: 1440, height: 1080, wide: true },
   { src: '/media/accesseu/phone-score.webp', width: 780, height: 1688, phone: true },
   { src: '/media/accesseu/phone-theme-change.webp', width: 780, height: 1688, phone: true },
+]
+
+// Interdyn: screens of Dealernet sent by me, dealer details and trade prices blurred
+const INTERDYN_MEDIA = [
+  { src: '/media/interdyn/catalogue.webp', width: 1440, height: 718 },
+  { src: '/media/interdyn/cart.webp', width: 1440, height: 714 },
+  { src: '/media/interdyn/checkout.webp', width: 1440, height: 713 },
 ]
 
 // Pairs the shared media with the text of one language
@@ -55,8 +64,33 @@ const translations = {
     work_intro: 'From B2B platforms to Shopify stores, a few recent projects.',
     view_project: 'View project',
 
+    clients_label: 'Brands I have built for',
+
     services_title: 'What I do',
     services_intro: 'From the first sketch to launch day, one person to talk to.',
+    service_proof: 'See it in {name}',
+    service_lab: 'See it in the lab',
+
+    process_title: 'How I work',
+    process_intro: 'Four steps, one person from start to finish, and something you can click at every stage.',
+    process: [
+      { title: 'Understand', text: 'A call about your goals, your users and your constraints, then a short written summary of what we will build, and of what we will not.' },
+      { title: 'Design', text: 'Wireframes, then a clickable prototype in Figma. We test the idea together before a single line of code.' },
+      { title: 'Build', text: 'Clean, tested code, with a link to the work in progress at every step: you see the product grow, not a status report.' },
+      { title: 'Launch and follow up', text: 'Speed and accessibility checked before launch, then a follow-up to measure what works and improve it.' },
+    ],
+
+    teaser_title: 'The lab and the blog',
+    teaser_intro: 'Where I try things out, and where I write down what I learn.',
+    teaser_lab_count: '{n} animations',
+    teaser_lab_title: 'The lab',
+    teaser_lab_text: 'Buttons, scroll cues, loaders, text effects: interface animations made by hand, each one live, with its code.',
+    teaser_lab_cta: 'Open the lab',
+    teaser_lab_pill: 'Get started',
+    teaser_blog_count: '{n} posts',
+    teaser_blog_latest: 'Latest post',
+    teaser_blog_cta: 'Read the post',
+    teaser_blog_all: 'All posts',
 
     services: [
       {
@@ -133,14 +167,31 @@ const translations = {
         year: 'Since 2024',
         type: 'B2B platform',
         title: 'Interdyn Dealer Portal',
-        desc: 'A fullstack B2B ecommerce platform for an Australian audio equipment distributor. Custom product catalog, complex checkout flow, product option management, and a full admin order system built with Django, React, HTMX, and PostgreSQL.',
-        summary: 'A fullstack B2B ecommerce platform for an Australian audio equipment distributor.',
-        did: [
-          'Custom product catalog',
-          'Complex checkout flow',
-          'Product option management',
-          'Full admin order system',
+        desc: "Dealernet, the B2B ordering platform of an Australian audio distributor: a catalogue by category and brand, a cart and checkout made for trade orders, ordering on a dealer's behalf, and a full admin order system. Built with Django, React, HTMX and PostgreSQL.",
+        summary: 'Dealernet, the platform where Australian hi-fi retailers order from their distributor, Interdyn. I have been building it, end to end, since 2024.',
+        story: [
+          'Interdyn (International Dynamics) distributes hi-fi and audiovisual brands to retailers across Australia. Its dealers needed one place to browse the range, order stock and follow their orders, and its team needed to work in that same place on their behalf.',
+          "Dealernet is the platform I build for them, from the database to the interface: a catalogue organised by category and by brand, a cart and checkout made for trade orders, and the tools Interdyn's team uses to place and adjust orders for any dealer.",
         ],
+        did: [
+          'Fullstack development since 2024: Django and PostgreSQL behind, React and HTMX in front, styled with Tailwind',
+          'A catalogue by category and by brand, with filters, sorting, current specials and open-box stock',
+          'Product options and bundles, such as a turntable sold with a matched cartridge, and labels for lines being phased out',
+          'A cart and checkout for trade orders: SKUs, quantities, discounts, GST shown apart, payment by bank account or card',
+          "Delivery to the dealer's store or straight to the dealer's customer, with the store's own order reference",
+          "Staff tools: ordering on any dealer's behalf, adjusting prices or freight before payment, and the full admin order system",
+        ],
+        highlights: [
+          { title: "Ordering on a dealer's behalf", text: "Interdyn's team can step into any dealer's account: a banner always says which store they are representing, and one click changes customer. An order taken on the phone becomes a normal order in that dealer's account." },
+          { title: 'Delivery where the stock is needed', text: "At checkout a dealer chooses: delivery to their store, or straight to their own customer. The order can carry the store's own reference, for their records." },
+          { title: 'Prices that can still move', text: 'Before payment is taken, staff can still change the price of a line or the freight. The checkout says so in plain words, next to the order.' },
+          { title: 'Built the way a distributor sells', text: 'Bundles, specials, open-box stock and lines being phased out each have their place in the catalogue, so a dealer sees at a glance what they can order and on what terms.' },
+        ],
+        gallery: withText(INTERDYN_MEDIA, [
+          { alt: "Dealernet catalogue: Pro-Ject turntables with brand and category filters, RRP prices and add to cart buttons, under a banner showing which dealer a staff member is representing (blurred)", caption: 'The catalogue, by category and by brand. Dealer details are blurred.' },
+          { alt: 'Shopping cart with Monitor Audio and Pro-Ject products, their SKUs and quantities, and a summary with GST shown apart (prices blurred)', caption: 'The cart: SKUs, quantities, discounts, GST apart. Trade prices are blurred.' },
+          { alt: "Checkout: delivery to the store or straight to the customer, an order reference, the adjust pricing button, payment by bank account or card, and the order summary (dealer address and prices blurred)", caption: "Checkout for trade: the store or its customer, the store's own reference, and pricing that staff can still adjust." },
+        ]),
         tags: ['Django', 'React', 'HTMX', 'Tailwind', 'PostgreSQL'],
         link: null,
       },
@@ -344,6 +395,8 @@ const translations = {
     },
 
     footer: 'Designed and built in Toulouse.',
+    footer_nav: 'Footer',
+    footer_rss: 'RSS feed of the blog',
 
     case: {
       back: 'All projects',
@@ -434,8 +487,33 @@ const translations = {
     work_intro: 'Des plateformes B2B aux boutiques Shopify, quelques projets récents.',
     view_project: 'Voir le projet',
 
+    clients_label: "Des marques pour lesquelles j'ai travaillé",
+
     services_title: 'Ce que je fais',
     services_intro: 'Du premier croquis à la mise en ligne, un seul interlocuteur.',
+    service_proof: 'À voir dans {name}',
+    service_lab: 'À voir dans le lab',
+
+    process_title: 'Comment je travaille',
+    process_intro: "Quatre étapes, un seul interlocuteur du début à la fin, et quelque chose à cliquer à chaque étape.",
+    process: [
+      { title: 'Comprendre', text: "Un appel sur vos objectifs, vos utilisateurs et vos contraintes, puis un court résumé écrit de ce que nous allons construire, et de ce que nous ne ferons pas." },
+      { title: 'Concevoir', text: "Des maquettes, puis un prototype cliquable dans Figma. On teste l'idée ensemble avant la moindre ligne de code." },
+      { title: 'Développer', text: "Un code propre et testé, avec un lien vers le travail en cours à chaque étape : vous voyez le produit grandir, pas un compte rendu." },
+      { title: 'Lancer et suivre', text: "Vitesse et accessibilité vérifiées avant le lancement, puis un suivi pour mesurer ce qui marche et l'améliorer." },
+    ],
+
+    teaser_title: 'Le lab et le blog',
+    teaser_intro: "Là où j'essaie des choses, et où j'écris ce que j'en apprends.",
+    teaser_lab_count: '{n} animations',
+    teaser_lab_title: 'Le lab',
+    teaser_lab_text: "Boutons, indicateurs de défilement, chargements, effets de texte : des animations d'interface faites main, chacune en direct, avec son code.",
+    teaser_lab_cta: 'Ouvrir le lab',
+    teaser_lab_pill: 'Commencer',
+    teaser_blog_count: '{n} articles',
+    teaser_blog_latest: 'Dernier article',
+    teaser_blog_cta: "Lire l'article",
+    teaser_blog_all: 'Tous les articles',
 
     services: [
       {
@@ -512,14 +590,31 @@ const translations = {
         year: 'Depuis 2024',
         type: 'Plateforme B2B',
         title: 'Interdyn Dealer Portal',
-        desc: "Une plateforme e-commerce B2B fullstack pour un distributeur australien d'équipements audio. Catalogue produit sur mesure, tunnel de commande complexe, gestion des options et système de commandes admin complet, développé avec Django, React, HTMX et PostgreSQL.",
-        summary: "Une plateforme e-commerce B2B fullstack pour un distributeur australien d'équipements audio.",
-        did: [
-          'Catalogue produit sur mesure',
-          'Tunnel de commande complexe',
-          'Gestion des options produit',
-          'Système de commandes admin complet',
+        desc: "Dealernet, la plateforme de commande B2B d'un distributeur audio australien : un catalogue par catégorie et par marque, un panier et un tunnel de commande pensés pour les professionnels, la commande au nom d'un revendeur, et un système de commandes admin complet. Développée avec Django, React, HTMX et PostgreSQL.",
+        summary: "Dealernet, la plateforme où les revendeurs hi-fi australiens commandent à leur distributeur, Interdyn. Je la développe de bout en bout depuis 2024.",
+        story: [
+          "Interdyn (International Dynamics) distribue des marques hi-fi et audiovisuelles auprès des revendeurs de toute l'Australie. Ses revendeurs avaient besoin d'un seul endroit pour parcourir la gamme, commander du stock et suivre leurs commandes, et son équipe devait pouvoir y travailler à leur place.",
+          "Dealernet est la plateforme que je développe pour eux, de la base de données à l'interface : un catalogue organisé par catégorie et par marque, un panier et un tunnel de commande pensés pour les professionnels, et les outils avec lesquels l'équipe d'Interdyn passe et ajuste les commandes de n'importe quel revendeur.",
         ],
+        did: [
+          'Développement fullstack depuis 2024 : Django et PostgreSQL côté serveur, React et HTMX côté interface, avec Tailwind',
+          'Un catalogue par catégorie et par marque, avec filtres, tri, promotions en cours et produits déballés',
+          "Des options et des lots produit, comme une platine vendue avec une cellule assortie, et des étiquettes pour les gammes en fin de vie",
+          'Un panier et un tunnel de commande pour les professionnels : références, quantités, remises, TVA australienne à part, paiement par virement ou par carte',
+          "La livraison au magasin du revendeur ou directement chez son client, avec la référence de commande du magasin",
+          "Des outils pour l'équipe : commander au nom de n'importe quel revendeur, ajuster les prix ou le port avant paiement, et le système de commandes admin complet",
+        ],
+        highlights: [
+          { title: "Commander au nom d'un revendeur", text: "L'équipe d'Interdyn peut entrer dans le compte de n'importe quel revendeur : un bandeau rappelle toujours quel magasin elle représente, et un clic change de client. Une commande prise au téléphone devient une commande normale dans le compte du revendeur." },
+          { title: 'Livrer là où le stock est attendu', text: "Au moment de commander, le revendeur choisit : livraison à son magasin, ou directement chez son propre client. La commande peut porter la référence du magasin, pour ses dossiers." },
+          { title: 'Des prix qui peuvent encore bouger', text: "Avant l'encaissement, l'équipe peut encore modifier le prix d'une ligne ou les frais de port. Le tunnel de commande le dit en toutes lettres, à côté de la commande." },
+          { title: "Pensée comme un distributeur vend", text: "Les lots, les promotions, les produits déballés et les gammes en fin de vie ont chacun leur place dans le catalogue : un revendeur voit d'un coup d'œil ce qu'il peut commander, et à quelles conditions." },
+        ],
+        gallery: withText(INTERDYN_MEDIA, [
+          { alt: "Catalogue Dealernet : des platines Pro-Ject avec filtres par marque et par catégorie, prix de vente conseillés et boutons d'ajout au panier, sous un bandeau indiquant le revendeur représenté (flouté)", caption: 'Le catalogue, par catégorie et par marque. Les informations du revendeur sont floutées.' },
+          { alt: 'Panier avec des produits Monitor Audio et Pro-Ject, leurs références et quantités, et un récapitulatif avec la TVA à part (prix floutés)', caption: 'Le panier : références, quantités, remises, TVA à part. Les prix revendeur sont floutés.' },
+          { alt: "Tunnel de commande : livraison au magasin ou directement au client, référence de commande, bouton d'ajustement des prix, paiement par virement ou par carte, et récapitulatif (adresse du revendeur et prix floutés)", caption: "Une commande professionnelle : le magasin ou son client, la référence du magasin, et des prix que l'équipe peut encore ajuster." },
+        ]),
         tags: ['Django', 'React', 'HTMX', 'Tailwind', 'PostgreSQL'],
         link: null,
       },
@@ -723,6 +818,8 @@ const translations = {
     },
 
     footer: 'Conçu et développé à Toulouse.',
+    footer_nav: 'Pied de page',
+    footer_rss: 'Flux RSS du blog',
 
     case: {
       back: 'Tous les projets',
@@ -780,5 +877,8 @@ const translations = {
     },
   },
 }
+
+// French texts get their no-break spaces once, here
+translations.fr = typesetAll(translations.fr, 'fr')
 
 export default translations
