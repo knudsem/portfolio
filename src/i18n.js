@@ -27,6 +27,42 @@ const INTERDYN_MEDIA = [
   { src: '/media/interdyn/checkout.webp', width: 1440, height: 713 },
 ]
 
+// Pro-Ject Audio Australia, Pro-Ject Audio Systems and Exclusive Construction:
+// screens of the live sites
+const PROJECT_AU_MEDIA = [
+  { src: '/media/project-au/home.webp', width: 1440, height: 900 },
+  { src: '/media/project-au/menu.webp', width: 1440, height: 900 },
+  { src: '/media/project-au/black-friday.webp', width: 1440, height: 900 },
+  { src: '/media/project-au/systems.webp', width: 1440, height: 900 },
+  { src: '/media/project-au/product.webp', width: 1440, height: 900 },
+  { src: '/media/project-au/turntables.webp', width: 1440, height: 900 },
+  { src: '/media/project-au/phone-home.webp', width: 780, height: 1688, phone: true },
+  { src: '/media/project-au/phone-product.webp', width: 780, height: 1688, phone: true },
+]
+
+const PROJECT_GLOBAL_MEDIA = [
+  { src: '/media/project-global/debut-evo-2.webp', width: 1440, height: 900 },
+  { src: '/media/project-global/turntables.webp', width: 1440, height: 900 },
+  { src: '/media/project-global/whats-new.webp', width: 1440, height: 900 },
+  { src: '/media/project-global/home.webp', width: 1440, height: 900 },
+  { src: '/media/project-global/sustainable-hifi.webp', width: 1440, height: 900 },
+  { src: '/media/project-global/true-balanced.webp', width: 1440, height: 900 },
+  { src: '/media/project-global/phone-home.webp', width: 780, height: 1688, phone: true },
+  { src: '/media/project-global/phone-product.webp', width: 780, height: 1688, phone: true },
+]
+
+const EXCLUSIVE_MEDIA = [
+  { src: '/media/exclusive/home.webp', width: 1440, height: 900 },
+  { src: '/media/exclusive/intro.webp', width: 1440, height: 900 },
+  { src: '/media/exclusive/portfolio.webp', width: 1440, height: 900 },
+  { src: '/media/exclusive/suburb.webp', width: 1440, height: 900 },
+  { src: '/media/exclusive/consultation.webp', width: 1440, height: 900 },
+  { src: '/media/exclusive/process.webp', width: 1440, height: 900 },
+  { src: '/media/exclusive/faq.webp', width: 1440, height: 900 },
+  { src: '/media/exclusive/phone-home.webp', width: 780, height: 1688, phone: true },
+  { src: '/media/exclusive/phone-suburb.webp', width: 780, height: 1688, phone: true },
+]
+
 // Pairs the shared media with the text of one language
 const withText = (media, texts) => media.map((item, i) => ({ ...item, ...texts[i] }))
 
@@ -171,7 +207,7 @@ const translations = {
         summary: 'Dealernet, the platform where Australian hi-fi retailers order from their distributor, Interdyn. I have been building it, end to end, since 2024.',
         story: [
           'Interdyn (International Dynamics) distributes hi-fi and audiovisual brands to retailers across Australia. Its dealers needed one place to browse the range, order stock and follow their orders, and its team needed to work in that same place on their behalf.',
-          "Dealernet is the platform I build for them, from the database to the interface: a catalogue organised by category and by brand, a cart and checkout made for trade orders, and the tools Interdyn's team uses to place and adjust orders for any dealer.",
+          "Dealernet is the platform I build for them, from the database to the interface: a catalogue organised by category and by brand, a cart and checkout made for trade orders, and the tools Interdyn's team uses to place and adjust orders for any dealer. For the same client, I also built and run the Pro-Ject Audio Australia store.",
         ],
         did: [
           'Fullstack development since 2024: Django and PostgreSQL behind, React and HTMX in front, styled with Tailwind',
@@ -203,8 +239,8 @@ const translations = {
         desc: 'Custom Shopify theme for the official Australian distributor of Pro-Ject turntables and audio components. Product pages, landing pages, seasonal campaigns, and a full Black Friday promotional experience, coded by hand from a bespoke Figma design.',
         summary: 'Custom Shopify theme for the official Australian distributor of Pro-Ject turntables and audio components.',
         story: [
-          'Pro-Ject Audio Australia is the online store of Pro-Ject in Australia, run by its official distributor. It sells the whole range: turntables from entry level to high end, complete hi-fi systems, electronics and accessories, with a store finder for people who want to listen before they buy.',
-          'I built the store from end to end: a Shopify theme coded by hand in Liquid, JavaScript and CSS from a bespoke Figma design, then every page and campaign since 2024, from product pages and landing pages to seasonal specials and Black Friday.',
+          'Pro-Ject Audio Australia is the online store of Pro-Ject in Australia, run by its official distributor, Interdyn. It sells the whole range: turntables from entry level to high end, complete hi-fi systems, electronics and accessories, with a store finder for people who want to listen before they buy.',
+          'I built the store from end to end: a Shopify theme coded by hand in Liquid, JavaScript and CSS from a bespoke Figma design, then every page and campaign since 2024, from product pages and landing pages to seasonal specials and Black Friday. For the same client, I also build Dealernet, the platform its dealers order from.',
         ],
         did: [
           'A custom Shopify theme, coded by hand in Liquid, JavaScript and CSS from a bespoke Figma design',
@@ -220,6 +256,16 @@ const translations = {
           { title: 'Systems sold as one product', text: 'Complete systems, from the Juke Box E1 Hi-Fi Set to the Classic Debut Hi-Fi Pack, are sold as one product: the card gives a one-line summary, the finishes it comes in, and the price before and after the saving.' },
           { title: 'Two ways into the range', text: 'The range can be browsed by budget and use (budget friendly, designer value, all-rounders, high end) or by product line (Debut, Primary, E Line, T Line, Juke Box): one way for a first turntable, one for someone who already knows the names.' },
         ],
+        gallery: withText(PROJECT_AU_MEDIA, [
+          { alt: 'Home page of the Pro-Ject Audio Australia store: a turntable between two speakers under the headline The very best of both worlds, below a menu with Specials, Turntables, Hi-Fi Sets, Hi-Fi Components and Find a Store', caption: 'The home page, with the specials and the store finder one click away.' },
+          { alt: 'The Hi-Fi Components menu open: each category with an icon and one line saying what it is for', caption: 'The menu explains each category in one line.' },
+          { alt: 'Black Friday 2025 page: the end of the sale, free shipping, 1 to 3 day dispatch and Australian support, then the discount on each turntable line', caption: 'Black Friday, on its own page: the offers line by line.' },
+          { alt: 'Turntable hi-fi systems: the Juke Box E1 Hi-Fi Set, the Classic Debut Hi-Fi Pack and the T2 Super Set, each with its finishes', caption: 'Complete systems, each card with its finishes.' },
+          { alt: 'Product page of the Juke Box E1 Hi-Fi Set: the photos, the finish picker, a Where to buy button and what is included', caption: "A system's page: pick a finish, see what is included, find where to buy." },
+          { alt: 'Turntables page: the product lines (Primary, E Line, T Line), each with a photo and a short promise', caption: 'Turntables, line by line.' },
+          { alt: 'The home page on a phone', caption: 'On a phone: the home page and a product page.' },
+          { alt: 'The Juke Box E1 Hi-Fi Set page on a phone' },
+        ]),
         tags: ['Shopify', 'Liquid', 'JavaScript', 'CSS'],
         link: 'https://www.projectaudio.com.au/',
       },
@@ -246,6 +292,16 @@ const translations = {
           { title: 'Two languages, one catalogue', text: 'Every page exists in German and English, linked to each other for search engines (hreflang), so each visitor lands in their own language.' },
           { title: 'Everything after the purchase', text: 'Owners find what they need in one place: a dealer finder, the FAQ, the warranty, software updates, manuals and brochures to download, and an archive of past models.' },
         ],
+        gallery: withText(PROJECT_GLOBAL_MEDIA, [
+          { alt: 'Debut EVO 2 product page: the turntable on a white plinth under its name, with Configurator, Buy local and Buy now buttons, and links to the specifications, downloads and reviews', caption: 'A product page: the Debut EVO 2, with its configurator and where to buy it.' },
+          { alt: 'Turntables page: the product lines listed on the left (Automat, E Line, Vertical, Juke Box, T Line, Debut and more) next to a photo of a blue turntable', caption: 'Turntables, sorted by line.' },
+          { alt: "Debut EVO 2 page, What's new: four features (the platter, the bearing block, the Pick it MM EVO cartridge, the counterweight) drawn in line", caption: 'What is new, feature by feature.' },
+          { alt: 'Home page: a limited edition turntable presented on black', caption: 'The home page leads with launches and limited editions.' },
+          { alt: 'Sustainable HiFi page: a map of central Europe showing that 95% of the goods are made within 440 km of the headquarters', caption: "Sustainable hi-fi: the brand's story, told with a map." },
+          { alt: 'True Balanced page: an illustration of the electrical noise around a turntable in a modern home', caption: 'True Balanced: a technical idea made visual.' },
+          { alt: 'The home page on a phone', caption: 'On a phone: the home page and a product page.' },
+          { alt: 'The Debut EVO 2 page on a phone' },
+        ]),
         tags: ['WordPress', 'CSS', 'JavaScript', 'WooCommerce'],
         link: 'https://www.project-audio.com/en/',
       },
@@ -274,6 +330,17 @@ const translations = {
           { title: 'Questions answered before the call', text: 'The home page answers the questions every client asks first (do you only build luxury homes, can you build from my plans, how do I start), and the quote form is on the same page.' },
           { title: 'Proof from real clients', text: 'Their Google reviews show on the site itself, next to their trusted partners: trust comes from the people who have already built with them.' },
         ],
+        gallery: withText(EXCLUSIVE_MEDIA, [
+          { alt: 'Home page of Exclusive Construction: a house drawn in pencil on the left that becomes a photo on the right, under the words Design and Build', caption: 'The home page: the design on one side, the built house on the other.' },
+          { alt: "Introduction: the builder's promise above photos of finished interiors", caption: 'Finished work, right after the promise.' },
+          { alt: 'Portfolio page: Excellence in construction, above a grid of kitchen and bathroom photos', caption: 'The portfolio: the work does the talking.' },
+          { alt: 'Home Builders Bentleigh page: a living room photo with Book a consultation and Call now buttons', caption: 'A page for each suburb they build in, here Bentleigh.' },
+          { alt: 'Bentleigh page: Build your dream home, next to a Book a free consultation form', caption: 'A consultation form right on the suburb page.' },
+          { alt: 'A structured and seamless build process: four numbered steps, from consultation and planning to handover', caption: 'The build process, in four steps.' },
+          { alt: 'FAQ: five questions, from do you only build luxury homes to are you a design and build company', caption: 'The questions every client asks, answered before the call.' },
+          { alt: 'The home page on a phone', caption: 'On a phone: the home page and a suburb page.' },
+          { alt: 'The Bentleigh page on a phone' },
+        ]),
         tags: ['WordPress', 'Elementor', 'CSS', 'JavaScript'],
         link: 'https://exclusiveconstruction.com.au/',
       },
@@ -628,7 +695,7 @@ const translations = {
         summary: "Dealernet, la plateforme où les revendeurs hi-fi australiens commandent à leur distributeur, Interdyn. Je la développe de bout en bout depuis 2024.",
         story: [
           "Interdyn (International Dynamics) distribue des marques hi-fi et audiovisuelles auprès des revendeurs de toute l'Australie. Ses revendeurs avaient besoin d'un seul endroit pour parcourir la gamme, commander du stock et suivre leurs commandes, et son équipe devait pouvoir y travailler à leur place.",
-          "Dealernet est la plateforme que je développe pour eux, de la base de données à l'interface : un catalogue organisé par catégorie et par marque, un panier et un tunnel de commande pensés pour les professionnels, et les outils avec lesquels l'équipe d'Interdyn passe et ajuste les commandes de n'importe quel revendeur.",
+          "Dealernet est la plateforme que je développe pour eux, de la base de données à l'interface : un catalogue organisé par catégorie et par marque, un panier et un tunnel de commande pensés pour les professionnels, et les outils avec lesquels l'équipe d'Interdyn passe et ajuste les commandes de n'importe quel revendeur. Pour le même client, j'ai aussi construit la boutique Pro-Ject Audio Australia, que je fais vivre.",
         ],
         did: [
           'Développement fullstack depuis 2024 : Django et PostgreSQL côté serveur, React et HTMX côté interface, avec Tailwind',
@@ -660,8 +727,8 @@ const translations = {
         desc: "Thème Shopify sur mesure pour le distributeur officiel australien des platines et composants audio Pro-Ject. Pages produits, pages d'atterrissage, campagnes saisonnières et expérience Black Friday complète, codées à partir d'une maquette Figma sur mesure.",
         summary: 'Thème Shopify sur mesure pour le distributeur officiel australien des platines et composants audio Pro-Ject.',
         story: [
-          "Pro-Ject Audio Australia est la boutique en ligne de Pro-Ject en Australie, tenue par son distributeur officiel. Elle vend toute la gamme : des platines d'entrée de gamme au haut de gamme, des systèmes hi-fi complets, de l'électronique et des accessoires, avec un localisateur de magasins pour ceux qui veulent écouter avant d'acheter.",
-          "J'ai construit la boutique de bout en bout : un thème Shopify codé à la main en Liquid, JavaScript et CSS à partir d'une maquette Figma sur mesure, puis chaque page et chaque campagne depuis 2024, des pages produits et pages d'atterrissage aux promotions saisonnières et au Black Friday.",
+          "Pro-Ject Audio Australia est la boutique en ligne de Pro-Ject en Australie, tenue par son distributeur officiel, Interdyn. Elle vend toute la gamme : des platines d'entrée de gamme au haut de gamme, des systèmes hi-fi complets, de l'électronique et des accessoires, avec un localisateur de magasins pour ceux qui veulent écouter avant d'acheter.",
+          "J'ai construit la boutique de bout en bout : un thème Shopify codé à la main en Liquid, JavaScript et CSS à partir d'une maquette Figma sur mesure, puis chaque page et chaque campagne depuis 2024, des pages produits et pages d'atterrissage aux promotions saisonnières et au Black Friday. Pour le même client, je développe aussi Dealernet, la plateforme où ses revendeurs commandent.",
         ],
         did: [
           "Un thème Shopify sur mesure, codé à la main en Liquid, JavaScript et CSS à partir d'une maquette Figma sur mesure",
@@ -677,6 +744,16 @@ const translations = {
           { title: 'Des systèmes vendus comme un seul produit', text: 'Les systèmes complets, du Juke Box E1 Hi-Fi Set au Classic Debut Hi-Fi Pack, sont vendus comme un seul produit : la fiche donne un résumé en une ligne, les finitions disponibles, et le prix avant et après remise.' },
           { title: 'Deux entrées dans la gamme', text: 'On peut parcourir la gamme par budget et par usage (petit budget, design, polyvalentes, haut de gamme) ou par ligne de produits (Debut, Primary, E Line, T Line, Juke Box) : une entrée pour une première platine, une autre pour qui connaît déjà les noms.' },
         ],
+        gallery: withText(PROJECT_AU_MEDIA, [
+          { alt: "Page d'accueil de la boutique Pro-Ject Audio Australia : une platine entre deux enceintes sous le titre The very best of both worlds, sous un menu avec Specials, Turntables, Hi-Fi Sets, Hi-Fi Components et Find a Store", caption: "L'accueil, avec les promotions et le localisateur de magasins à un clic." },
+          { alt: 'Le menu Hi-Fi Components ouvert : chaque catégorie avec une icône et une ligne qui dit à quoi elle sert', caption: 'Le menu explique chaque catégorie en une ligne.' },
+          { alt: "Page Black Friday 2025 : la fin des soldes, la livraison offerte, l'expédition sous 1 à 3 jours et le support australien, puis la remise de chaque gamme de platines", caption: 'Le Black Friday, sur sa propre page : les offres gamme par gamme.' },
+          { alt: 'Systèmes hi-fi : le Juke Box E1 Hi-Fi Set, le Classic Debut Hi-Fi Pack et le T2 Super Set, chacun avec ses finitions', caption: 'Les systèmes complets, chaque fiche avec ses finitions.' },
+          { alt: 'Page produit du Juke Box E1 Hi-Fi Set : les photos, le choix de la finition, un bouton Where to buy et le contenu du pack', caption: "La page d'un système : choisir sa finition, voir ce qui est inclus, trouver où l'acheter." },
+          { alt: 'Page des platines : les lignes de produits (Primary, E Line, T Line), chacune avec une photo et une courte promesse', caption: 'Les platines, ligne par ligne.' },
+          { alt: "La page d'accueil sur téléphone", caption: "Sur téléphone : l'accueil et une page produit." },
+          { alt: 'La page du Juke Box E1 Hi-Fi Set sur téléphone' },
+        ]),
         tags: ['Shopify', 'Liquid', 'JavaScript', 'CSS'],
         link: 'https://www.projectaudio.com.au/',
       },
@@ -703,6 +780,16 @@ const translations = {
           { title: 'Deux langues, un seul catalogue', text: 'Chaque page existe en allemand et en anglais, reliées entre elles pour les moteurs de recherche (hreflang), pour que chacun arrive dans sa langue.' },
           { title: "Tout ce qui vient après l'achat", text: 'Les propriétaires trouvent tout au même endroit : un localisateur de revendeurs, la FAQ, la garantie, les mises à jour logicielles, les notices et brochures à télécharger, et les archives des anciens modèles.' },
         ],
+        gallery: withText(PROJECT_GLOBAL_MEDIA, [
+          { alt: 'Page produit de la Debut EVO 2 : la platine sur un socle blanc sous son nom, avec les boutons Configurator, Buy local et Buy now, et des liens vers les caractéristiques, les téléchargements et les avis', caption: "Une page produit : la Debut EVO 2, avec son configurateur et où l'acheter." },
+          { alt: "Page des platines : les lignes de produits à gauche (Automat, E Line, Vertical, Juke Box, T Line, Debut et d'autres) à côté de la photo d'une platine bleue", caption: 'Les platines, classées par ligne.' },
+          { alt: "Page de la Debut EVO 2, What's new : quatre nouveautés (le plateau, le palier, la cellule Pick it MM EVO, le contrepoids) dessinées au trait", caption: 'Les nouveautés, une par une.' },
+          { alt: "Page d'accueil : une platine en édition limitée présentée sur fond noir", caption: "L'accueil met en avant les lancements et les éditions limitées." },
+          { alt: "Page Sustainable HiFi : une carte de l'Europe centrale montrant que 95 % des produits sont fabriqués à moins de 440 km du siège", caption: "La hi-fi durable : l'histoire de la marque, racontée avec une carte." },
+          { alt: "Page True Balanced : une illustration des parasites électriques autour d'une platine dans une maison moderne", caption: 'True Balanced : une idée technique rendue visuelle.' },
+          { alt: "La page d'accueil sur téléphone", caption: "Sur téléphone : l'accueil et une page produit." },
+          { alt: 'La page de la Debut EVO 2 sur téléphone' },
+        ]),
         tags: ['WordPress', 'CSS', 'JavaScript', 'WooCommerce'],
         link: 'https://www.project-audio.com/en/',
       },
@@ -731,6 +818,17 @@ const translations = {
           { title: "Les questions avant l'appel", text: "La page d'accueil répond aux questions que chaque client pose d'abord (construisez-vous seulement des maisons de luxe, pouvez-vous partir de mes plans, comment commencer), et le formulaire de devis est sur la même page." },
           { title: 'La preuve par les clients', text: "Leurs avis Google s'affichent sur le site même, à côté de leurs partenaires de confiance : la confiance vient de ceux qui ont déjà construit avec eux." },
         ],
+        gallery: withText(EXCLUSIVE_MEDIA, [
+          { alt: "Page d'accueil d'Exclusive Construction : une maison dessinée au crayon à gauche qui devient une photo à droite, sous les mots Design et Build", caption: "L'accueil : le dessin d'un côté, la maison construite de l'autre." },
+          { alt: "Introduction : la promesse du constructeur au-dessus de photos d'intérieurs finis", caption: 'Le travail fini, juste après la promesse.' },
+          { alt: "Page portfolio : Excellence in construction, au-dessus d'une grille de photos de cuisines et de salles de bains", caption: 'Le portfolio : le travail parle de lui-même.' },
+          { alt: "Page Home Builders Bentleigh : la photo d'un salon avec les boutons Book a consultation et Call now", caption: 'Une page pour chaque quartier où ils construisent, ici Bentleigh.' },
+          { alt: "Page Bentleigh : Build your dream home, à côté d'un formulaire Book a free consultation", caption: 'Un formulaire de consultation directement sur la page du quartier.' },
+          { alt: 'Un processus de construction structuré : quatre étapes numérotées, de la consultation à la remise des clés', caption: 'Le processus de construction, en quatre étapes.' },
+          { alt: 'FAQ : cinq questions, de construisez-vous seulement des maisons de luxe à êtes-vous une entreprise de conception et construction', caption: "Les questions que chaque client pose, avec leurs réponses avant l'appel." },
+          { alt: "La page d'accueil sur téléphone", caption: "Sur téléphone : l'accueil et une page de quartier." },
+          { alt: 'La page Bentleigh sur téléphone' },
+        ]),
         tags: ['WordPress', 'Elementor', 'CSS', 'JavaScript'],
         link: 'https://exclusiveconstruction.com.au/',
       },
