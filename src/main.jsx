@@ -1,15 +1,31 @@
 import { StrictMode } from 'react'
+import { flushSync } from 'react-dom'
 import { createRoot } from 'react-dom/client'
 import './App.css'
 import App from './App.jsx'
 import { detectLanguage } from './language'
 import { SHORTCUT } from './platform'
+import { handlePageReveal, resetNames } from './viewTransitions'
+import { parseRoute } from './projects'
 
 // Scroll reveal animations, set before the first paint so nothing flickers.
 // Skipped for visitors who asked their system to reduce motion.
 if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.documentElement.classList.add('reveal-ready')
 }
+
+// Smooth scrolling (App.css) is for clicks on links to a section. It stays
+// off until the visitor clicks, types or scrolls, so the browser's own jumps
+// (going back to a page, opening a link to a section) are instant instead of
+// a long glide from the top of the page.
+const html = document.documentElement
+const INTERACTIONS = ['pointerdown', 'keydown', 'wheel', 'touchstart']
+const allowSmoothScroll = () => {
+  html.style.scrollBehavior = ''
+  for (const type of INTERACTIONS) window.removeEventListener(type, allowSmoothScroll, true)
+}
+html.style.scrollBehavior = 'auto'
+for (const type of INTERACTIONS) window.addEventListener(type, allowSmoothScroll, { capture: true, passive: true })
 
 // A note for the developers who open the console.
 const CONSOLE_NOTE = {
@@ -31,8 +47,18 @@ console.log(
   'font-weight:600',
 )
 
-createRoot(document.getElementById('root')).render(
+// Project pages are rendered at once, while their HTML holds the first paint
+// for this script (blocking="render", added by scripts/prerender.mjs): they
+// show complete from their first frame, so the morph from the clicked card
+// finds the cover and the title. The home page, much bigger, renders as
+// usual so its first paint is not held back.
+const root = createRoot(document.getElementById('root'))
+const app = (
   <StrictMode>
     <App />
-  </StrictMode>,
+  </StrictMode>
 )
+if (parseRoute(window.location.pathname).name === 'home') root.render(app)
+else flushSync(() => root.render(app))
+resetNames()
+window.addEventListener('pagereveal', handlePageReveal)

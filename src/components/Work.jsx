@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react'
 import ProjectCover from './ProjectCovers'
+import { projectPath } from '../projects'
+import { nameFrom, isPlainClick } from '../viewTransitions'
 
 // How long a cover plays when it first comes into view. Kept under five
 // seconds: longer motion that starts by itself would need a pause control
@@ -8,8 +10,7 @@ const PLAY_MS = 4200
 
 const IconArrow = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-    <line x1="7" y1="17" x2="17" y2="7" />
-    <polyline points="7 7 17 7 17 17" />
+    <path d="M5 12h14M13 6l6 6-6 6" />
   </svg>
 )
 
@@ -52,24 +53,26 @@ export default function Work({ t }) {
         {t.projects.map((project, i) => (
           <li
             key={project.id}
-            className={`project-card${project.link ? ' is-link' : ''}`}
+            className="project-card is-link"
+            data-project={project.id}
             data-reveal
             style={{ '--reveal-delay': `${(i % 2) * 90}ms` }}
           >
-            <ProjectCover id={project.id} />
+            <ProjectCover id={project.id} data-vt="cover" />
             <div className="project-meta">
               <span className="project-type">{project.type}</span>
               <span className="project-year">{project.year}</span>
             </div>
-            <h3 className="project-title">
-              {project.link ? (
-                // The link covers the whole card (see .project-link::after),
-                // so its name stays short: just the title.
-                <a href={project.link} target="_blank" rel="noreferrer" className="project-link">
-                  {project.title}
-                  <span className="sr-only"> {t.new_tab}</span>
-                </a>
-              ) : project.title}
+            <h3 className="project-title" data-vt="title">
+              {/* The link covers the whole card (see .project-link::after),
+                  so its name stays short: just the title. */}
+              <a
+                href={projectPath(project.id)}
+                className="project-link"
+                onClick={(e) => { if (isPlainClick(e)) nameFrom(e.currentTarget.closest('.project-card')) }}
+              >
+                {project.title}
+              </a>
             </h3>
             <p className="project-desc">{project.desc}</p>
             <ul className="project-tags">
@@ -77,12 +80,10 @@ export default function Work({ t }) {
                 <li key={tag} className="project-tag">{tag}</li>
               ))}
             </ul>
-            {project.link && (
-              <span className="project-visit" aria-hidden="true">
-                {t.visit}
-                <IconArrow />
-              </span>
-            )}
+            <span className="project-visit" aria-hidden="true">
+              {t.view_project}
+              <IconArrow />
+            </span>
           </li>
         ))}
       </ul>

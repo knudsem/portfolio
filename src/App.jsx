@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -8,13 +8,20 @@ import Proof from './components/Proof'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import CommandPalette from './components/CommandPalette'
+import ProjectPage, { NotFound } from './components/ProjectPage'
 import translations from './i18n'
 import { detectLanguage, saveLanguage, isLanguageChosen } from './language'
 import { CONTACT_EMAIL } from './email'
 import { IS_APPLE, SHORTCUT } from './platform'
 import { startPointerEffects } from './pointerEffects'
+import { parseRoute, projectPath, SITE_URL } from './projects'
 
 const SECTIONS = ['about', 'work', 'services', 'proof', 'contact']
+
+// Which page this is. Every page is its own address, loaded by the browser
+// (links between pages are ordinary links), so this never changes.
+const ROUTE = parseRoute(window.location.pathname)
+const HOME = ROUTE.name === 'home'
 
 const fill = (template, values) => template.replace(/\{(\w+)\}/g, (_, key) => values[key])
 
@@ -36,10 +43,14 @@ const KEYWORDS = {
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 // Scrolls to a section and moves keyboard focus there: to the element given
-// by the selector, or else to the section's heading.
+// by the selector, or else to the section's heading. From a project page,
+// opens the home page at that section.
 function goTo(id, selector) {
   const section = document.getElementById(id)
-  if (!section) return
+  if (!section) {
+    window.location.assign(`/#${id}`)
+    return
+  }
   section.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' })
   const target = (selector && section.querySelector(selector)) || section.querySelector('h2')
   if (!target) return
@@ -66,7 +77,13 @@ export default function App() {
   // and the browser tab title in sync with the language shown.
   useEffect(() => {
     document.documentElement.lang = lang
-    document.title = t.page_title
+    if (ROUTE.name === 'project') {
+      document.title = fill(t.case.title, { title: t.projects.find((p) => p.id === ROUTE.id).title })
+    } else if (ROUTE.name === 'notfound') {
+      document.title = fill(t.case.title, { title: t.case.not_found_title })
+    } else {
+      document.title = t.page_title
+    }
   }, [lang, t])
 
   // Language toggle with fade (instant when the visitor asked to reduce
@@ -128,7 +145,8 @@ export default function App() {
       return navigator.clipboard.writeText(text).then(() => showToast(done), failed)
     }
     const section = (id) => ({ id, group: 'go', icon: 'arrow', label: t.nav[id], hint: `#${id}`, run: () => goTo(id) })
-    const siteUrl = document.querySelector('link[rel="canonical"]')?.href || `${window.location.origin}/`
+    // The public address of this page, also when browsing a preview
+    const pageUrl = `${SITE_URL}${ROUTE.name === 'project' ? projectPath(ROUTE.id) : '/'}`
     const otherLang = lang === 'fr' ? 'en' : 'fr'
     return [
       section('about'),
@@ -146,8 +164,19 @@ export default function App() {
           document.getElementById('main')?.focus({ preventScroll: true })
         },
       },
+      ...t.projects
+        .filter((project) => project.id !== ROUTE.id)
+        .map((project) => ({
+          id: `project-${project.id}`,
+          group: 'projects',
+          icon: 'project',
+          label: project.title,
+          keywords: `${project.type} ${project.tags.join(' ')} projet project`,
+          run: () => window.location.assign(projectPath(project.id)),
+        })),
       { id: 'message', group: 'actions', icon: 'message', label: p.message, run: () => goTo('contact', '#cf-name') },
-      {
+      // The audit checks the home page, where its results are shown
+      HOME && {
         id: 'audit',
         group: 'actions',
         icon: 'audit',
@@ -158,9 +187,9 @@ export default function App() {
         },
       },
       { id: 'email', group: 'actions', icon: 'copy', label: p.email, instant: true, run: () => copy(CONTACT_EMAIL, t.toast.email) },
-      { id: 'link', group: 'actions', icon: 'link', label: p.link, instant: true, run: () => copy(siteUrl, t.toast.link) },
+      { id: 'link', group: 'actions', icon: 'link', label: p.link, instant: true, run: () => copy(pageUrl, t.toast.link) },
       { id: 'lang', group: 'actions', icon: 'lang', label: p.lang, lang: otherLang, run: () => setLang(otherLang) },
-    ].map((cmd) => ({ ...cmd, keywords: KEYWORDS[cmd.id] }))
+    ].filter(Boolean).map((cmd) => ({ keywords: KEYWORDS[cmd.id], ...cmd }))
   }, [t, lang, setLang, showToast])
 
   const closePalette = useCallback(() => setPaletteOpen(false), [])
@@ -223,8 +252,20 @@ export default function App() {
     return () => observer.disconnect()
   }, [lang])
 
-  // Scroll spy
+  // Arriving from another page on a link to a section (/#work from a project
+  // page): the section only exists once the app has drawn the page, after
+  // the browser looked for it, so the page is taken there now, before it is
+  // shown. Going back or reloading, the browser restores the position itself.
+  useLayoutEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1))
+    const arrival = performance.getEntriesByType?.('navigation')?.[0]?.type
+    if (!HOME || !id || arrival !== 'navigate') return
+    document.getElementById(id)?.scrollIntoView({ block: 'start' })
+  }, [])
+
+  // Scroll spy (home page only: other pages have no sections)
   useEffect(() => {
+    if (!HOME) return undefined
     let frame = 0
 
     const update = () => {
@@ -277,6 +318,7 @@ export default function App() {
         setMenuOpen={setMenuOpen}
         shortcut={SHORTCUT}
         onOpenPalette={() => setPaletteOpen(true)}
+        home={HOME}
       />
 
       {/* inert: while the phone menu is open, the page behind it cannot be
@@ -290,12 +332,18 @@ export default function App() {
         }}
       >
         <main id="main" className="main-content" tabIndex={-1}>
-          <Hero t={t} />
-          <About t={t} />
-          <Work t={t} />
-          <Services t={t} />
-          <Proof t={t} lang={lang} langChosen={langChosen} auditRequest={auditRequest} />
-          <Contact t={t} />
+          {ROUTE.name === 'home' && (
+            <>
+              <Hero t={t} />
+              <About t={t} />
+              <Work t={t} />
+              <Services t={t} />
+              <Proof t={t} lang={lang} langChosen={langChosen} auditRequest={auditRequest} />
+              <Contact t={t} />
+            </>
+          )}
+          {ROUTE.name === 'project' && <ProjectPage t={t} id={ROUTE.id} />}
+          {ROUTE.name === 'notfound' && <NotFound t={t} />}
         </main>
         <Footer t={t} />
       </div>

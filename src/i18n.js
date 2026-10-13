@@ -1,3 +1,69 @@
+// Code shown on the Trimension project page (same in both languages).
+// Excerpts from the site's source, lightly simplified for reading.
+const TRIMENSION_HAND_JS = `const rightHand = document.querySelector('.right-hand')
+const spacer = document.querySelector('.spacer')
+const maxTranslateY = 33 // % of its height
+const maxTranslateX = 4 // %
+const maxRotate = 6 // degrees
+let isTranslationSet = false
+
+const updateTranslation = () => {
+  const progress = window.scrollY / (document.body.scrollHeight - window.innerHeight)
+  const y = Math.min(progress * maxTranslateY, maxTranslateY)
+  rightHand.style.transform =
+    \`translate(\${maxTranslateX * progress}%, \${y}%) rotate(\${maxRotate * progress}deg)\`
+}
+
+// Only while the section is on screen
+const observer = new IntersectionObserver(([entry]) => {
+  if (entry.isIntersecting && !isTranslationSet) {
+    requestAnimationFrame(updateTranslation)
+    isTranslationSet = true
+  } else if (!entry.isIntersecting && isTranslationSet) {
+    rightHand.style.transform = 'translate(0, 0) rotate(0deg)'
+    isTranslationSet = false
+  }
+}, { threshold: 0.5 })
+
+observer.observe(spacer)
+window.addEventListener('scroll', () => {
+  if (isTranslationSet) updateTranslation()
+})`
+
+const TRIMENSION_FRAGMENTS_CSS = `/* Each fragment of the shattered world floats on its own */
+.pos-1 {
+  animation: custom-transform1 2.85s linear infinite alternate;
+}
+
+@keyframes custom-transform1 {
+  from { transform: translate(5%, -75%) scale(0.7) rotate(0deg); }
+  to { transform: translate(5%, -78%) scale(0.7) rotate(2deg); }
+}
+
+.pos-3 {
+  animation: custom-transform3 1.15s linear infinite alternate;
+}
+
+/* Phones get their own, smaller moves */
+@media screen and (max-width: 768px) {
+  .pos-1 {
+    animation: custom-transform1-mobile 2.85s linear infinite alternate;
+  }
+}`
+
+const TRIMENSION_MEDIA = [
+  { src: '/media/trimension/home-eons.webp', width: 1440, height: 900 },
+  { src: '/media/trimension/home-godsent.webp', width: 1440, height: 900 },
+  { src: '/media/trimension/eons-page.webp', width: 1440, height: 900 },
+  { src: '/media/trimension/eons-fragments.webp', width: 1440, height: 900 },
+  { src: '/media/trimension/eons-hand.webp', width: 1440, height: 900 },
+  { src: '/media/trimension/phone-home.webp', width: 780, height: 1688, phone: true },
+  { src: '/media/trimension/phone-eons.webp', width: 780, height: 1688, phone: true },
+]
+
+// Pairs the shared media with the text of one language
+const withText = (media, texts) => media.map((item, i) => ({ ...item, ...texts[i] }))
+
 const translations = {
   en: {
     page_title: 'Mathias Knudsen | Fullstack & Shopify Developer, UI/UX Designer',
@@ -30,7 +96,7 @@ const translations = {
 
     work_title: 'Selected work',
     work_intro: 'From B2B platforms to Shopify stores, a few recent projects.',
-    visit: 'Visit site',
+    view_project: 'View project',
 
     services_title: 'What I do',
     services_intro: 'From the first sketch to launch day, one person to talk to.',
@@ -75,6 +141,12 @@ const translations = {
         type: 'Accessibility app for Shopify',
         title: 'AccessEU',
         desc: 'A commercial Shopify app that audits storefronts against WCAG 2.1 AA and the European Accessibility Act. Built with React Router v7, TypeScript, Prisma, and a Playwright plus axe-core scanning engine running 100 rules across desktop and mobile viewports.',
+        summary: 'A commercial Shopify app that audits storefronts against WCAG 2.1 AA and the European Accessibility Act.',
+        did: [
+          'A scanning engine built on Playwright and axe-core',
+          '100 rules checked on desktop and mobile viewports',
+          'The Shopify app around it, built with React Router v7, TypeScript and Prisma',
+        ],
         tags: ['React Router', 'TypeScript', 'Prisma', 'Playwright', 'PostgreSQL'],
         link: null,
       },
@@ -84,6 +156,13 @@ const translations = {
         type: 'B2B platform',
         title: 'Interdyn Dealer Portal',
         desc: 'A fullstack B2B ecommerce platform for an Australian audio equipment distributor. Custom product catalog, complex checkout flow, product option management, and a full admin order system built with Django, React, HTMX, and PostgreSQL.',
+        summary: 'A fullstack B2B ecommerce platform for an Australian audio equipment distributor.',
+        did: [
+          'Custom product catalog',
+          'Complex checkout flow',
+          'Product option management',
+          'Full admin order system',
+        ],
         tags: ['Django', 'React', 'HTMX', 'Tailwind', 'PostgreSQL'],
         link: null,
       },
@@ -93,6 +172,14 @@ const translations = {
         type: 'Shopify theme',
         title: 'Pro-Ject Audio Australia',
         desc: 'Custom Shopify theme for the official Australian distributor of Pro-Ject turntables and audio components. Product pages, landing pages, seasonal campaigns, and a full Black Friday promotional experience, coded by hand from a bespoke Figma design.',
+        summary: 'Custom Shopify theme for the official Australian distributor of Pro-Ject turntables and audio components.',
+        did: [
+          'Product pages',
+          'Landing pages',
+          'Seasonal campaigns',
+          'A full Black Friday promotional experience',
+          'All coded by hand from a bespoke Figma design',
+        ],
         tags: ['Shopify', 'Liquid', 'JavaScript', 'CSS'],
         link: 'https://www.projectaudio.com.au/',
       },
@@ -102,6 +189,12 @@ const translations = {
         type: 'Brand website',
         title: 'Pro-Ject Audio Systems',
         desc: 'Frontend development for the official worldwide brand site of Pro-Ject Audio Systems, a European turntable and audio manufacturer distributed in over 80 countries. Custom theme work, editorial layouts, and multilingual support across the full product catalog.',
+        summary: 'Frontend development for the official worldwide brand site of Pro-Ject Audio Systems, a European turntable and audio manufacturer distributed in over 80 countries.',
+        did: [
+          'Custom theme work',
+          'Editorial layouts',
+          'Multilingual support across the full product catalog',
+        ],
         tags: ['WordPress', 'CSS', 'JavaScript', 'WooCommerce'],
         link: 'https://www.project-audio.com/en/',
       },
@@ -111,6 +204,13 @@ const translations = {
         type: 'Website',
         title: 'Exclusive Construction',
         desc: 'Website design and development for a Melbourne luxury home builder. A site built around photography to communicate craftsmanship and trust, with lead capture, a project gallery, and service pages optimised for local search.',
+        summary: 'Website design and development for a Melbourne luxury home builder.',
+        did: [
+          'A site built around photography, to communicate craftsmanship and trust',
+          'Lead capture',
+          'A project gallery',
+          'Service pages optimised for local search',
+        ],
         tags: ['WordPress', 'Elementor', 'CSS', 'JavaScript'],
         link: 'https://exclusiveconstruction.com.au/',
       },
@@ -119,7 +219,38 @@ const translations = {
         year: '2023',
         type: 'Brand website',
         title: 'Trimension Studio',
-        desc: 'Brand website for an immersive VR gaming studio. A dark, cinematic experience on a single page, with smooth scroll animations and custom motion, built to reflect the visual intensity of their game titles Eons and Godsent.',
+        desc: 'Brand website for an immersive VR gaming studio. Full-screen game videos, a page per game with scroll-driven motion, and a dark, cinematic look built to match the visual intensity of their titles Eons and Godsent.',
+        summary: "Brand website for an immersive VR gaming studio, which I designed and built as the studio's art director.",
+        story: [
+          'Trimension makes virtual reality games. Its site had to introduce the studio and its two titles, Eons and Godsent, to players and to future recruits.',
+          'The idea: let the games speak. The home page is a series of full-screen game videos that scrolling snaps between, and each game gets its own page and mood. Eons tells its story as you scroll, in a world breaking apart; Godsent shows off its arsenal and its monsters.',
+        ],
+        did: [
+          'Design and development, in plain HTML, CSS and JavaScript, no framework',
+          'A home page made of full-screen game videos, with scroll snapping',
+          'A page per game: Eons, with scroll-driven animation, and Godsent',
+          'Team and careers pages, with application forms',
+          'Responsive, with animations tuned for phones',
+        ],
+        highlights: [
+          { title: 'Full-screen video, snapping scroll', text: 'Each home section is a looping, muted game video filling the screen. CSS scroll snapping lands every scroll on a complete scene, and the arrows glide to the next one.' },
+          { title: 'A menu without JavaScript', text: 'The side menu opens with a hidden checkbox and CSS alone, and its links slide in one after another. The header hides as you scroll down and comes back as soon as you scroll up.' },
+          { title: 'A world in pieces', text: 'On the Eons page, ten fragments of the shattered world float in the air. Each has its own keyframes, with durations from 1.15 s to 3.85 s, so the scene never moves as one block. Phones get their own versions.' },
+          { title: 'A hand that follows the scroll', text: "Agent Steve's hand slides and turns as the page scrolls. An Intersection Observer switches the effect on only while the section is on screen, and puts the hand back when it leaves." },
+        ],
+        gallery: withText(TRIMENSION_MEDIA, [
+          { alt: 'Trimension home page: a pastel castle on a floating island, with a Discover Eons button', caption: 'The home page: every section is a full-screen game video.' },
+          { alt: 'Second home section: a monster with glowing eyes in blue smoke, with a Discover Godsent button', caption: "Scroll once more and the page snaps to Godsent's world." },
+          { alt: 'Eons page: a dark creature with tentacles next to the story of the Nebulites and a newsletter field', caption: 'The Eons page introduces the game and its characters.' },
+          { alt: 'Fragments of terracotta rock floating around a paragraph, under the title The world is shattering', caption: 'Fragments of the world float, each on its own rhythm. The logo\'s eye stands in for the letter\u00a0o.' },
+          { alt: 'A low poly hand wearing a glowing gadget, under the title Become Agent Steve', caption: "Agent Steve's hand follows the scroll." },
+          { alt: 'The home page on a phone', caption: 'On phones.' },
+          { alt: 'The Eons page on a phone', caption: '' },
+        ]),
+        code: [
+          { file: 'js/scrollarm.js', lang: 'js', caption: 'The hand that follows the scroll. Excerpt, lightly simplified.', source: TRIMENSION_HAND_JS },
+          { file: 'style/eons.css', lang: 'css', caption: 'Two of the ten floating fragments, and their phone version. Excerpt.', source: TRIMENSION_FRAGMENTS_CSS },
+        ],
         tags: ['JavaScript', 'HTML', 'CSS', 'SVG'],
         link: null,
       },
@@ -178,6 +309,31 @@ const translations = {
 
     footer: 'Designed and built in Toulouse.',
 
+    case: {
+      back: 'All projects',
+      title: '{title} | Mathias Knudsen',
+      story: 'The project',
+      did: 'What I did',
+      highlights: 'Details that matter',
+      gallery: 'Screens',
+      code: 'In the code',
+      copy: 'Copy',
+      copied: 'Copied',
+      details: 'Details',
+      type: 'Type',
+      year: 'Year',
+      stack: 'Tech stack',
+      visit: 'Visit the live site',
+      pause: 'Pause the animation',
+      play: 'Play the animation',
+      next: 'Next project',
+      cta_title: 'Have a similar project?',
+      cta_text: "Tell me about it. I usually reply within 24 hours.",
+      not_found_title: 'Page not found',
+      not_found_text: "This page doesn't exist, or no longer does.",
+      not_found_link: 'Back to the home page',
+    },
+
     palette: {
       open: 'Command menu',
       label: 'Command menu',
@@ -186,6 +342,7 @@ const translations = {
       close: 'Close',
       group_go: 'Go to',
       group_actions: 'Actions',
+      group_projects: 'Projects',
       empty: 'No command matches “{q}”.',
       count_one: '{n} command',
       count_other: '{n} commands',
@@ -237,7 +394,7 @@ const translations = {
 
     work_title: 'Projets sélectionnés',
     work_intro: 'Des plateformes B2B aux boutiques Shopify, quelques projets récents.',
-    visit: 'Voir le site',
+    view_project: 'Voir le projet',
 
     services_title: 'Ce que je fais',
     services_intro: 'Du premier croquis à la mise en ligne, un seul interlocuteur.',
@@ -282,6 +439,12 @@ const translations = {
         type: "App d'accessibilité pour Shopify",
         title: 'AccessEU',
         desc: "Une app Shopify commerciale qui audite les boutiques selon les normes WCAG 2.1 AA et l'European Accessibility Act. Développée avec React Router v7, TypeScript, Prisma, et un moteur de scan Playwright plus axe-core exécutant 100 règles sur les viewports desktop et mobile.",
+        summary: "Une app Shopify commerciale qui audite les boutiques selon les normes WCAG 2.1 AA et l'European Accessibility Act.",
+        did: [
+          'Un moteur de scan basé sur Playwright et axe-core',
+          '100 règles vérifiées sur les viewports desktop et mobile',
+          "L'app Shopify autour, développée avec React Router v7, TypeScript et Prisma",
+        ],
         tags: ['React Router', 'TypeScript', 'Prisma', 'Playwright', 'PostgreSQL'],
         link: null,
       },
@@ -291,6 +454,13 @@ const translations = {
         type: 'Plateforme B2B',
         title: 'Interdyn Dealer Portal',
         desc: "Une plateforme e-commerce B2B fullstack pour un distributeur australien d'équipements audio. Catalogue produit sur mesure, tunnel de commande complexe, gestion des options et système de commandes admin complet, développé avec Django, React, HTMX et PostgreSQL.",
+        summary: "Une plateforme e-commerce B2B fullstack pour un distributeur australien d'équipements audio.",
+        did: [
+          'Catalogue produit sur mesure',
+          'Tunnel de commande complexe',
+          'Gestion des options produit',
+          'Système de commandes admin complet',
+        ],
         tags: ['Django', 'React', 'HTMX', 'Tailwind', 'PostgreSQL'],
         link: null,
       },
@@ -300,6 +470,14 @@ const translations = {
         type: 'Thème Shopify',
         title: 'Pro-Ject Audio Australia',
         desc: "Thème Shopify sur mesure pour le distributeur officiel australien des platines et composants audio Pro-Ject. Pages produits, pages d'atterrissage, campagnes saisonnières et expérience Black Friday complète, codées à partir d'une maquette Figma sur mesure.",
+        summary: 'Thème Shopify sur mesure pour le distributeur officiel australien des platines et composants audio Pro-Ject.',
+        did: [
+          'Pages produits',
+          "Pages d'atterrissage",
+          'Campagnes saisonnières',
+          'Une expérience Black Friday complète',
+          "Le tout codé à la main à partir d'une maquette Figma sur mesure",
+        ],
         tags: ['Shopify', 'Liquid', 'JavaScript', 'CSS'],
         link: 'https://www.projectaudio.com.au/',
       },
@@ -309,6 +487,12 @@ const translations = {
         type: 'Site de marque',
         title: 'Pro-Ject Audio Systems',
         desc: "Développement frontend pour le site mondial officiel de Pro-Ject Audio Systems, fabricant européen de platines et de matériel audio distribué dans plus de 80 pays. Travail sur mesure du thème, mises en page éditoriales et support multilingue sur l'ensemble du catalogue produits.",
+        summary: 'Développement frontend pour le site mondial officiel de Pro-Ject Audio Systems, fabricant européen de platines et de matériel audio distribué dans plus de 80 pays.',
+        did: [
+          'Travail sur mesure du thème',
+          'Mises en page éditoriales',
+          "Support multilingue sur l'ensemble du catalogue produits",
+        ],
         tags: ['WordPress', 'CSS', 'JavaScript', 'WooCommerce'],
         link: 'https://www.project-audio.com/en/',
       },
@@ -318,6 +502,13 @@ const translations = {
         type: 'Site vitrine',
         title: 'Exclusive Construction',
         desc: "Design et développement du site d'un constructeur de maisons de luxe à Melbourne. Un site centré sur la photographie, conçu pour mettre en valeur la qualité de leurs constructions et inspirer confiance, avec formulaires de contact, galerie de projets et pages de services optimisées pour la recherche locale.",
+        summary: "Design et développement du site d'un constructeur de maisons de luxe à Melbourne.",
+        did: [
+          'Un site centré sur la photographie, pour mettre en valeur la qualité des constructions et inspirer confiance',
+          'Formulaires de contact',
+          'Galerie de projets',
+          'Pages de services optimisées pour la recherche locale',
+        ],
         tags: ['WordPress', 'Elementor', 'CSS', 'JavaScript'],
         link: 'https://exclusiveconstruction.com.au/',
       },
@@ -326,7 +517,38 @@ const translations = {
         year: '2023',
         type: 'Site vitrine',
         title: 'Trimension Studio',
-        desc: "Site vitrine pour un studio de jeux VR immersifs. Une expérience cinématique en une seule page avec animations au scroll et motion sur mesure, conçue pour refléter l'intensité visuelle de leurs titres Eons et Godsent.",
+        desc: "Site vitrine pour un studio de jeux VR immersifs. Vidéos de jeu en plein écran, une page par jeu avec des animations au défilement, et une ambiance sombre et cinématique, à la hauteur de l'intensité visuelle de leurs titres Eons et Godsent.",
+        summary: "Site vitrine pour un studio de jeux VR immersifs, que j'ai conçu et développé en tant que directeur artistique du studio.",
+        story: [
+          'Trimension crée des jeux en réalité virtuelle. Son site devait présenter le studio et ses deux titres, Eons et Godsent, aux joueurs comme aux futurs talents.',
+          "Le parti pris : laisser parler les jeux. L'accueil enchaîne des vidéos de jeu en plein écran, sur lesquelles le défilement s'aimante, et chaque jeu a sa propre page et sa propre ambiance. Eons raconte son histoire au fil du défilement, dans un monde qui se brise ; Godsent montre son arsenal et ses monstres.",
+        ],
+        did: [
+          'Design et développement, en HTML, CSS et JavaScript, sans framework',
+          'Un accueil fait de vidéos de jeu en plein écran, avec défilement aimanté',
+          'Une page par jeu : Eons, avec des animations au défilement, et Godsent',
+          'Pages équipe et carrières, avec formulaires de candidature',
+          'Responsive, avec des animations adaptées au téléphone',
+        ],
+        highlights: [
+          { title: 'Vidéo plein écran, défilement aimanté', text: "Chaque section de l'accueil est une vidéo de jeu en boucle, sans son, qui remplit l'écran. Le scroll snapping en CSS fait atterrir chaque défilement sur une scène complète, et les flèches glissent jusqu'à la suivante." },
+          { title: 'Un menu sans JavaScript', text: "Le menu latéral s'ouvre grâce à une case à cocher cachée et du CSS seul, et ses liens arrivent l'un après l'autre. L'en-tête se cache quand on descend et revient dès qu'on remonte." },
+          { title: 'Un monde en morceaux', text: 'Sur la page Eons, dix fragments du monde brisé flottent dans les airs. Chacun a sa propre animation, sur des durées de 1,15 s à 3,85 s, pour que la scène ne bouge jamais d\'un bloc. Le téléphone a ses propres versions.' },
+          { title: 'Une main qui suit le défilement', text: "La main de l'agent Steve glisse et pivote au rythme du défilement. Un Intersection Observer n'active l'effet que lorsque la section est à l'écran, et remet la main en place quand elle en sort." },
+        ],
+        gallery: withText(TRIMENSION_MEDIA, [
+          { alt: "Accueil de Trimension : un château pastel sur une île flottante, avec un bouton Discover Eons", caption: "L'accueil : chaque section est une vidéo de jeu en plein écran." },
+          { alt: "Deuxième section de l'accueil : un monstre aux yeux lumineux dans une fumée bleue, avec un bouton Discover Godsent", caption: "Un défilement de plus, et la page s'aimante sur l'univers de Godsent." },
+          { alt: "Page Eons : une créature sombre à tentacules à côté de l'histoire des Nebulites et d'un champ d'inscription à la newsletter", caption: 'La page Eons présente le jeu et ses personnages.' },
+          { alt: 'Des fragments de roche terre cuite flottent autour d\'un paragraphe, sous le titre The world is shattering', caption: "Les fragments du monde flottent, chacun à son rythme. L'œil du logo remplace la lettre\u00a0o." },
+          { alt: "Une main low poly portant un gadget lumineux, sous le titre Become Agent Steve", caption: "La main de l'agent Steve suit le défilement." },
+          { alt: "L'accueil sur téléphone", caption: 'Sur téléphone.' },
+          { alt: 'La page Eons sur téléphone', caption: '' },
+        ]),
+        code: [
+          { file: 'js/scrollarm.js', lang: 'js', caption: 'La main qui suit le défilement. Extrait, légèrement simplifié.', source: TRIMENSION_HAND_JS },
+          { file: 'style/eons.css', lang: 'css', caption: 'Deux des dix fragments flottants, et leur version téléphone. Extrait.', source: TRIMENSION_FRAGMENTS_CSS },
+        ],
         tags: ['JavaScript', 'HTML', 'CSS', 'SVG'],
         link: null,
       },
@@ -385,6 +607,31 @@ const translations = {
 
     footer: 'Conçu et développé à Toulouse.',
 
+    case: {
+      back: 'Tous les projets',
+      title: '{title} | Mathias Knudsen',
+      story: 'Le projet',
+      did: "Ce que j'ai fait",
+      highlights: 'Les détails qui comptent',
+      gallery: 'En images',
+      code: 'Dans le code',
+      copy: 'Copier',
+      copied: 'Copié',
+      details: 'En bref',
+      type: 'Type',
+      year: 'Année',
+      stack: 'Technologies',
+      visit: 'Voir le site en ligne',
+      pause: "Mettre l'animation en pause",
+      play: "Lancer l'animation",
+      next: 'Projet suivant',
+      cta_title: 'Un projet similaire ?',
+      cta_text: 'Parlez-moi de votre projet. Je réponds en général sous 24 heures.',
+      not_found_title: 'Page introuvable',
+      not_found_text: "Cette page n'existe pas, ou plus.",
+      not_found_link: "Retour à l'accueil",
+    },
+
     palette: {
       open: 'Menu de commandes',
       label: 'Menu de commandes',
@@ -393,6 +640,7 @@ const translations = {
       close: 'Fermer',
       group_go: 'Aller à',
       group_actions: 'Actions',
+      group_projects: 'Projets',
       empty: 'Aucune commande ne correspond à «\u00a0{q}\u00a0».',
       count_one: '{n} commande',
       count_other: '{n} commandes',

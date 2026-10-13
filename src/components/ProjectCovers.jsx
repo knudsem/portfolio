@@ -229,11 +229,11 @@ const COVERS = {
   trimension: Cube,
 }
 
-export default function ProjectCover({ id }) {
+export default function ProjectCover({ id, ...rest }) {
   const Cover = COVERS[id]
   if (!Cover) return null
   return (
-    <div className={`project-cover cover-${id}`} aria-hidden="true">
+    <div className={`project-cover cover-${id}`} aria-hidden="true" {...rest}>
       <Cover />
     </div>
   )
