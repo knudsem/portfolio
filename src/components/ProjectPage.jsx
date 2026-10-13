@@ -65,8 +65,8 @@ function CodeBlock({ c, code }) {
   )
 }
 
-// Screens of the real site: the first one wide, then two by two, and the
-// phone views side by side.
+// Screens of the real site: the first one wide (and any marked wide), the
+// others two by two, and the phone views side by side.
 function Gallery({ c, images }) {
   const screens = images.filter((img) => !img.phone)
   const phones = images.filter((img) => img.phone)
@@ -78,7 +78,7 @@ function Gallery({ c, images }) {
       <h2 id="case-gallery" className="case-h2">{c.gallery}</h2>
       <div className="case-shots">
         {screens.map((img, i) => (
-          <figure key={img.src} className={`case-shot${i === 0 ? ' is-wide' : ''}`}>
+          <figure key={img.src} className={`case-shot${i === 0 || img.wide ? ' is-wide' : ''}`}>
             {picture(img)}
             {img.caption && <figcaption>{img.caption}</figcaption>}
           </figure>
