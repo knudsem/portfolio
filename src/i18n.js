@@ -1,56 +1,3 @@
-// Code shown on the Trimension project page (same in both languages).
-// Excerpts from the site's source, lightly simplified for reading.
-const TRIMENSION_HAND_JS = `const rightHand = document.querySelector('.right-hand')
-const spacer = document.querySelector('.spacer')
-const maxTranslateY = 33 // % of its height
-const maxTranslateX = 4 // %
-const maxRotate = 6 // degrees
-let isTranslationSet = false
-
-const updateTranslation = () => {
-  const progress = window.scrollY / (document.body.scrollHeight - window.innerHeight)
-  const y = Math.min(progress * maxTranslateY, maxTranslateY)
-  rightHand.style.transform =
-    \`translate(\${maxTranslateX * progress}%, \${y}%) rotate(\${maxRotate * progress}deg)\`
-}
-
-// Only while the section is on screen
-const observer = new IntersectionObserver(([entry]) => {
-  if (entry.isIntersecting && !isTranslationSet) {
-    requestAnimationFrame(updateTranslation)
-    isTranslationSet = true
-  } else if (!entry.isIntersecting && isTranslationSet) {
-    rightHand.style.transform = 'translate(0, 0) rotate(0deg)'
-    isTranslationSet = false
-  }
-}, { threshold: 0.5 })
-
-observer.observe(spacer)
-window.addEventListener('scroll', () => {
-  if (isTranslationSet) updateTranslation()
-})`
-
-const TRIMENSION_FRAGMENTS_CSS = `/* Each fragment of the shattered world floats on its own */
-.pos-1 {
-  animation: custom-transform1 2.85s linear infinite alternate;
-}
-
-@keyframes custom-transform1 {
-  from { transform: translate(5%, -75%) scale(0.7) rotate(0deg); }
-  to { transform: translate(5%, -78%) scale(0.7) rotate(2deg); }
-}
-
-.pos-3 {
-  animation: custom-transform3 1.15s linear infinite alternate;
-}
-
-/* Phones get their own, smaller moves */
-@media screen and (max-width: 768px) {
-  .pos-1 {
-    animation: custom-transform1-mobile 2.85s linear infinite alternate;
-  }
-}`
-
 const TRIMENSION_MEDIA = [
   { src: '/media/trimension/home-eons.webp', width: 1440, height: 900 },
   { src: '/media/trimension/home-godsent.webp', width: 1440, height: 900 },
@@ -247,9 +194,27 @@ const translations = {
           { alt: 'The home page on a phone', caption: 'On phones.' },
           { alt: 'The Eons page on a phone', caption: '' },
         ]),
+        revisited: {
+          intro: "In 2026 I rebuilt the two signature animations of the Eons page with today's techniques. They run below, live: scroll to play them.",
+          shatter_label: 'Live demo: fragments of a shattered world burst out of the centre as you scroll, then float around a paragraph, each at its own depth.',
+          shatter_caption: 'The world shatters as you scroll, then the fragments float, each at its own depth.',
+          hands_label: "Live demo: as you scroll, a hand reaches for the gadget on Agent Steve's wrist and presses it, and the gadget lights up.",
+          hands_caption: "As you scroll, Agent Steve's hand reaches the gadget and presses it.",
+          pause: 'Pause the floating',
+          play: 'Resume the floating',
+          changes: [
+            { title: 'Played by the scroll itself', text: 'Scroll-driven animations: the browser plays them itself from the scroll position, off the main thread, with no script driving them in Chrome, Edge and Safari. Other browsers scrub the same keyframes with a 45-line script.' },
+            { title: 'Timed on the scene, not the page', text: 'The old hand stayed still until a 1-pixel marker entered the screen, then jumped a quarter of its height at once and barely moved after, because its progress was measured on the whole page. Now each scene has its own progress: the hand follows the scroll from start to finish and presses the gadget as it crosses the middle of the screen.' },
+            { title: 'One animation for ten fragments', text: 'Twenty keyframe blocks (one per fragment, twice for phones) become one: each fragment only sets its position, size, depth and rhythm in custom properties.' },
+            { title: 'Motion that breathes', text: 'Linear back and forth becomes an eased float, the fragments now burst out of the centre as the world shatters, and depth is real: far fragments are smaller, hazy and move less.' },
+            { title: 'Every screen, the text always readable', text: 'Container queries replace the device-specific media queries: three layouts follow the space the scene actually has. The text is never covered, and the page no longer scrolls sideways (it did by 20 to 53 px).' },
+            { title: 'Thirty times lighter', text: 'The same images, 4 MB of PNG before, 132 KB of WebP now, with their sizes declared so nothing jumps while they load. With reduced motion, a still picture; the floating can be paused and rests off screen.' },
+          ],
+        },
         code: [
-          { file: 'js/scrollarm.js', lang: 'js', caption: 'The hand that follows the scroll. Excerpt, lightly simplified.', source: TRIMENSION_HAND_JS },
-          { file: 'style/eons.css', lang: 'css', caption: 'Two of the ten floating fragments, and their phone version. Excerpt.', source: TRIMENSION_FRAGMENTS_CSS },
+          { file: 'eons.css', lang: 'css', caption: 'The shattered world: one burst on the scroll and one float in time, shared by all ten fragments, and the scene itself as the timeline. Excerpt.', excerpt: 'eons-fragments' },
+          { file: 'eons.css', lang: 'css', caption: 'Agent Steve: both arms share one canvas, so a single translate brings the fingertip onto the dial. Excerpt.', excerpt: 'eons-hands' },
+          { file: 'scrollScenes.js', lang: 'js', caption: 'The only script: rests the loops off screen, and scrubs the keyframes where the browser cannot play them from the scroll.', excerpt: 'scroll-scenes' },
         ],
         tags: ['JavaScript', 'HTML', 'CSS', 'SVG'],
         link: null,
@@ -317,6 +282,8 @@ const translations = {
       highlights: 'Details that matter',
       gallery: 'Screens',
       code: 'In the code',
+      revisited: 'The animations, revisited',
+      changes: 'What changed',
       copy: 'Copy',
       copied: 'Copied',
       details: 'Details',
@@ -545,9 +512,27 @@ const translations = {
           { alt: "L'accueil sur téléphone", caption: 'Sur téléphone.' },
           { alt: 'La page Eons sur téléphone', caption: '' },
         ]),
+        revisited: {
+          intro: "En 2026, j'ai reconstruit les deux animations phares de la page Eons avec les techniques d'aujourd'hui. Elles tournent ci-dessous, en direct : faites défiler pour les jouer.",
+          shatter_label: "Démo en direct : au défilement, les fragments d'un monde brisé jaillissent du centre, puis flottent autour d'un paragraphe, chacun à sa profondeur.",
+          shatter_caption: 'Le monde se brise au défilement, puis les fragments flottent, chacun à sa profondeur.',
+          hands_label: "Démo en direct : au défilement, une main s'approche du gadget au poignet de l'agent Steve et appuie dessus, et le gadget s'allume.",
+          hands_caption: "Au défilement, la main de l'agent Steve rejoint le gadget et appuie dessus.",
+          pause: 'Mettre le flottement en pause',
+          play: 'Relancer le flottement',
+          changes: [
+            { title: 'Joué par le défilement lui-même', text: "Des animations pilotées par le défilement : le navigateur les joue lui-même à partir de la position de la page, hors du fil principal, sans script pour les animer dans Chrome, Edge et Safari. Les autres navigateurs font défiler les mêmes keyframes avec un script de 45 lignes." },
+            { title: 'Calé sur la scène, pas sur la page', text: "L'ancienne main restait immobile jusqu'à ce qu'un repère d'un pixel entre dans l'écran, puis sautait d'un quart de sa hauteur d'un coup et ne bougeait presque plus ensuite, car sa progression était calculée sur toute la page. Désormais chaque scène a sa propre progression : la main suit le défilement du début à la fin et appuie sur le gadget quand elle passe au milieu de l'écran." },
+            { title: 'Une seule animation pour dix fragments', text: "Vingt blocs de keyframes (un par fragment, deux fois pour le téléphone) deviennent un seul : chaque fragment ne fixe que sa position, sa taille, sa profondeur et son rythme dans des propriétés personnalisées." },
+            { title: 'Un mouvement qui respire', text: "Le va-et-vient linéaire devient un flottement adouci, les fragments jaillissent désormais du centre quand le monde se brise, et la profondeur est réelle : les fragments lointains sont plus petits, flous, et bougent moins." },
+            { title: "Tous les écrans, un texte toujours lisible", text: "Les container queries remplacent les media queries par appareil : trois mises en page suivent la place réelle de la scène. Le texte n'est jamais recouvert, et la page ne défile plus de travers (elle le faisait de 20 à 53 px)." },
+            { title: 'Trente fois plus léger', text: "Les mêmes images, 4 Mo de PNG avant, 132 Ko de WebP maintenant, avec leurs dimensions déclarées pour que rien ne saute au chargement. En mouvement réduit, une image fixe ; le flottement se met en pause et se repose hors de l'écran." },
+          ],
+        },
         code: [
-          { file: 'js/scrollarm.js', lang: 'js', caption: 'La main qui suit le défilement. Extrait, légèrement simplifié.', source: TRIMENSION_HAND_JS },
-          { file: 'style/eons.css', lang: 'css', caption: 'Deux des dix fragments flottants, et leur version téléphone. Extrait.', source: TRIMENSION_FRAGMENTS_CSS },
+          { file: 'eons.css', lang: 'css', caption: 'Le monde brisé : un jaillissement au défilement et un flottement dans le temps, communs aux dix fragments, et la scène elle-même comme timeline. Extrait.', excerpt: 'eons-fragments' },
+          { file: 'eons.css', lang: 'css', caption: "L'agent Steve : les deux bras partagent une même toile, donc une seule translation amène le bout du doigt sur le cadran. Extrait.", excerpt: 'eons-hands' },
+          { file: 'scrollScenes.js', lang: 'js', caption: "Le seul script : il met les boucles au repos hors de l'écran, et fait défiler les keyframes là où le navigateur ne sait pas les jouer au défilement.", excerpt: 'scroll-scenes' },
         ],
         tags: ['JavaScript', 'HTML', 'CSS', 'SVG'],
         link: null,
@@ -615,6 +600,8 @@ const translations = {
       highlights: 'Les détails qui comptent',
       gallery: 'En images',
       code: 'Dans le code',
+      revisited: 'Les animations, revisitées',
+      changes: 'Ce qui a changé',
       copy: 'Copier',
       copied: 'Copié',
       details: 'En bref',

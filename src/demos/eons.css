@@ -1,0 +1,359 @@
+/* Eons, revisited: the two animations of the Eons page (2023), rebuilt.
+   - Scroll-driven CSS animations on a view timeline: the browser plays them
+     from the scroll position, off the main thread, with no script.
+   - Browsers without them: scrollScenes.js sets --progress (0 to 1) and the
+     same keyframes are scrubbed with a negative animation-delay.
+   - Container queries: the scenes follow the space they actually have.
+   - Reduced motion: the finished picture, nothing moves. */
+
+@font-face {
+  font-family: 'Eons Display';
+  src: url('/fonts/josefin-sans-latin.woff2') format('woff2');
+  font-weight: 100 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Eons Text';
+  src: url('/fonts/open-sans-latin.woff2') format('woff2');
+  font-weight: 300 800;
+  font-display: swap;
+}
+
+/* Every layout choice below reads this one width, so the scene's shape and
+   the fragments' places always agree */
+.eons-demo {
+  container: eons / inline-size;
+  position: relative;
+  margin: 0;
+}
+
+.eons-panel {
+  overflow: clip;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #232323;
+}
+
+.eons-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.28em;
+  padding: 6% 8% 0;
+  font: 600 clamp(24px, 3.4cqi, 46px) / 1.1 sans-serif;
+  color: #fff;
+}
+
+/* The two typefaces are not needed to show the page: they are applied, so
+   fetched, only once it has loaded (EonsDemos.jsx) */
+.eons-demos[data-fonts] .eons-title { font-family: 'Eons Display', sans-serif; }
+.eons-demos[data-fonts] .shatter-copy { font-family: 'Eons Text', sans-serif; }
+
+/* The logo's eye stands in for an o */
+.eons-title img {
+  width: 0.78em;
+  height: 0.78em;
+  margin-inline: 0.02em;
+  vertical-align: -0.08em;
+}
+
+.eons-word {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* The shattered world: each fragment only sets where it sits and how it
+   moves (custom properties); every fragment shares the same keyframes. */
+.shatter {
+  container-type: inline-size;
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  padding-block: 12%;
+}
+
+.frag {
+  --x: var(--xl);
+  --y: var(--yl);
+  --s: var(--sl);
+  --ky: 0.5625; /* 1% of the height, in cqi */
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--s) * 1cqi);
+  translate: -50% -50%;
+}
+
+/* excerpt:fragments */
+/* Scroll: the fragments burst out of the centre, then drift apart */
+.frag-move {
+  --from-x: calc((50 - var(--x)) * 0.8cqi);
+  --from-y: calc((50 - var(--y)) * 0.8cqi * var(--ky));
+  --to-x: calc((var(--x) - 50) * 0.14cqi * var(--depth));
+  --to-y: calc(((var(--y) - 50) * 0.1 - 7) * 1cqi * var(--depth));
+  animation: frag-burst 1s linear both;
+}
+
+/* Held together until the scene's centre is on screen, then the burst */
+@keyframes frag-burst {
+  0%, 20% {
+    transform: translate(var(--from-x), var(--from-y)) rotate(calc(var(--spin) * 1deg)) scale(0.5);
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.2, 0.75, 0.25, 1);
+  }
+  26% { opacity: 1; }
+  46% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  100% { transform: translate(var(--to-x), var(--to-y)) rotate(calc(var(--spin) * -0.1deg)) scale(1); }
+}
+
+/* Time: an organic float, its size set by the depth */
+.frag img {
+  display: block;
+  width: 100%;
+  height: auto;
+  rotate: calc(var(--rot) * 1deg);
+  animation: frag-float calc(var(--dur) * 1s) ease-in-out calc(var(--delay) * -1s) infinite alternate;
+}
+
+@keyframes frag-float {
+  from { transform: translateY(calc(var(--depth) * -0.9cqi)) rotate(-2.5deg); }
+  to { transform: translateY(calc(var(--depth) * 0.9cqi)) rotate(2.5deg); }
+}
+/* /excerpt */
+
+/* Depth of field: far fragments are hazy, near ones cast a shadow */
+.frag[data-depth='far'] img { filter: blur(1.2px) brightness(0.75); }
+.frag[data-depth='near'] img { filter: drop-shadow(0 2.4cqi 2cqi rgb(0 0 0 / 0.45)); }
+
+/* The floating rests off screen, or when paused */
+.shatter:not([data-inview]) .frag img,
+.shatter[data-paused] .frag img {
+  animation-play-state: paused;
+}
+
+/* Three layouts, from the space the scene actually has */
+@container eons (max-width: 899px) {
+  .shatter { aspect-ratio: 4 / 3; }
+  .frag { --x: var(--xm); --y: var(--ym); --s: var(--sm); --ky: 0.75; }
+}
+
+/* Small screens: a band for the fragments above the text and one below,
+   the scene grows with the text, so they can never meet */
+@container eons (max-width: 599px) {
+  .shatter { aspect-ratio: auto; padding-block: 46% 38%; }
+  .frag { --x: var(--xs); --y: var(--ys); --s: var(--ss); --ky: 1.8; top: calc(var(--edge) * 1cqi); }
+  .frag[data-edge='bottom'] { top: calc(100% - var(--edge) * 1cqi); }
+  .frag[data-small='hide'] { display: none; }
+}
+
+.shatter-copy {
+  position: relative;
+  z-index: 2;
+  width: 34cqi;
+  font: 300 clamp(15px, 1.45cqi, 18px) / 1.65 sans-serif;
+  color: #fff;
+  animation: shatter-copy 1s linear both;
+}
+
+@container eons (max-width: 899px) { .shatter-copy { width: 56cqi; } }
+@container eons (max-width: 599px) { .shatter-copy { width: 84cqi; } }
+
+@keyframes shatter-copy {
+  0%, 30% { opacity: 0; transform: translateY(24px); }
+  50%, 100% { opacity: 1; transform: none; }
+}
+
+/* excerpt:fragments */
+/* Played by the scroll where the browser can: the scene is the timeline
+   (elsewhere, scrollScenes.js scrubs the same keyframes) */
+@supports (animation-timeline: view()) {
+  .shatter { view-timeline: --shatter block; }
+
+  .frag-move,
+  .shatter-copy {
+    animation-duration: auto;
+    animation-timeline: --shatter;
+  }
+}
+/* /excerpt */
+
+/* Agent Steve: the right hand reaches for the gadget and presses it, the
+   gadget lights up */
+.agent {
+  container-type: inline-size;
+  padding-bottom: 4%;
+}
+
+.agent-stage {
+  position: relative;
+  aspect-ratio: 2534 / 1426;
+  margin-top: 3%;
+}
+
+.agent-stage img,
+.agent-glow,
+.agent-ring {
+  position: absolute;
+}
+
+.agent-stage img {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Own layers from the start: an arm decoded while still transparent is
+     otherwise never drawn in Chrome when its opacity rises on the scroll */
+  will-change: transform, opacity;
+}
+
+/* excerpt:hands */
+/* Both arms share one canvas, so the fingertip (14.3%, 34.9%) lands on the
+   dial (28.2%, 49.4%) with a single translate */
+.agent-right {
+  z-index: 2;
+  translate: 13.9% 14.5%; /* the press, also the still picture */
+  transform-origin: 14.3% 34.9%;
+  animation: agent-reach 1s linear both;
+}
+
+/* Apart until the stage is well on screen, then the approach, the press */
+@keyframes agent-reach {
+  0%, 20% {
+    translate: 60% -22%;
+    rotate: 12deg;
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  28% { opacity: 1; }
+  47% {
+    translate: 15.5% 9%;
+    rotate: 2.5deg;
+    animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0);
+  }
+  53% { translate: 13.9% 14.5%; rotate: 0deg; scale: 0.985; }
+  58% { scale: 1; }
+  100% { translate: 13.9% 14.5%; rotate: 0deg; }
+}
+/* /excerpt */
+
+.agent-left {
+  transform-origin: 0% 60%;
+  animation: agent-hold 1s linear both;
+}
+
+@keyframes agent-hold {
+  0%, 20% {
+    translate: -40% 10%;
+    rotate: -7deg;
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  28% { opacity: 1; }
+  45%, 53% { translate: 0 0; rotate: 0deg; }
+  56% { translate: 0 0.8%; }
+  64%, 100% { translate: 0 0; }
+}
+
+/* The gadget lights up as it is pressed */
+.agent-glow,
+.agent-ring {
+  z-index: 1;
+  left: 28.2%;
+  top: 49.4%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+}
+
+.agent-glow {
+  width: 11%;
+  background: radial-gradient(circle, rgb(255 60 80 / 0.85), rgb(255 30 60 / 0.3) 38%, transparent 70%);
+  mix-blend-mode: screen;
+  opacity: 0.55;
+  animation: agent-glow 1s linear both;
+}
+
+.agent-ring {
+  width: 7%;
+  border: 0.25cqi solid rgb(255 90 100 / 0.9);
+  opacity: 0;
+  animation: agent-ring 1s linear both;
+}
+
+@keyframes agent-glow {
+  0%, 50% { opacity: 0; scale: 0.6; }
+  55% { opacity: 1; scale: 1.25; }
+  70%, 100% { opacity: 0.55; scale: 1; }
+}
+
+@keyframes agent-ring {
+  0%, 52% { opacity: 0; scale: 0.4; }
+  56% { opacity: 1; }
+  78%, 100% { opacity: 0; scale: 3.2; }
+}
+
+@supports (animation-timeline: view()) {
+  .agent { view-timeline: --agent block; }
+
+  .agent-left,
+  .agent-right,
+  .agent-glow,
+  .agent-ring {
+    animation-duration: auto;
+    animation-timeline: --agent;
+  }
+}
+
+/* Elsewhere, scrollScenes.js sets --progress (0 to 1) */
+@supports not (animation-timeline: view()) {
+  .frag-move,
+  .shatter-copy,
+  .agent-left,
+  .agent-right,
+  .agent-glow,
+  .agent-ring {
+    animation-play-state: paused;
+    animation-delay: calc(var(--progress, 0) * -1s);
+  }
+}
+
+/* Reduced motion: the finished picture */
+@media (prefers-reduced-motion: reduce) {
+  .frag-move,
+  .frag img,
+  .shatter-copy,
+  .agent-left,
+  .agent-right,
+  .agent-glow,
+  .agent-ring {
+    animation: none !important;
+  }
+}
+
+.eons-pause {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgb(255 255 255 / 0.25);
+  border-radius: 999px;
+  background: rgb(20 20 24 / 0.7);
+  color: #fff;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.eons-pause:hover {
+  border-color: rgba(var(--accent-rgb), 0.7);
+  color: var(--accent);
+}
+
+.eons-demo figcaption {
+  margin-top: 12px;
+  font-size: 14.5px;
+  color: var(--text-2);
+}
