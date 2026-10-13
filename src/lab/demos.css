@@ -1690,3 +1690,3959 @@
   .lb-envelope-letter { animation: none; translate: 0 -70px; }
 }
 /* /demo */
+
+/* Buttons, more */
+
+/* demo:btn-ripple */
+.lb-ripple {
+  position: relative;
+  overflow: hidden;
+  padding: 15px 28px;
+  border: 0;
+  border-radius: 12px;
+  background: #6d4ae6;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lb-ripple:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+/* One wave per click, placed and sized by the script, removed when done */
+.lb-ripple-wave {
+  position: absolute;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.35);
+  pointer-events: none;
+  translate: -50% -50%;
+  scale: 0;
+  animation: lb-ripple 0.65s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+@keyframes lb-ripple {
+  to { scale: 1; opacity: 0; }
+}
+/* /demo */
+
+/* demo:btn-arrow */
+.lb-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 18px 13px 24px;
+  border: 1px solid #3a3a48;
+  border-radius: 999px;
+  background: #16161f;
+  color: #f2f2f5;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+/* Two arrows in a small window: one leaves, the other takes its place */
+.lb-arrow-icon {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #c5f04a;
+}
+
+.lb-arrow-icon svg {
+  grid-area: 1 / 1;
+  width: 16px;
+  height: 16px;
+  margin: auto;
+  fill: none;
+  stroke: #0b0b10;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: translate 0.4s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+.lb-arrow-icon svg + svg {
+  translate: -200% 0;
+}
+
+.lb-arrow:hover,
+.lb-arrow:focus-visible {
+  border-color: #c5f04a;
+}
+
+.lb-arrow:hover .lb-arrow-icon svg,
+.lb-arrow:focus-visible .lb-arrow-icon svg {
+  translate: 200% 0;
+}
+
+.lb-arrow:hover .lb-arrow-icon svg + svg,
+.lb-arrow:focus-visible .lb-arrow-icon svg + svg {
+  translate: 0 0;
+}
+
+.lb-arrow:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-arrow-icon svg { transition: none; }
+}
+/* /demo */
+
+/* demo:btn-underline */
+.lb-uline-text {
+  max-width: 240px;
+  margin: 0;
+  color: #a1a1b3;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+/* Two lines in the background: a quiet one always there, a bright one that
+   grows from the left, and on the way out shrinks towards the right */
+.lb-uline {
+  color: #f2f2f5;
+  text-decoration: none;
+  background:
+    linear-gradient(#c5f04a, #c5f04a) no-repeat right bottom / 0 2px,
+    linear-gradient(rgb(197 240 74 / 0.4), rgb(197 240 74 / 0.4)) no-repeat left bottom / 100% 1px;
+  transition: background-size 0.4s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+.lb-uline:hover,
+.lb-uline:focus-visible {
+  background-position: left bottom, left bottom;
+  background-size: 100% 2px, 100% 1px;
+}
+
+.lb-uline:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-uline { transition: none; }
+}
+/* /demo */
+
+/* demo:btn-press */
+/* The button is the key's side, its span the face that moves */
+.lb-press {
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: #4a8a12;
+  font: inherit;
+  cursor: pointer;
+}
+
+.lb-press span {
+  display: block;
+  padding: 14px 30px;
+  border-radius: 14px;
+  background: #c5f04a;
+  color: #0b0b10;
+  font-weight: 700;
+  translate: 0 -6px;
+  transition: translate 0.25s cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+.lb-press:hover span,
+.lb-press:focus-visible span {
+  translate: 0 -8px;
+}
+
+.lb-press:active span {
+  translate: 0 -2px;
+  transition-duration: 0.05s;
+}
+
+.lb-press:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-press span { transition: none; }
+}
+/* /demo */
+
+/* demo:btn-copy */
+.lb-copy {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 6px 6px 6px 16px;
+  border: 1px solid #34343f;
+  border-radius: 12px;
+  background: #121219;
+}
+
+.lb-copy code {
+  overflow: hidden;
+  color: #e6e6ef;
+  font-size: 13.5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lb-copy button {
+  position: relative;
+  display: grid;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #34343f;
+  border-radius: 9px;
+  background: #1b1b25;
+  color: #f2f2f5;
+  cursor: pointer;
+}
+
+.lb-copy button:hover,
+.lb-copy button:focus-visible {
+  border-color: #c5f04a;
+}
+
+.lb-copy button:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+.lb-copy svg {
+  grid-area: 1 / 1;
+  width: 18px;
+  height: 18px;
+  margin: auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity 0.2s ease, scale 0.3s cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+/* The tick waits hidden, then draws itself once copied */
+.lb-copy-done {
+  stroke: #c5f04a;
+  opacity: 0;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.lb-copy[data-copied] .lb-copy-icon {
+  opacity: 0;
+  scale: 0.5;
+}
+
+.lb-copy[data-copied] .lb-copy-done {
+  opacity: 1;
+  stroke-dashoffset: 0;
+  transition: opacity 0.1s ease, stroke-dashoffset 0.35s ease 0.05s;
+}
+
+.lb-copy-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-copy svg,
+  .lb-copy[data-copied] .lb-copy-done { transition: none; }
+}
+/* /demo */
+
+/* demo:btn-loading */
+.lb-load {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 170px;
+  height: 50px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  background: #c5f04a;
+  color: #0b0b10;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.lb-load > * {
+  grid-area: 1 / 1;
+  transition: opacity 0.2s ease, scale 0.3s ease;
+}
+
+.lb-load-spin {
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid rgb(11 11 16 / 0.25);
+  border-top-color: #0b0b10;
+  border-radius: 50%;
+  opacity: 0;
+  scale: 0.6;
+  animation: lb-load-turn 0.8s linear infinite;
+}
+
+.lb-load-done {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: #0b0b10;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+}
+
+/* The script sets data-state: busy, then done */
+.lb-load[data-state='busy'] .lb-load-label,
+.lb-load[data-state='done'] .lb-load-label {
+  opacity: 0;
+  scale: 0.8;
+}
+
+.lb-load[data-state='busy'] .lb-load-spin {
+  opacity: 1;
+  scale: 1;
+}
+
+.lb-load[data-state='done'] {
+  background: #4ae0d2;
+}
+
+.lb-load[data-state='done'] .lb-load-done {
+  opacity: 1;
+  stroke-dashoffset: 0;
+  transition: opacity 0.1s ease, stroke-dashoffset 0.4s ease 0.1s;
+}
+
+.lb-load:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+.lb-load-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+@keyframes lb-load-turn {
+  to { rotate: 1turn; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-load-spin { animation-duration: 2.4s; }
+  .lb-load > *,
+  .lb-load[data-state='done'] .lb-load-done { transition: none; }
+}
+/* /demo */
+
+/* demo:btn-expand */
+.lb-expand {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  max-width: 52px;
+  height: 52px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #c5f04a;
+  color: #0b0b10;
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: max-width 0.45s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+.lb-expand svg {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  transition: rotate 0.45s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+/* The label is always in the button (its name), only clipped when closed */
+.lb-expand span {
+  padding: 0 6px 0 10px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.lb-expand:hover,
+.lb-expand:focus-visible {
+  max-width: 200px;
+}
+
+.lb-expand:hover svg,
+.lb-expand:focus-visible svg {
+  rotate: 90deg;
+}
+
+.lb-expand:hover span,
+.lb-expand:focus-visible span {
+  opacity: 1;
+  transition-delay: 0.12s;
+}
+
+.lb-expand:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-expand,
+  .lb-expand svg,
+  .lb-expand span { transition: none; }
+}
+/* /demo */
+
+/* Icons */
+
+/* demo:icon-burger */
+.lb-burger {
+  display: grid;
+  place-content: center;
+  gap: 6px;
+  width: 64px;
+  height: 64px;
+  border: 1px solid #34343f;
+  border-radius: 18px;
+  background: #16161f;
+  cursor: pointer;
+}
+
+.lb-burger span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  border-radius: 3px;
+  background: #f2f2f5;
+  transition: translate 0.35s cubic-bezier(0.6, 0, 0.2, 1), rotate 0.35s cubic-bezier(0.6, 0, 0.2, 1), scale 0.25s ease;
+}
+
+/* Open: the outer lines meet in the middle and turn, the middle one goes */
+.lb-burger[aria-expanded='true'] span:nth-child(1) {
+  translate: 0 9px;
+  rotate: 45deg;
+}
+
+.lb-burger[aria-expanded='true'] span:nth-child(2) {
+  scale: 0 1;
+}
+
+.lb-burger[aria-expanded='true'] span:nth-child(3) {
+  translate: 0 -9px;
+  rotate: -45deg;
+}
+
+.lb-burger:hover,
+.lb-burger:focus-visible {
+  border-color: #c5f04a;
+}
+
+.lb-burger:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-burger span { transition: none; }
+}
+/* /demo */
+
+/* demo:icon-play */
+.lb-play {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border: 0;
+  border-radius: 50%;
+  background: #c5f04a;
+  cursor: pointer;
+  transition: scale 0.2s ease;
+}
+
+/* Two halves, each a polygon of four points: a triangle split in two, or
+   two bars. Same number of points, so one can turn into the other. */
+.lb-play span {
+  position: absolute;
+  inset: 24px 22px 24px 27px;
+  background: #0b0b10;
+  transition: clip-path 0.4s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+.lb-play-a {
+  clip-path: polygon(0 0, 50% 25%, 50% 75%, 0 100%);
+}
+
+.lb-play-b {
+  clip-path: polygon(50% 25%, 100% 50%, 100% 50%, 50% 75%);
+}
+
+.lb-play[aria-pressed='true'] .lb-play-a {
+  clip-path: polygon(0 0, 34% 0, 34% 100%, 0 100%);
+}
+
+.lb-play[aria-pressed='true'] .lb-play-b {
+  clip-path: polygon(66% 0, 100% 0, 100% 100%, 66% 100%);
+}
+
+.lb-play:active {
+  scale: 0.94;
+}
+
+.lb-play:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-play span { transition: none; }
+}
+/* /demo */
+
+/* demo:icon-bell */
+.lb-bell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid #34343f;
+  border-radius: 50%;
+  background: #16161f;
+  color: #f2f2f5;
+  cursor: pointer;
+}
+
+.lb-bell svg {
+  width: 30px;
+  height: 30px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The bell swings from its top, the clapper follows a beat later */
+.lb-bell-body {
+  transform-origin: 12px 3px;
+  animation: lb-bell 3.2s ease-in-out infinite;
+}
+
+.lb-bell-clapper {
+  transform-origin: 12px 3px;
+  animation: lb-bell 3.2s ease-in-out 0.08s infinite;
+}
+
+.lb-bell-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border: 2px solid #0d0d13;
+  border-radius: 999px;
+  background: #ff5f7e;
+  color: #0b0b10;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.lb-bell:hover,
+.lb-bell:focus-visible {
+  border-color: #c5f04a;
+}
+
+.lb-bell:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@keyframes lb-bell {
+  0%, 62%, 100% { rotate: 0deg; }
+  66% { rotate: 16deg; }
+  72% { rotate: -14deg; }
+  78% { rotate: 10deg; }
+  84% { rotate: -6deg; }
+  90% { rotate: 2deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-bell-body,
+  .lb-bell-clapper { animation: none; }
+}
+/* /demo */
+
+/* demo:icon-trash */
+.lb-trash {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid #34343f;
+  border-radius: 18px;
+  background: #16161f;
+  color: #f2f2f5;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.lb-trash svg {
+  width: 30px;
+  height: 30px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The lid lifts and tilts from its left end */
+.lb-trash-lid {
+  transform-origin: 4px 7px;
+  transition: transform 0.3s cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+.lb-trash:hover,
+.lb-trash:focus-visible {
+  border-color: #ff8fa3;
+  color: #ff8fa3;
+}
+
+.lb-trash:hover .lb-trash-lid,
+.lb-trash:focus-visible .lb-trash-lid {
+  transform: translateY(-2.5px) rotate(-14deg);
+}
+
+.lb-trash:focus-visible {
+  outline: 2px solid #ff8fa3;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-trash-lid { transition: none; }
+}
+/* /demo */
+
+/* demo:icon-cart */
+.lb-cart {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.lb-cart-add {
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: #c5f04a;
+  color: #0b0b10;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lb-cart-add:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+.lb-cart-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid #34343f;
+  border-radius: 50%;
+  color: #f2f2f5;
+}
+
+.lb-cart-icon svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.lb-cart-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #4ae0d2;
+  color: #0b0b10;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* The item: a small dot that hops from the button into the cart */
+.lb-cart-item {
+  position: absolute;
+  top: 50%;
+  left: 40%;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: #c5f04a;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lb-cart[data-adding] .lb-cart-item {
+  animation: lb-cart-hop 0.6s cubic-bezier(0.5, 0, 0.5, 1);
+}
+
+.lb-cart[data-adding] .lb-cart-icon {
+  animation: lb-cart-bump 0.35s ease 0.5s;
+}
+
+.lb-cart[data-adding] .lb-cart-count {
+  animation: lb-cart-count 0.35s cubic-bezier(0.3, 0.7, 0.4, 1.6) 0.55s;
+}
+
+.lb-cart-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+@keyframes lb-cart-hop {
+  0% { opacity: 1; translate: 0 0; }
+  50% { translate: 50px -46px; }
+  100% { opacity: 1; translate: 98px 0; scale: 0.5; }
+}
+
+@keyframes lb-cart-bump {
+  50% { scale: 1.12; }
+}
+
+@keyframes lb-cart-count {
+  50% { scale: 1.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-cart[data-adding] .lb-cart-item,
+  .lb-cart[data-adding] .lb-cart-icon,
+  .lb-cart[data-adding] .lb-cart-count { animation: none; }
+}
+/* /demo */
+
+/* Text, more */
+
+/* demo:text-words */
+.lb-words {
+  max-width: 250px;
+  margin: 0;
+  color: #f2f2f5;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.lb-words-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* Each word in its own mask; the word inside rises and straightens */
+.lb-word {
+  display: inline-block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  vertical-align: bottom;
+}
+
+.lb-word span {
+  display: inline-block;
+  transform-origin: 0 100%;
+  animation: lb-words-in 0.8s cubic-bezier(0.2, 0.75, 0.2, 1) calc(var(--i) * 0.12s + 0.2s) both;
+}
+
+.lb-word:nth-child(3) span {
+  color: #c5f04a;
+}
+
+@keyframes lb-words-in {
+  from { translate: 0 110%; rotate: 8deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-word span { animation: none; }
+}
+/* /demo */
+
+/* demo:text-glitch */
+.lb-glitch {
+  position: relative;
+  display: grid;
+  margin: 0;
+  color: #f2f2f5;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+/* The two copies sit on the original, shifted, each showing one slice */
+.lb-glitch span {
+  grid-area: 1 / 1;
+}
+
+.lb-glitch span + span {
+  clip-path: inset(0 0 100% 0);
+  animation: lb-glitch 3.6s steps(1) infinite;
+}
+
+.lb-glitch span:nth-child(2) {
+  color: #4ae0d2;
+  translate: -3px 0;
+}
+
+.lb-glitch span:nth-child(3) {
+  color: #ff5f7e;
+  translate: 3px 0;
+  animation-delay: 0.05s;
+}
+
+/* About 0.3 seconds of glitch every 3.6 seconds, then nothing */
+@keyframes lb-glitch {
+  0%, 88%, 100% { clip-path: inset(0 0 100% 0); }
+  89% { clip-path: inset(10% 0 62% 0); }
+  91% { clip-path: inset(48% 0 30% 0); }
+  93% { clip-path: inset(72% 0 6% 0); }
+  95% { clip-path: inset(24% 0 54% 0); }
+  97% { clip-path: inset(0 0 100% 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-glitch span + span { animation: none; }
+}
+/* /demo */
+
+/* demo:text-counter */
+.lb-count {
+  display: grid;
+  justify-items: center;
+  margin: 0;
+}
+
+.lb-count-num {
+  color: #c5f04a;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.lb-count-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.lb-count-label {
+  margin-top: 10px;
+  color: #a1a1b3;
+  font-size: 15px;
+}
+/* /demo */
+
+/* demo:text-rotate */
+.lb-rotate {
+  margin: 0;
+  color: #f2f2f5;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.lb-rotate-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* A window one line high; the list of words moves up a line at a time.
+   Aligned to the top of the line (a box that clips has no text baseline),
+   with the same line height, so the words sit on the sentence's baseline. */
+.lb-rotate-words {
+  display: inline-flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 1.25em;
+  vertical-align: top;
+}
+
+.lb-rotate-words span {
+  color: #c5f04a;
+  animation: lb-rotate 6s cubic-bezier(0.7, 0, 0.2, 1) infinite;
+}
+
+/* Three moves, then a jump back to the copy of the first word, unseen */
+@keyframes lb-rotate {
+  0%, 25% { translate: 0 0; }
+  33%, 58% { translate: 0 -100%; }
+  66%, 91% { translate: 0 -200%; }
+  99.99% { translate: 0 -300%; }
+  100% { translate: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-rotate-words span { animation: none; }
+}
+/* /demo */
+
+/* demo:text-outline */
+/* The fill is a background clipped to the letters, half colour, half
+   transparent, slid across; the stroke keeps the outline visible */
+.lb-outline {
+  margin: 0;
+  background: linear-gradient(90deg, #c5f04a 50%, transparent 50%) 100% 0 / 200% 100% no-repeat;
+  color: transparent;
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 1.5px #c5f04a;
+  animation: lb-outline 4s cubic-bezier(0.6, 0, 0.2, 1) infinite alternate;
+}
+
+@keyframes lb-outline {
+  0%, 15% { background-position: 100% 0; }
+  85%, 100% { background-position: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-outline { animation: none; background-position: 0 0; }
+}
+/* /demo */
+
+/* demo:text-price */
+/* Old and new price on one line, the saving centred below */
+.lb-price {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px 14px;
+  margin: 0;
+}
+
+.lb-price-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.lb-price-old {
+  position: relative;
+  color: #a1a1b3;
+  font-size: 20px;
+  animation: lb-price-old 0.5s ease 0.7s both;
+}
+
+/* The line that strikes the old price draws from left to right */
+.lb-price-old::after {
+  content: '';
+  position: absolute;
+  inset: 50% -3px auto;
+  height: 2px;
+  background: #ff5f7e;
+  transform-origin: left;
+  animation: lb-price-strike 0.45s cubic-bezier(0.6, 0, 0.2, 1) 0.3s both;
+}
+
+.lb-price-new {
+  color: #f2f2f5;
+  font-size: 40px;
+  font-weight: 800;
+  animation: lb-price-pop 0.55s cubic-bezier(0.3, 0.7, 0.4, 1.5) 1s both;
+}
+
+.lb-price-tag {
+  grid-column: 1 / -1;
+  justify-self: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #c5f04a;
+  color: #0b0b10;
+  font-size: 13px;
+  font-weight: 700;
+  animation: lb-price-pop 0.5s cubic-bezier(0.3, 0.7, 0.4, 1.5) 1.35s both;
+}
+
+@keyframes lb-price-strike {
+  from { scale: 0 1; }
+}
+
+@keyframes lb-price-old {
+  to { translate: 0 2px; scale: 0.9; opacity: 0.8; }
+}
+
+@keyframes lb-price-pop {
+  from { opacity: 0; scale: 0.6; translate: 0 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-price-old,
+  .lb-price-old::after,
+  .lb-price-new,
+  .lb-price-tag { animation: none; }
+}
+/* /demo */
+
+/* Loaders, more */
+
+/* demo:loader-ring */
+.lb-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 15%, #4ae0d2 60%, #c5f04a);
+  /* keep only a ring 7px thick */
+  mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
+  animation: lb-ring 0.9s linear infinite;
+}
+
+@keyframes lb-ring {
+  to { rotate: 1turn; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-ring { animation-duration: 3s; }
+}
+/* /demo */
+
+/* demo:loader-pulse */
+.lb-pulse {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 130px;
+  height: 130px;
+}
+
+.lb-pulse span {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #4ae0d2;
+  border-radius: 50%;
+  opacity: 0;
+  animation: lb-pulse 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) calc(var(--i) * 0.8s) infinite;
+}
+
+.lb-pulse i {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #4ae0d2;
+  box-shadow: 0 0 20px #4ae0d2;
+}
+
+@keyframes lb-pulse {
+  0% { scale: 0.15; opacity: 1; }
+  100% { scale: 1; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-pulse span { animation: none; opacity: 0.35; }
+  .lb-pulse span:nth-child(2) { scale: 0.66; }
+  .lb-pulse span:nth-child(3) { scale: 0.33; }
+}
+/* /demo */
+
+/* demo:loader-skeleton */
+.lb-skel {
+  --shine: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 0.09) 50%, transparent 70%) 0 0 / 300% 100% fixed;
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 10px 14px;
+  width: min(250px, 100%);
+  padding: 18px;
+  border: 1px solid #2a2a35;
+  border-radius: 14px;
+}
+
+/* One shine for all the blocks: a fixed background, so the light crosses
+   them together instead of each block having its own */
+.lb-skel span {
+  border-radius: 8px;
+  background: var(--shine), #22222c;
+  animation: lb-skel 1.6s linear infinite;
+}
+
+.lb-skel-avatar {
+  grid-row: span 2;
+  width: 52px;
+  height: 52px;
+  border-radius: 50% !important;
+}
+
+.lb-skel-line {
+  height: 12px;
+  align-self: center;
+}
+
+.lb-skel-line:nth-of-type(3) {
+  width: 70%;
+}
+
+.lb-skel-line:last-child {
+  grid-column: 1 / -1;
+  height: 40px;
+}
+
+@keyframes lb-skel {
+  from { background-position: 100% 0, 0 0; }
+  to { background-position: 0 0, 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-skel span { animation: none; }
+}
+/* /demo */
+
+/* demo:loader-progress */
+.lb-progress {
+  position: relative;
+  overflow: hidden;
+  width: min(240px, 100%);
+  height: 6px;
+  border-radius: 999px;
+  background: #22222c;
+}
+
+.lb-progress span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #4ae0d2, #c5f04a);
+}
+
+.lb-progress span:first-child {
+  animation: lb-progress-long 2.1s cubic-bezier(0.65, 0.8, 0.35, 0.9) infinite;
+}
+
+.lb-progress span:last-child {
+  animation: lb-progress-short 2.1s cubic-bezier(0.17, 0.84, 0.44, 1) 1.15s infinite;
+}
+
+@keyframes lb-progress-long {
+  0% { left: -35%; right: 100%; }
+  60%, 100% { left: 100%; right: -90%; }
+}
+
+@keyframes lb-progress-short {
+  0% { left: -200%; right: 100%; }
+  60%, 100% { left: 107%; right: -8%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-progress span:first-child { animation-duration: 5s; }
+  .lb-progress span:last-child { display: none; }
+}
+/* /demo */
+
+/* demo:loader-bounce */
+.lb-bounce {
+  position: relative;
+  width: 80px;
+  height: 120px;
+}
+
+.lb-bounce-ball {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  width: 34px;
+  height: 34px;
+  margin-left: -17px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e3ff8a, #c5f04a 45%, #8fbf1d);
+  transform-origin: 50% 100%;
+  animation: lb-bounce 0.9s infinite;
+}
+
+.lb-bounce-shadow {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  width: 40px;
+  height: 8px;
+  margin-left: -20px;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 0.55);
+  filter: blur(2px);
+  animation: lb-bounce-shadow 0.9s infinite;
+}
+
+/* Down fast, up slow; flattened on the ground, stretched when it leaves */
+@keyframes lb-bounce {
+  0%, 100% { translate: 0 -70px; scale: 1 1; animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5); }
+  45% { translate: 0 0; scale: 0.9 1.12; animation-timing-function: linear; }
+  50% { translate: 0 0; scale: 1.25 0.75; animation-timing-function: linear; }
+  55% { translate: 0 0; scale: 0.92 1.1; animation-timing-function: cubic-bezier(0.1, 0.5, 0.5, 1); }
+}
+
+@keyframes lb-bounce-shadow {
+  0%, 100% { scale: 0.5; opacity: 0.4; animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.5); }
+  50% { scale: 1.1; opacity: 1; animation-timing-function: cubic-bezier(0.1, 0.5, 0.5, 1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-bounce-ball,
+  .lb-bounce-shadow { animation: none; }
+}
+/* /demo */
+
+/* demo:loader-infinity */
+.lb-inf svg {
+  width: 150px;
+  height: 75px;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.lb-inf-track {
+  stroke: #22222c;
+  stroke-width: 6;
+}
+
+/* A dash a quarter of the path long, slid along it */
+.lb-inf-run {
+  stroke: #c5f04a;
+  stroke-width: 6;
+  stroke-dasharray: 25 75;
+  animation: lb-inf 1.8s linear infinite;
+}
+
+@keyframes lb-inf {
+  to { stroke-dashoffset: -100; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-inf-run { animation-duration: 6s; }
+}
+/* /demo */
+
+/* Cards, more */
+
+/* demo:card-fan */
+/* One typed number, 0 (closed) to 1 (open), animated on each card: its
+   angle and its sideways step are multiples of it */
+@property --lb-fan {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: false;
+}
+
+.lb-fan {
+  position: relative;
+  width: 100px;
+  height: 130px;
+}
+
+.lb-fan span {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 14px;
+  background: linear-gradient(150deg, #8f6bff, #3d2c8f);
+  box-shadow: 0 12px 30px -10px rgb(0 0 0 / 0.7);
+  transform-origin: 50% 120%;
+  rotate: calc(var(--i) * var(--lb-fan) * 16deg);
+  translate: calc(var(--i) * var(--lb-fan) * 22px) 0;
+  animation: lb-fan 4s cubic-bezier(0.6, 0, 0.2, 1) infinite;
+}
+
+.lb-fan span:nth-child(1) {
+  background: linear-gradient(150deg, #4ae0d2, #1f6f86);
+}
+
+.lb-fan span:nth-child(3) {
+  background: linear-gradient(150deg, #c5f04a, #4a8a12);
+}
+
+@keyframes lb-fan {
+  0%, 15% { --lb-fan: 0; }
+  40%, 75% { --lb-fan: 1; }
+  100% { --lb-fan: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-fan span { animation: none; --lb-fan: 1; }
+}
+/* /demo */
+
+/* demo:card-product */
+.lb-product {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 4px 10px;
+  width: 210px;
+  padding: 10px 10px 14px;
+  border: 1px solid #2a2a35;
+  border-radius: 16px;
+  background: #15151d;
+}
+
+/* Two "photos" drawn in CSS: the front view, and a side view that slides
+   in when the card is pointed at */
+.lb-product-media {
+  position: relative;
+  grid-column: 1 / -1;
+  overflow: hidden;
+  height: 120px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  background: #e9e4dc;
+}
+
+.lb-product-media span {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.4s ease, scale 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.lb-product-front {
+  background:
+    radial-gradient(circle at 50% 46%, #c5f04a 0 6px, #111 7px 34px, transparent 35px),
+    linear-gradient(#7a4e2d, #5d3a20) 50% 82% / 150px 22px no-repeat;
+}
+
+.lb-product-side {
+  opacity: 0;
+  scale: 1.08;
+  background:
+    radial-gradient(ellipse 52px 12px at 50% 56%, #111 98%, transparent),
+    linear-gradient(#7a4e2d, #5d3a20) 50% 68% / 150px 18px no-repeat,
+    #ddd5c9;
+}
+
+.lb-product-name {
+  margin: 0;
+  color: #f2f2f5;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lb-product-price {
+  margin: 0;
+  color: #c5f04a;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* The button's place is kept (so nothing below moves); it shows when the
+   card is pointed at or when it gets the focus */
+.lb-product-add {
+  grid-column: 1 / -1;
+  height: 38px;
+  margin-top: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #c5f04a;
+  color: #0b0b10;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0;
+  translate: 0 8px;
+  pointer-events: none;
+  transition: opacity 0.25s ease, translate 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.lb-product:hover .lb-product-side,
+.lb-product:focus-within .lb-product-side {
+  opacity: 1;
+  scale: 1;
+}
+
+.lb-product:hover .lb-product-front,
+.lb-product:focus-within .lb-product-front {
+  opacity: 0;
+}
+
+.lb-product:hover .lb-product-add,
+.lb-product:focus-within .lb-product-add {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+
+.lb-product-add:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+/* No hover on a touch screen: the button is always there */
+@media (hover: none) {
+  .lb-product-add { opacity: 1; translate: 0 0; pointer-events: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-product-media span,
+  .lb-product-add { transition: none; }
+}
+/* /demo */
+
+/* demo:card-pricing */
+.lb-pricing {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  width: 220px;
+  padding: 18px;
+  border: 1px solid #2a2a35;
+  border-radius: 16px;
+  background: #15151d;
+}
+
+.lb-pricing-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  margin: 0;
+  padding: 3px;
+  border: 1px solid #2a2a35;
+  border-radius: 999px;
+}
+
+.lb-pricing-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.lb-pricing-switch label {
+  position: relative;
+  cursor: pointer;
+}
+
+/* The real radio buttons stay there, invisible, for the keyboard */
+.lb-pricing-switch input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.lb-pricing-switch span {
+  display: block;
+  padding: 7px 0;
+  border-radius: 999px;
+  color: #a1a1b3;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.lb-pricing-switch input:checked + span {
+  background: #c5f04a;
+  color: #0b0b10;
+}
+
+.lb-pricing-switch input:focus-visible + span {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+.lb-pricing-price {
+  margin: 4px 0 0;
+  color: #a1a1b3;
+  font-size: 14px;
+}
+
+.lb-pricing-amount {
+  display: inline-block;
+  color: #f2f2f5;
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.lb-pricing-note {
+  margin: 0;
+  color: #a1a1b3;
+  font-size: 13px;
+}
+/* /demo */
+
+/* demo:card-gallery */
+.lb-gallery {
+  display: flex;
+  gap: 6px;
+  width: min(250px, 100%);
+  height: 150px;
+}
+
+.lb-gallery-panel {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  min-width: 0;
+  overflow: hidden;
+  padding: 10px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(170deg, var(--a), var(--b));
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  transition: flex-grow 0.5s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+/* A dark foot under the label, so white text always reads */
+.lb-gallery-panel::after {
+  content: '';
+  position: absolute;
+  inset: 45% 0 0;
+  background: linear-gradient(transparent, rgb(0 0 0 / 0.6));
+}
+
+.lb-gallery-panel span {
+  position: relative;
+  z-index: 1;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  translate: 0 8px;
+  transition: opacity 0.3s ease, translate 0.4s ease;
+}
+
+/* The one pointed at, focused, or (when none is pointed at) chosen */
+.lb-gallery-panel:hover,
+.lb-gallery-panel:focus-visible,
+.lb-gallery:not(:hover) .lb-gallery-panel[aria-pressed='true'] {
+  flex-grow: 4;
+}
+
+.lb-gallery-panel:hover span,
+.lb-gallery-panel:focus-visible span,
+.lb-gallery:not(:hover) .lb-gallery-panel[aria-pressed='true'] span {
+  opacity: 1;
+  translate: 0 0;
+  transition-delay: 0.15s;
+}
+
+.lb-gallery-panel:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-gallery-panel,
+  .lb-gallery-panel span { transition: none; }
+}
+/* /demo */
+
+/* demo:card-stack */
+.lb-notes {
+  position: relative;
+  width: 230px;
+  height: 150px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: 14px;
+}
+
+/* Stacked: each one a little higher, smaller and dimmer than the one in
+   front; spread: a list, one under the other */
+.lb-notes li {
+  position: absolute;
+  inset: auto 0 calc(50% - 30px);
+  z-index: calc(3 - var(--i));
+  display: grid;
+  gap: 2px;
+  padding: 11px 14px;
+  border: 1px solid #2f2f3a;
+  border-radius: 14px;
+  background: #1a1a23;
+  translate: 0 calc(var(--i) * -9px);
+  scale: calc(1 - var(--i) * 0.06);
+  opacity: calc(1 - var(--i) * 0.3);
+  transition: translate 0.45s cubic-bezier(0.3, 0.7, 0.3, 1.1), scale 0.45s ease, opacity 0.3s ease;
+}
+
+.lb-notes strong {
+  color: #f2f2f5;
+  font-size: 13.5px;
+}
+
+.lb-notes span {
+  color: #a1a1b3;
+  font-size: 12.5px;
+}
+
+.lb-notes:hover li,
+.lb-notes:focus-visible li {
+  translate: 0 calc((var(--i) - 1) * 60px);
+  scale: 1;
+  opacity: 1;
+}
+
+.lb-notes:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-notes li { transition: none; }
+}
+/* /demo */
+
+/* Navigation */
+
+/* demo:nav-tabs */
+.lb-tabs {
+  width: min(250px, 100%);
+}
+
+.lb-tabs-list {
+  position: relative;
+  display: flex;
+  border-bottom: 1px solid #2f2f3a;
+}
+
+.lb-tabs-list button {
+  flex: 1;
+  padding: 10px 4px;
+  border: 0;
+  background: none;
+  color: #a1a1b3;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.lb-tabs-list button[aria-selected='true'] {
+  color: #f2f2f5;
+}
+
+.lb-tabs-list button:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: -2px;
+  border-radius: 6px;
+}
+
+/* The line under the chosen tab: placed and sized by the script */
+.lb-tabs-ink {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: var(--w, 0);
+  height: 2px;
+  border-radius: 2px;
+  background: #c5f04a;
+  translate: var(--x, 0) 0;
+  transition: translate 0.35s cubic-bezier(0.6, 0, 0.2, 1), width 0.35s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+.lb-tabs [role='tabpanel'] {
+  padding: 14px 4px 0;
+  color: #a1a1b3;
+  font-size: 14px;
+}
+
+.lb-tabs [role='tabpanel']:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-tabs-ink { transition: none; }
+}
+/* /demo */
+
+/* demo:nav-accordion */
+/* Lets height animate to and from auto (where supported) */
+.lb-acc {
+  width: min(250px, 100%);
+  interpolate-size: allow-keywords;
+}
+
+.lb-acc details {
+  border-bottom: 1px solid #2f2f3a;
+}
+
+.lb-acc summary {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 2px;
+  color: #f2f2f5;
+  font-size: 14.5px;
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+
+.lb-acc summary::-webkit-details-marker {
+  display: none;
+}
+
+.lb-acc summary::after {
+  content: '+';
+  color: #c5f04a;
+  font-size: 18px;
+  line-height: 1;
+  transition: rotate 0.3s ease;
+}
+
+.lb-acc details[open] summary::after {
+  rotate: 45deg;
+}
+
+.lb-acc summary:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.lb-acc p {
+  margin: 0;
+  padding: 0 2px 12px;
+  color: #a1a1b3;
+  font-size: 13.5px;
+}
+
+/* The content box of each details: from 0 to its natural height */
+.lb-acc details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition: block-size 0.35s cubic-bezier(0.6, 0, 0.2, 1), content-visibility 0.35s allow-discrete;
+}
+
+.lb-acc details[open]::details-content {
+  block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-acc details::details-content,
+  .lb-acc summary::after { transition: none; }
+}
+/* /demo */
+
+/* demo:nav-underline */
+.lb-navline {
+  position: relative;
+  display: flex;
+}
+
+.lb-navline a {
+  padding: 8px 7px;
+  color: #a1a1b3;
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.lb-navline a:hover,
+.lb-navline a:focus-visible,
+.lb-navline a[aria-current='page'] {
+  color: #f2f2f5;
+}
+
+.lb-navline a:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 0;
+  border-radius: 6px;
+}
+
+/* One line for the whole menu, moved by the script */
+.lb-navline-ink {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: var(--w, 0);
+  height: 2px;
+  border-radius: 2px;
+  background: #c5f04a;
+  translate: var(--x, 0) 0;
+  transition: translate 0.35s cubic-bezier(0.6, 0, 0.2, 1), width 0.35s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-navline-ink { transition: none; }
+}
+/* /demo */
+
+/* demo:nav-segmented */
+.lb-seg {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: min(240px, 100%);
+  margin: 0;
+  padding: 4px;
+  border: 1px solid #2f2f3a;
+  border-radius: 999px;
+  background: #15151d;
+}
+
+.lb-seg-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.lb-seg label {
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.lb-seg input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.lb-seg span {
+  display: block;
+  padding: 8px 0;
+  border-radius: 999px;
+  color: #a1a1b3;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.lb-seg input:checked + span {
+  color: #0b0b10;
+}
+
+.lb-seg input:focus-visible + span {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+/* The pill: a third of the width, moved to the checked option */
+.lb-seg-pill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / 3);
+  border-radius: 999px;
+  background: #c5f04a;
+  transition: translate 0.4s cubic-bezier(0.6, 0, 0.2, 1.2);
+}
+
+.lb-seg:has(label:nth-of-type(2) input:checked) .lb-seg-pill {
+  translate: 100% 0;
+}
+
+.lb-seg:has(label:nth-of-type(3) input:checked) .lb-seg-pill {
+  translate: 200% 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-seg-pill { transition: none; }
+}
+/* /demo */
+
+/* demo:nav-slides */
+.lb-slides {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  width: min(230px, 100%);
+}
+
+.lb-slides-window {
+  overflow: hidden;
+  width: 100%;
+  border-radius: 14px;
+}
+
+.lb-slides-track {
+  display: flex;
+  translate: calc(var(--index, 0) * -100%) 0;
+  transition: translate 0.55s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+.lb-slides-track span {
+  display: grid;
+  flex: 0 0 100%;
+  place-items: center;
+  height: 110px;
+  background: linear-gradient(150deg, var(--c), #15151d 140%);
+  color: #0b0b10;
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.lb-slides-dots {
+  display: flex;
+  gap: 8px;
+}
+
+/* Each dot is a 24px target; the visible dot is drawn inside it */
+.lb-slides-dots button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: width 0.4s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+.lb-slides-dots button::before {
+  content: '';
+  width: 100%;
+  max-width: 100%;
+  height: 8px;
+  margin-inline: 8px;
+  border-radius: 999px;
+  background: #4a4a58;
+  transition: background-color 0.3s ease;
+}
+
+.lb-slides-dots button[aria-current='true'] {
+  width: 44px;
+}
+
+.lb-slides-dots button[aria-current='true']::before {
+  background: #c5f04a;
+}
+
+.lb-slides-dots button:focus-visible {
+  outline: 2px solid #c5f04a;
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-slides-track,
+  .lb-slides-dots button { transition: none; }
+}
+/* /demo */
+
+/* demo:nav-menu */
+.lb-menu {
+  position: relative;
+  align-self: start;
+  width: 200px;
+  height: 200px;
+}
+
+.lb-menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 11px 16px;
+  border: 1px solid #2f2f3a;
+  border-radius: 12px;
+  background: #15151d;
+  color: #f2f2f5;
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lb-menu-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: rotate 0.3s ease;
+}
+
+.lb-menu-button[aria-expanded='true'] svg {
+  rotate: 180deg;
+}
+
+.lb-menu-button:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+/* Closed: hidden for everyone, links out of the tab order too */
+.lb-menu-list {
+  position: absolute;
+  top: 52px;
+  right: 0;
+  left: 0;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1px solid #2f2f3a;
+  border-radius: 12px;
+  background: #15151d;
+  visibility: hidden;
+  opacity: 0;
+  translate: 0 -6px;
+  transition: opacity 0.2s ease, translate 0.25s ease, visibility 0s 0.25s;
+}
+
+.lb-menu-button[aria-expanded='true'] + .lb-menu-list {
+  visibility: visible;
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity 0.2s ease, translate 0.25s ease;
+}
+
+.lb-menu-list a {
+  display: block;
+  padding: 7px 10px;
+  border-radius: 8px;
+  color: #d4d4de;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.lb-menu-list a:hover,
+.lb-menu-list a:focus-visible {
+  background: #22222c;
+  color: #f2f2f5;
+}
+
+.lb-menu-list a:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: -2px;
+}
+
+/* Open: the items arrive one after the other */
+.lb-menu-button[aria-expanded='true'] + .lb-menu-list li {
+  animation: lb-menu-in 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) calc(var(--i) * 0.05s) backwards;
+}
+
+@keyframes lb-menu-in {
+  from { opacity: 0; translate: -8px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-menu-list,
+  .lb-menu-button[aria-expanded='true'] + .lb-menu-list,
+  .lb-menu-button svg { transition: none; }
+  .lb-menu-button[aria-expanded='true'] + .lb-menu-list li { animation: none; }
+}
+/* /demo */
+
+/* Inputs, more */
+
+/* demo:input-search */
+/* The label holds the icon and the field: a click anywhere on it focuses
+   the field. Open while focused, or while the field holds text. */
+.lb-search {
+  display: flex;
+  align-items: center;
+  overflow: clip;
+  width: 52px;
+  height: 52px;
+  padding: 0 15px;
+  border: 1px solid #34343f;
+  border-radius: 999px;
+  background: #16161f;
+  color: #f2f2f5;
+  cursor: text;
+  transition: width 0.45s cubic-bezier(0.6, 0, 0.2, 1), border-color 0.2s ease;
+}
+
+.lb-search svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.lb-search-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.lb-search input {
+  width: 100%;
+  min-width: 0;
+  margin-left: 10px;
+  border: 0;
+  background: none;
+  color: #f2f2f5;
+  font: inherit;
+  font-size: 15px;
+  outline: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.lb-search input::placeholder {
+  color: #a1a1b3;
+}
+
+.lb-search:focus-within,
+.lb-search:has(input:not(:placeholder-shown)) {
+  width: 230px;
+  border-color: #c5f04a;
+}
+
+.lb-search:focus-within input,
+.lb-search:has(input:not(:placeholder-shown)) input {
+  opacity: 1;
+  transition-delay: 0.15s;
+}
+
+/* the field's own focus ring is replaced by the open state's border */
+.lb-search:has(input:focus-visible) {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-search,
+  .lb-search input { transition: none; }
+}
+/* /demo */
+
+/* demo:input-password */
+.lb-pass {
+  display: grid;
+  gap: 8px;
+  width: min(240px, 100%);
+}
+
+.lb-pass label {
+  color: #d4d4de;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lb-pass-field {
+  display: flex;
+  align-items: center;
+  border: 1px solid #34343f;
+  border-radius: 12px;
+  background: #16161f;
+}
+
+.lb-pass-field:focus-within {
+  border-color: #c5f04a;
+}
+
+/* width 0 and flex 1: the field takes the room left, and never pushes the
+   row wider than its box (an input's natural width is about 20 characters) */
+.lb-pass input {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 0;
+  background: none;
+  color: #f2f2f5;
+  font: inherit;
+  font-size: 15px;
+  outline: none;
+}
+
+.lb-pass button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: none;
+  color: #a1a1b3;
+  cursor: pointer;
+}
+
+.lb-pass button:hover,
+.lb-pass button:focus-visible {
+  color: #f2f2f5;
+}
+
+.lb-pass button:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: -4px;
+  border-radius: 10px;
+}
+
+.lb-pass svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Hidden password: the slash is drawn; shown: it withdraws */
+.lb-pass-slash {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.lb-pass button[aria-pressed='true'] .lb-pass-slash {
+  stroke-dashoffset: 1;
+}
+
+/* A blink at each change (the script sets data-blink for a moment) */
+.lb-pass button[data-blink] svg {
+  animation: lb-pass-blink 0.25s ease;
+}
+
+@keyframes lb-pass-blink {
+  50% { scale: 1 0.1; }
+}
+
+.lb-pass input:focus-visible {
+  outline: none;
+}
+
+.lb-pass-field:has(input:focus-visible) {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-pass-slash { transition: none; }
+  .lb-pass button[data-blink] svg { animation: none; }
+}
+/* /demo */
+
+/* demo:input-otp */
+.lb-otp {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-align: center;
+}
+
+.lb-otp legend {
+  margin-bottom: 12px;
+  color: #d4d4de;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lb-otp-boxes {
+  display: flex;
+  gap: 10px;
+}
+
+.lb-otp input {
+  width: 48px;
+  height: 58px;
+  border: 1px solid #34343f;
+  border-radius: 12px;
+  background: #16161f;
+  color: #f2f2f5;
+  font: inherit;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  caret-color: #c5f04a;
+  transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+/* The box waiting for a digit glows softly */
+.lb-otp input:focus {
+  border-color: #c5f04a;
+  outline: none;
+  animation: lb-otp-wait 1.2s ease-in-out infinite;
+}
+
+.lb-otp input:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+/* Complete: the boxes light up one after the other */
+.lb-otp[data-done] input {
+  border-color: #4ae0d2;
+  background: #4ae0d2;
+  color: #0b0b10;
+  animation: lb-otp-done 0.4s cubic-bezier(0.3, 0.7, 0.4, 1.6) backwards;
+}
+
+.lb-otp[data-done] input:nth-child(2) { animation-delay: 0.06s; }
+.lb-otp[data-done] input:nth-child(3) { animation-delay: 0.12s; }
+.lb-otp[data-done] input:nth-child(4) { animation-delay: 0.18s; }
+
+.lb-otp-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+@keyframes lb-otp-wait {
+  50% { box-shadow: 0 0 0 4px rgb(197 240 74 / 0.18); }
+}
+
+@keyframes lb-otp-done {
+  from { scale: 0.8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-otp input:focus,
+  .lb-otp[data-done] input { animation: none; }
+}
+/* /demo */
+
+/* demo:input-range */
+.lb-range {
+  display: grid;
+  gap: 34px;
+  width: min(230px, 100%);
+}
+
+.lb-range label {
+  color: #d4d4de;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lb-range-track {
+  position: relative;
+}
+
+/* The native input, restyled: the filled part is a gradient whose stop is
+   the value (--v, set by the script) */
+.lb-range input {
+  width: 100%;
+  height: 8px;
+  margin: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4ae0d2, #c5f04a) 0 0 / calc(var(--v) * 1%) 100% no-repeat, #2a2a35;
+  cursor: pointer;
+  appearance: none;
+}
+
+.lb-range input::-webkit-slider-thumb {
+  width: 24px;
+  height: 24px;
+  border: 4px solid #0d0d13;
+  border-radius: 50%;
+  background: #c5f04a;
+  appearance: none;
+  transition: scale 0.2s ease;
+}
+
+.lb-range input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 4px solid #0d0d13;
+  border-radius: 50%;
+  background: #c5f04a;
+}
+
+.lb-range input:active::-webkit-slider-thumb {
+  scale: 1.2;
+}
+
+.lb-range input:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 8px;
+}
+
+/* The bubble rides above the thumb (the thumb's own width taken into
+   account), and grows while the thumb is held */
+.lb-range output {
+  position: absolute;
+  bottom: 22px;
+  left: calc(12px + (100% - 24px) * var(--v) / 100);
+  min-width: 36px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: #f2f2f5;
+  color: #0b0b10;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  translate: -50% 0;
+  transform-origin: 50% 120%;
+  transition: scale 0.2s cubic-bezier(0.3, 0.7, 0.4, 1.5);
+}
+
+.lb-range output::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  border: 5px solid transparent;
+  border-top-color: #f2f2f5;
+  translate: -50% 0;
+}
+
+.lb-range-track:has(input:active) output,
+.lb-range-track:has(input:focus-visible) output {
+  scale: 1.15;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-range output,
+  .lb-range input::-webkit-slider-thumb { transition: none; }
+}
+/* /demo */
+
+/* demo:input-rating */
+.lb-rate {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-align: center;
+}
+
+.lb-rate legend {
+  margin-bottom: 10px;
+  color: #d4d4de;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lb-rate-stars {
+  display: flex;
+}
+
+.lb-rate label {
+  position: relative;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.lb-rate input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.lb-rate span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.lb-rate svg {
+  display: block;
+  width: 34px;
+  height: 34px;
+  fill: #2a2a35;
+  stroke: #4a4a58;
+  stroke-width: 1;
+  stroke-linejoin: round;
+  transition: fill 0.15s ease, stroke 0.15s ease;
+}
+
+/* Lit: up to the star under the pointer; otherwise up to the chosen one */
+.lb-rate-stars:hover label:has(~ label:hover) svg,
+.lb-rate-stars label:hover svg,
+.lb-rate-stars:not(:hover) label:has(~ label input:checked) svg,
+.lb-rate-stars:not(:hover) label:has(input:checked) svg {
+  fill: #ffc94a;
+  stroke: #ffc94a;
+}
+
+.lb-rate input:checked + svg {
+  animation: lb-rate-pop 0.4s cubic-bezier(0.3, 0.7, 0.4, 1.8);
+}
+
+.lb-rate label:has(input:focus-visible) {
+  outline: 2px solid #c5f04a;
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+@keyframes lb-rate-pop {
+  50% { scale: 1.35; rotate: -10deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-rate svg { transition: none; }
+  .lb-rate input:checked + svg { animation: none; }
+}
+/* /demo */
+
+/* Feedback, more */
+
+/* demo:fb-confetti */
+.lb-confetti {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.lb-confetti button {
+  position: relative;
+  z-index: 1;
+  padding: 14px 28px;
+  border: 0;
+  border-radius: 999px;
+  background: #c5f04a;
+  color: #0b0b10;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lb-confetti button:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+/* Each piece: its direction, distance, spin and colour come from the
+   script as custom properties; up and out, then down with gravity */
+.lb-confetti i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 11px;
+  border-radius: 2px;
+  background: var(--c);
+  pointer-events: none;
+  animation: lb-confetti 1.3s cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
+}
+
+@keyframes lb-confetti {
+  0% { translate: -50% -50%; rotate: 0deg; opacity: 1; }
+  45% { translate: calc(-50% + var(--x)) calc(-50% + var(--y)); opacity: 1; }
+  100% { translate: calc(-50% + var(--x) * 1.25) calc(-50% + var(--y) + 120px); rotate: var(--r); opacity: 0; }
+}
+/* /demo */
+
+/* demo:fb-shake */
+.lb-shake {
+  display: grid;
+  gap: 8px;
+  width: min(250px, 100%);
+}
+
+.lb-shake label {
+  color: #d4d4de;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lb-shake-row {
+  display: flex;
+  gap: 6px;
+}
+
+.lb-shake input {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  padding: 11px 12px;
+  border: 1px solid #34343f;
+  border-radius: 10px;
+  background: #16161f;
+  color: #f2f2f5;
+  font: inherit;
+  font-size: 14.5px;
+}
+
+.lb-shake input::placeholder {
+  color: #8a8a9c;
+}
+
+.lb-shake input:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+.lb-shake input[aria-invalid='true'] {
+  border-color: #ff6b85;
+}
+
+.lb-shake input[aria-invalid='true']:focus-visible {
+  outline-color: #ff6b85;
+}
+
+.lb-shake button {
+  padding: 0 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #c5f04a;
+  color: #0b0b10;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lb-shake button:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+.lb-shake-message {
+  min-height: 1.5em;
+  margin: 0;
+  color: #ff8fa3;
+  font-size: 13.5px;
+}
+
+.lb-shake-message[data-ok] {
+  color: #4ae0d2;
+}
+
+/* The shake: quick, decreasing, sideways only */
+.lb-shake[data-shake] .lb-shake-row {
+  animation: lb-shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes lb-shake {
+  15%, 85% { translate: -2px 0; }
+  30%, 70% { translate: 4px 0; }
+  45% { translate: -6px 0; }
+  60% { translate: 6px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-shake[data-shake] .lb-shake-row { animation: none; }
+}
+/* /demo */
+
+/* demo:fb-steps */
+.lb-steps {
+  display: grid;
+  gap: 20px;
+  width: min(250px, 100%);
+}
+
+/* The steps on a line; the line behind them fills up to the current one */
+.lb-steps-list {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: lb-step;
+}
+
+.lb-steps-list::before,
+.lb-steps-list::after {
+  content: '';
+  position: absolute;
+  top: 13px;
+  right: 14px;
+  left: 14px;
+  height: 2px;
+  background: #2f2f3a;
+}
+
+.lb-steps-list::after {
+  background: #c5f04a;
+  transform-origin: left;
+  scale: calc(var(--step) / 2) 1;
+  transition: scale 0.5s cubic-bezier(0.6, 0, 0.2, 1);
+}
+
+.lb-steps-list li {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  width: 64px;
+  color: #a1a1b3;
+  font-size: 12.5px;
+  font-weight: 600;
+  counter-increment: lb-step;
+}
+
+/* The dot: a number, a ring when current, a tick when done */
+.lb-steps-list li::before {
+  content: counter(lb-step);
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #3a3a48;
+  border-radius: 50%;
+  background: #0d0d13;
+  color: #a1a1b3;
+  font-size: 12px;
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.lb-steps-list li[aria-current='step'] {
+  color: #f2f2f5;
+}
+
+.lb-steps-list li[aria-current='step']::before {
+  border-color: #c5f04a;
+  color: #f2f2f5;
+  transition-delay: 0.3s;
+}
+
+.lb-steps-list li[data-done]::before {
+  content: '\2713';
+  border-color: #c5f04a;
+  background: #c5f04a;
+  color: #0b0b10;
+}
+
+.lb-steps-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.lb-steps-actions button {
+  padding: 9px 18px;
+  border: 1px solid #34343f;
+  border-radius: 999px;
+  background: #16161f;
+  color: #f2f2f5;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lb-steps-actions button:last-child {
+  border-color: #c5f04a;
+  background: #c5f04a;
+  color: #0b0b10;
+}
+
+.lb-steps-actions button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.lb-steps-actions button:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-steps-list::after,
+  .lb-steps-list li::before { transition: none; }
+}
+/* /demo */
+
+/* demo:fb-tooltip */
+.lb-tip {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  padding-top: 64px;
+}
+
+.lb-tip button {
+  padding: 11px 22px;
+  border: 1px dashed #4a4a58;
+  border-radius: 999px;
+  background: #16161f;
+  color: #f2f2f5;
+  font: inherit;
+  font-weight: 600;
+  cursor: help;
+}
+
+.lb-tip button:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 3px;
+}
+
+/* Hidden below the button's top; springs up when the button is pointed at
+   or focused, and stays while the pointer is on the tip itself */
+.lb-tip [role='tooltip'] {
+  position: absolute;
+  top: 0;
+  padding: 9px 13px;
+  border-radius: 10px;
+  background: #f2f2f5;
+  color: #0b0b10;
+  font-size: 13.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  scale: 0.85;
+  translate: 0 8px;
+  transform-origin: 50% 100%;
+  visibility: hidden;
+  transition: opacity 0.15s ease, scale 0.3s cubic-bezier(0.3, 0.7, 0.4, 1.6), translate 0.3s cubic-bezier(0.3, 0.7, 0.4, 1.6), visibility 0s 0.3s;
+}
+
+.lb-tip [role='tooltip']::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  border: 6px solid transparent;
+  border-top-color: #f2f2f5;
+  translate: -50% 0;
+}
+
+.lb-tip:not([data-dismissed]):has(button:hover, button:focus-visible, [role='tooltip']:hover) [role='tooltip'] {
+  opacity: 1;
+  scale: 1;
+  translate: 0 0;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-tip [role='tooltip'] { transition: none; }
+}
+/* /demo */
+
+/* Scroll, more */
+
+/* demo:scroll-reveal */
+.lb-reveal {
+  width: min(250px, 100%);
+  height: 180px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #34343f;
+  border-radius: 12px;
+  background: #121219;
+}
+
+.lb-reveal:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+.lb-reveal p {
+  margin: 4px 4px 10px;
+  color: #a1a1b3;
+  font-size: 13px;
+}
+
+.lb-reveal-item {
+  margin-bottom: 8px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #1d1d27;
+  color: #f2f2f5;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Where scroll-driven animations exist: each row plays its entrance as it
+   enters the box. Elsewhere the rows are simply there. */
+@supports (animation-timeline: view()) {
+  .lb-reveal-item {
+    animation: lb-reveal-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 90%;
+  }
+}
+
+@keyframes lb-reveal-in {
+  from { opacity: 0; translate: 0 24px; scale: 0.94; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-reveal-item { animation: none; }
+}
+/* /demo */
+
+/* demo:scroll-parallax */
+/* The box scrolls; its scene stays in view (sticky) while its layers move
+   at different speeds along the box's scroll timeline */
+.lb-plx {
+  position: relative;
+  width: min(250px, 100%);
+  height: 170px;
+  overflow-y: auto;
+  border: 1px solid #34343f;
+  border-radius: 12px;
+  scroll-timeline: --lb-plx block;
+}
+
+.lb-plx:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+}
+
+.lb-plx-scene {
+  position: sticky;
+  top: 0;
+  height: 170px;
+  overflow: hidden;
+  margin-bottom: -170px;
+  background: linear-gradient(#2b2350, #c26a6a 75%, #f2b880);
+}
+
+.lb-plx-scene span {
+  position: absolute;
+  left: -10%;
+  width: 120%;
+}
+
+.lb-plx-sun {
+  top: 30px;
+  left: calc(50% - 22px) !important;
+  width: 44px !important;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffd36e;
+  box-shadow: 0 0 40px #ffb04a;
+}
+
+.lb-plx-far {
+  bottom: 30px;
+  height: 70px;
+  background: #4a3a6e;
+  clip-path: polygon(0 60%, 18% 20%, 34% 55%, 52% 10%, 70% 50%, 86% 25%, 100% 55%, 100% 100%, 0 100%);
+}
+
+.lb-plx-near {
+  bottom: -20px;
+  height: 80px;
+  background: #16132a;
+  clip-path: polygon(0 40%, 22% 70%, 45% 30%, 66% 65%, 84% 35%, 100% 60%, 100% 100%, 0 100%);
+}
+
+.lb-plx-length {
+  height: 520px;
+}
+
+@supports (animation-timeline: scroll()) {
+  .lb-plx-scene span {
+    animation: linear both;
+    animation-timeline: --lb-plx;
+  }
+
+  .lb-plx-scene .lb-plx-sun { animation-name: lb-plx-sun; }
+  .lb-plx-scene .lb-plx-far { animation-name: lb-plx-far; }
+  .lb-plx-scene .lb-plx-near { animation-name: lb-plx-near; }
+}
+
+@keyframes lb-plx-sun {
+  to { translate: 0 110px; }
+}
+
+@keyframes lb-plx-far {
+  to { translate: -6% 20px; }
+}
+
+@keyframes lb-plx-near {
+  to { translate: -14% 50px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-plx-scene span { animation: none; }
+}
+/* /demo */
+
+/* demo:scroll-carousel */
+.lb-snap {
+  display: flex;
+  gap: 12px;
+  width: min(250px, 100%);
+  overflow-x: auto;
+  padding: 16px 62px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: #4a4a58 transparent;
+}
+
+.lb-snap:focus-visible {
+  outline: 2px solid #c5f04a;
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+.lb-snap span {
+  display: grid;
+  flex: 0 0 120px;
+  place-items: center;
+  height: 140px;
+  border-radius: 14px;
+  background: linear-gradient(150deg, var(--c), #15151d 150%);
+  color: #0b0b10;
+  font-size: 30px;
+  font-weight: 800;
+  scroll-snap-align: center;
+}
+
+/* Small at the edges, full size in the middle of the box */
+@supports (animation-timeline: view()) {
+  .lb-snap span {
+    animation: lb-snap linear both;
+    animation-timeline: view(inline);
+  }
+}
+
+@keyframes lb-snap {
+  0%, 100% { scale: 0.78; opacity: 0.45; }
+  50% { scale: 1; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-snap span { animation: none; }
+}
+/* /demo */
+
+/* Backgrounds */
+
+/* demo:bg-aurora */
+.lb-aurora {
+  position: relative;
+  overflow: hidden;
+  width: min(250px, 100%);
+  height: 160px;
+  border-radius: 16px;
+  background: #0b0b18;
+}
+
+/* Soft lights: a radial gradient that fades out, no blur filter needed */
+.lb-aurora span {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+}
+
+.lb-aurora span:nth-child(1) {
+  top: -70px;
+  left: -50px;
+  background: radial-gradient(circle, rgb(74 224 210 / 0.7), transparent 65%);
+  animation: lb-aurora-a 11s ease-in-out infinite alternate;
+}
+
+.lb-aurora span:nth-child(2) {
+  top: -40px;
+  right: -70px;
+  background: radial-gradient(circle, rgb(143 107 255 / 0.75), transparent 65%);
+  animation: lb-aurora-b 13s ease-in-out infinite alternate;
+}
+
+.lb-aurora span:nth-child(3) {
+  bottom: -110px;
+  left: 20px;
+  background: radial-gradient(circle, rgb(197 240 74 / 0.55), transparent 65%);
+  animation: lb-aurora-c 9s ease-in-out infinite alternate;
+}
+
+@keyframes lb-aurora-a {
+  to { translate: 90px 40px; scale: 1.2; }
+}
+
+@keyframes lb-aurora-b {
+  to { translate: -100px 50px; scale: 0.85; }
+}
+
+@keyframes lb-aurora-c {
+  to { translate: 60px -60px; scale: 1.15; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-aurora span { animation: none; }
+}
+/* /demo */
+
+/* demo:bg-grid */
+@property --lb-gx {
+  syntax: '<percentage>';
+  initial-value: 20%;
+  inherits: false;
+}
+
+@property --lb-gy {
+  syntax: '<percentage>';
+  initial-value: 30%;
+  inherits: false;
+}
+
+.lb-gridglow {
+  position: relative;
+  overflow: hidden;
+  width: min(250px, 100%);
+  height: 160px;
+  border-radius: 16px;
+  background:
+    linear-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(90deg, rgb(255 255 255 / 0.06) 1px, transparent 1px) 0 0 / 20px 20px,
+    #0b0b10;
+}
+
+/* The same grid, bright, seen only through a round mask that wanders */
+.lb-gridglow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(#c5f04a 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(90deg, #c5f04a 1px, transparent 1px) 0 0 / 20px 20px,
+    radial-gradient(circle 60px at var(--lb-gx) var(--lb-gy), rgb(197 240 74 / 0.12), transparent);
+  mask: radial-gradient(circle 70px at var(--lb-gx) var(--lb-gy), #000, transparent);
+  animation: lb-gridglow 8s ease-in-out infinite;
+}
+
+@keyframes lb-gridglow {
+  0%, 100% { --lb-gx: 20%; --lb-gy: 30%; }
+  25% { --lb-gx: 75%; --lb-gy: 25%; }
+  50% { --lb-gx: 80%; --lb-gy: 75%; }
+  75% { --lb-gx: 30%; --lb-gy: 70%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-gridglow::after { animation: none; --lb-gx: 50%; --lb-gy: 50%; }
+}
+/* /demo */
+
+/* demo:bg-mesh */
+/* Each centre is a typed percentage, so it can move smoothly */
+@property --lb-m1 { syntax: '<percentage>'; initial-value: 10%; inherits: false; }
+@property --lb-m2 { syntax: '<percentage>'; initial-value: 90%; inherits: false; }
+@property --lb-m3 { syntax: '<percentage>'; initial-value: 20%; inherits: false; }
+@property --lb-m4 { syntax: '<percentage>'; initial-value: 80%; inherits: false; }
+
+.lb-mesh {
+  width: min(250px, 100%);
+  height: 160px;
+  border-radius: 16px;
+  background:
+    radial-gradient(at var(--lb-m1) var(--lb-m3), #8f6bff, transparent 55%),
+    radial-gradient(at var(--lb-m2) var(--lb-m1), #4ae0d2, transparent 55%),
+    radial-gradient(at var(--lb-m3) var(--lb-m4), #c5f04a, transparent 50%),
+    radial-gradient(at var(--lb-m4) var(--lb-m2), #ff5f7e, transparent 55%),
+    #0b0b18;
+  animation:
+    lb-mesh-1 9s ease-in-out infinite alternate,
+    lb-mesh-2 11s ease-in-out infinite alternate,
+    lb-mesh-3 13s ease-in-out infinite alternate,
+    lb-mesh-4 7s ease-in-out infinite alternate;
+}
+
+@keyframes lb-mesh-1 { to { --lb-m1: 70%; } }
+@keyframes lb-mesh-2 { to { --lb-m2: 25%; } }
+@keyframes lb-mesh-3 { to { --lb-m3: 85%; } }
+@keyframes lb-mesh-4 { to { --lb-m4: 15%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-mesh { animation: none; }
+}
+/* /demo */
+
+/* demo:bg-waves */
+.lb-waves {
+  position: relative;
+  overflow: hidden;
+  width: min(250px, 100%);
+  height: 160px;
+  border-radius: 16px;
+  background: linear-gradient(#141a3a, #2b3f7a);
+}
+
+/* A row of crests (half ellipses, repeated) on top of a solid band; the
+   crests slide one crest width, so the loop is seamless */
+.lb-waves span {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 70px;
+  background:
+    radial-gradient(28px 12px at 50% 100%, var(--c) 98%, transparent) 0 0 / 56px 12px repeat-x,
+    linear-gradient(var(--c), var(--c)) 0 12px / 100% 100% no-repeat;
+  animation: lb-waves var(--t) linear infinite;
+}
+
+.lb-waves span:nth-child(1) { --c: #2f63b8; --t: 7s; bottom: 34px; }
+.lb-waves span:nth-child(2) { --c: #2f90c9; --t: 5s; bottom: 14px; animation-direction: reverse; }
+.lb-waves span:nth-child(3) { --c: #4ae0d2; --t: 3.6s; bottom: -10px; }
+
+@keyframes lb-waves {
+  to { background-position: 56px 0, 0 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-waves span { animation: none; }
+}
+/* /demo */
+
+/* From my archive (CodePen), rebuilt */
+
+/* demo:arch-magnifier */
+/* The lens centre is two typed lengths, so it can travel a smooth path */
+@property --lb-lx {
+  syntax: '<length>';
+  initial-value: 130px;
+  inherits: true;
+}
+
+@property --lb-ly {
+  syntax: '<length>';
+  initial-value: 84px;
+  inherits: true;
+}
+
+.lb-loupe {
+  position: relative;
+  overflow: hidden;
+  width: 240px;
+  height: 170px;
+  border-radius: 16px;
+  background: #dff1f5;
+  animation: lb-loupe 8s ease-in-out infinite;
+}
+
+/* The picture: a cream disc and a bank card, as in the original */
+.lb-loupe-scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 170px;
+}
+
+.lb-loupe-scene::before {
+  content: '';
+  position: absolute;
+  inset: 15px 50px;
+  border-radius: 50%;
+  background: #fcf7ef;
+}
+
+.lb-loupe-card {
+  position: absolute;
+  top: 44px;
+  left: 45px;
+  width: 150px;
+  height: 88px;
+  border: 3px solid #804a58;
+  border-radius: 12px;
+  background: #f4d24b;
+  rotate: -8deg;
+}
+
+.lb-loupe-card i {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 22px;
+  height: 16px;
+  border: 2px solid #804a58;
+  border-radius: 4px;
+}
+
+.lb-loupe-card b {
+  position: absolute;
+  top: 42px;
+  left: 14px;
+  color: #804a58;
+  font: 700 12px/1 ui-monospace, monospace;
+  letter-spacing: 0.08em;
+}
+
+.lb-loupe-card u {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  width: 44px;
+  height: 9px;
+  border-radius: 4px;
+  background: #804a58;
+}
+
+/* The lens: a circle centred on (--lb-lx, --lb-ly), holding a copy of the
+   picture twice as big, placed so the point under the lens stays centred */
+.lb-loupe-lens {
+  position: absolute;
+  top: calc(var(--lb-ly) - 37px);
+  left: calc(var(--lb-lx) - 37px);
+  width: 74px;
+  height: 74px;
+  overflow: hidden;
+  border: 5px solid #804a58;
+  border-radius: 50%;
+  background: #dff1f5;
+  box-shadow: 0 8px 18px -6px rgb(128 74 88 / 0.6);
+}
+
+.lb-loupe-lens .lb-loupe-scene {
+  transform-origin: 0 0;
+  translate: calc(32px - var(--lb-lx) * 2) calc(32px - var(--lb-ly) * 2);
+  scale: 2;
+}
+
+/* The handle follows the lens */
+.lb-loupe::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--lb-ly) + 24px);
+  left: calc(var(--lb-lx) + 22px);
+  width: 34px;
+  height: 10px;
+  border-radius: 5px;
+  background: #804a58;
+  rotate: 45deg;
+  transform-origin: 0 50%;
+}
+
+/* While the pointer drives it, the path stops */
+.lb-loupe[data-follow] {
+  animation: none;
+}
+
+@keyframes lb-loupe {
+  0%, 100% { --lb-lx: 130px; --lb-ly: 84px; }
+  20% { --lb-lx: 78px; --lb-ly: 70px; }
+  40% { --lb-lx: 105px; --lb-ly: 98px; }
+  60% { --lb-lx: 160px; --lb-ly: 66px; }
+  80% { --lb-lx: 168px; --lb-ly: 104px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-loupe { animation: none; }
+}
+/* /demo */
+
+/* demo:arch-cat */
+.lb-cat {
+  position: relative;
+  width: 150px;
+  height: 178px;
+}
+
+.lb-cat span,
+.lb-cat i {
+  position: absolute;
+  display: block;
+}
+
+.lb-cat-body {
+  bottom: 0;
+  left: 27px;
+  width: 96px;
+  height: 92px;
+  border: 2px solid #e6d8c4;
+  border-radius: 46% 46% 30% 30% / 55% 55% 30% 30%;
+  background: #fffaf2;
+}
+
+.lb-cat-tail {
+  right: 6px;
+  bottom: 10px;
+  width: 22px;
+  height: 64px;
+  border: 2px solid #e6d8c4;
+  border-radius: 11px;
+  background: #fffaf2;
+  transform-origin: 50% 100%;
+  rotate: 20deg;
+  animation: lb-cat-tail 2.4s ease-in-out infinite;
+}
+
+.lb-cat-head {
+  top: 22px;
+  left: 25px;
+  z-index: 2;
+  width: 100px;
+  height: 84px;
+  border: 2px solid #e6d8c4;
+  border-radius: 50% / 54%;
+  background: #fffaf2;
+}
+
+.lb-cat-ear {
+  top: -16px;
+  width: 30px;
+  height: 30px;
+  background: #fffaf2;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.lb-cat-ear:nth-child(1) { left: 8px; rotate: -12deg; }
+.lb-cat-ear:nth-child(2) { right: 8px; rotate: 12deg; }
+
+/* the pink inside of each ear */
+.lb-cat-ear::after {
+  content: '';
+  position: absolute;
+  inset: 9px 8px 0;
+  background: #ffb3c1;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+/* Happy closed eyes: two little upside-down arcs */
+.lb-cat-eye {
+  top: 36px;
+  width: 16px;
+  height: 8px;
+  border-bottom: 3px solid #2a1f1a;
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+}
+
+.lb-cat-eye:nth-of-type(3) { left: 20px; }
+.lb-cat-eye:nth-of-type(4) { right: 20px; }
+
+.lb-cat-nose {
+  top: 50px;
+  left: 45px;
+  width: 10px;
+  height: 7px;
+  border-radius: 50% 50% 60% 60%;
+  background: #ff8fa3;
+}
+
+.lb-cat-collar {
+  top: 98px;
+  left: 42px;
+  z-index: 3;
+  width: 66px;
+  height: 11px;
+  border-radius: 6px;
+  background: #e5484d;
+}
+
+/* the bell swings from the collar */
+.lb-cat-collar i {
+  top: 7px;
+  left: 25px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #b8860b;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff3a8, #f2c230 60%);
+  transform-origin: 50% -4px;
+  animation: lb-cat-bell 1.2s ease-in-out infinite;
+}
+
+/* The raised paw, waving from its base */
+.lb-cat-paw {
+  top: 70px;
+  left: 6px;
+  z-index: 1;
+  width: 28px;
+  height: 52px;
+  border: 2px solid #e6d8c4;
+  border-radius: 14px;
+  background: #fffaf2;
+  transform-origin: 50% 90%;
+  animation: lb-cat-wave 1.2s ease-in-out infinite;
+}
+
+.lb-cat-paw::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 7px;
+  width: 10px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffb3c1;
+}
+
+/* A gold coin held against the body */
+.lb-cat-coin {
+  right: 38px;
+  bottom: 14px;
+  z-index: 3;
+  width: 30px;
+  height: 42px;
+  border: 2px solid #b8860b;
+  border-radius: 50%;
+  background: repeating-linear-gradient(#f2c230 0 6px, #e0ac1e 6px 8px);
+  rotate: 12deg;
+}
+
+@keyframes lb-cat-wave {
+  0%, 100% { rotate: -6deg; }
+  50% { rotate: 22deg; }
+}
+
+@keyframes lb-cat-bell {
+  0%, 100% { rotate: -14deg; }
+  50% { rotate: 14deg; }
+}
+
+@keyframes lb-cat-tail {
+  0%, 100% { rotate: 14deg; }
+  50% { rotate: 30deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-cat-paw,
+  .lb-cat-collar i,
+  .lb-cat-tail { animation: none; }
+}
+/* /demo */
+
+/* demo:arch-water */
+.lb-tube {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.lb-tube-glass {
+  position: relative;
+  overflow: hidden;
+  width: 66px;
+  height: 170px;
+  border: 3px solid #c8d7e0;
+  border-top: 0;
+  border-radius: 0 0 33px 33px;
+  background: #65bec0;
+}
+
+/* The water fills the tube; the "empty" part above it is two big rounded
+   squares turning, the colour of the glass: their lower edge is the wave */
+.lb-tube-water {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(#88d3cd, #4ea7aa);
+}
+
+.lb-tube-wave {
+  position: absolute;
+  top: calc(35% - 210px);
+  left: 50%;
+  width: 220px;
+  height: 220px;
+  margin-left: -110px;
+  border-radius: 42%;
+  background: #1a2530;
+  animation: lb-tube-wave 6s linear infinite;
+}
+
+.lb-tube-wave + .lb-tube-wave {
+  top: calc(35% - 214px);
+  border-radius: 40%;
+  background: rgb(26 37 48 / 0.55);
+  animation-duration: 9s;
+}
+
+/* Bubbles from the bottom to the surface, each at its own pace */
+.lb-tube-glass i {
+  position: absolute;
+  bottom: 8px;
+  left: calc(14px + var(--i) * 8px);
+  width: 6px;
+  height: 6px;
+  border: 1.5px solid rgb(255 255 255 / 0.8);
+  border-radius: 50%;
+  opacity: 0;
+  animation: lb-tube-bubble calc(2.2s + var(--i) * 0.35s) ease-in calc(var(--i) * 0.6s) infinite;
+}
+
+.lb-tube-level {
+  color: #88d3cd;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.lb-tube-glass i:nth-of-type(odd) {
+  width: 9px;
+  height: 9px;
+}
+
+@keyframes lb-tube-wave {
+  to { rotate: 1turn; }
+}
+
+@keyframes lb-tube-bubble {
+  0% { opacity: 0; translate: 0 0; }
+  15% { opacity: 1; }
+  80% { opacity: 1; translate: 4px -88px; }
+  100% { opacity: 0; translate: -2px -100px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-tube-wave,
+  .lb-tube-glass i { animation: none; }
+}
+/* /demo */
+
+/* demo:arch-globe */
+.lb-globe-band {
+  display: grid;
+  grid-template-columns: 1fr 88px 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 18px 12px;
+  width: min(250px, 100%);
+}
+
+.lb-globe-stat {
+  margin: 0;
+  color: #a1a1b3;
+  font-size: 11.5px;
+  line-height: 1.3;
+}
+
+.lb-globe-stat strong {
+  display: block;
+  color: #f2f2f5;
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.lb-globe-stat:nth-child(1),
+.lb-globe-stat:nth-child(2) {
+  grid-column: 1;
+  text-align: right;
+}
+
+.lb-globe-stat:nth-child(4) { grid-area: 1 / 3; }
+.lb-globe-stat:nth-child(5) { grid-area: 2 / 3; }
+
+/* The globe: a map twice as wide as the globe slides across it, under an
+   inner shadow that makes it round */
+.lb-globe {
+  grid-area: 1 / 2 / 3;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background:
+    radial-gradient(14px 18px at 26px 28px, #6cc6bd 96%, transparent),
+    radial-gradient(10px 16px at 40px 56px, #6cc6bd 96%, transparent),
+    radial-gradient(9px 7px at 58px 18px, #6cc6bd 96%, transparent),
+    radial-gradient(22px 14px at 104px 30px, #6cc6bd 96%, transparent),
+    radial-gradient(10px 15px at 118px 58px, #6cc6bd 96%, transparent),
+    radial-gradient(14px 9px at 150px 66px, #6cc6bd 96%, transparent),
+    #f4fbfb;
+  background-size: 176px 88px;
+  box-shadow: inset -12px -8px 20px rgb(0 0 0 / 0.45), inset 6px 4px 12px rgb(255 255 255 / 0.6);
+  animation: lb-globe 9s linear infinite;
+}
+
+@keyframes lb-globe {
+  to { background-position: -176px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-globe { animation: none; }
+}
+/* /demo */
+
+/* demo:arch-rings */
+/* A corner menu: the button and three rings share one centre, the box's
+   bottom right corner, so only a quarter of each shows */
+/* clip, not hidden: a hidden box can still be scrolled, and the focused
+   button would scroll it to show its whole circle */
+.lb-rings {
+  position: relative;
+  overflow: clip;
+  width: 240px;
+  height: 180px;
+  border-radius: 16px;
+  background: #f2efe2;
+}
+
+.lb-rings ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lb-rings button,
+.lb-rings a {
+  position: absolute;
+  right: calc(var(--r) * -1);
+  bottom: calc(var(--r) * -1);
+  width: calc(var(--r) * 2);
+  height: calc(var(--r) * 2);
+  border-radius: 50%;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.lb-rings button {
+  --r: 58px;
+  z-index: 4;
+  padding: 0;
+  border: 0;
+  background: #c5f04a;
+  color: #0b0b10;
+  cursor: pointer;
+}
+
+/* the button's label, in its visible quarter */
+.lb-rings button span {
+  position: absolute;
+  top: 34px;
+  left: 34px;
+  translate: -50% -50%;
+}
+
+/* each ring's label sits in the visible band of its ring, on the diagonal */
+.lb-rings li:nth-child(1) a { --r: 110px; --at: 51px; z-index: 3; background: #232323; }
+.lb-rings li:nth-child(2) a { --r: 162px; --at: 66px; z-index: 2; background: #2e2e2e; }
+.lb-rings li:nth-child(3) a { --r: 230px; --at: 91px; z-index: 1; background: #3a3a3a; }
+
+.lb-rings a {
+  text-decoration: none;
+  transform-origin: 50% 50%;
+  /* closed: shrunk, turned away, hidden from everyone */
+  visibility: hidden;
+  opacity: 0;
+  scale: 0.5;
+  rotate: -90deg;
+  transition: scale 0.5s cubic-bezier(0.3, 1.4, 0.5, 0.9), rotate 0.5s cubic-bezier(0.3, 1.4, 0.5, 0.9), opacity 0.3s ease, visibility 0s 0.5s;
+}
+
+.lb-rings a span {
+  position: absolute;
+  top: var(--at);
+  left: var(--at);
+  white-space: nowrap;
+  translate: -50% -50%;
+}
+
+.lb-rings button[aria-expanded='true'] + ul a {
+  visibility: visible;
+  opacity: 1;
+  scale: 1;
+  rotate: 0deg;
+  transition-delay: calc(var(--i) * 0.08s);
+}
+
+.lb-rings a:hover,
+.lb-rings a:focus-visible {
+  background: #4a4a4a;
+}
+
+.lb-rings a:hover span,
+.lb-rings a:focus-visible span {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.lb-rings button:focus-visible,
+.lb-rings a:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 3px #8f6bff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-rings a { transition: none; }
+}
+/* /demo */
+
+/* demo:arch-signal */
+.lb-signal svg {
+  width: 84px;
+  height: 84px;
+  overflow: visible;
+}
+
+.lb-signal circle {
+  fill: #61bbbd;
+}
+
+.lb-signal path {
+  fill: none;
+  stroke: #61bbbd;
+  stroke-width: 5;
+  stroke-linecap: round;
+  opacity: 0.15;
+  animation: lb-signal 2s ease-in-out infinite;
+}
+
+/* the arcs light up one after the other, then all go dim together */
+.lb-signal path:nth-of-type(1) { animation-name: lb-signal-1; }
+.lb-signal path:nth-of-type(2) { animation-name: lb-signal-2; }
+
+@keyframes lb-signal-1 {
+  0%, 20% { opacity: 0.15; }
+  35%, 85% { opacity: 1; }
+  100% { opacity: 0.15; }
+}
+
+@keyframes lb-signal-2 {
+  0%, 45% { opacity: 0.15; }
+  60%, 85% { opacity: 1; }
+  100% { opacity: 0.15; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-signal path { animation: none; opacity: 1; }
+}
+/* /demo */
+
+/* demo:arch-mask */
+.lb-wipe {
+  position: relative;
+  overflow: hidden;
+  width: 240px;
+  height: 160px;
+  border-radius: 14px;
+}
+
+.lb-wipe-page {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: 0 26px;
+  background: #1b1b25;
+}
+
+.lb-wipe-page b {
+  color: #f2f2f5;
+  font-size: 24px;
+}
+
+.lb-wipe-page span {
+  height: 8px;
+  border-radius: 4px;
+  background: #34343f;
+}
+
+.lb-wipe-page span:last-child {
+  width: 60%;
+}
+
+/* The next page shows once the waves cover the first */
+.lb-wipe-next {
+  background: #f2efe2;
+  opacity: 0;
+  animation: lb-wipe-page 6s steps(1) infinite;
+}
+
+.lb-wipe-next b {
+  color: #1b1b25;
+}
+
+.lb-wipe-next span {
+  background: #d8d3bf;
+}
+
+/* Two waves, each wider than the box with a wavy left edge: in from the
+   right, a pause covering everything, out to the left */
+.lb-wipe-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 312px;
+  height: 100%;
+  translate: 250px 0;
+  animation: lb-wipe-a 6s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+}
+
+.lb-wipe-wave path {
+  fill: #ffa400;
+}
+
+.lb-wipe-wave + .lb-wipe-wave {
+  animation-name: lb-wipe-b;
+}
+
+.lb-wipe-wave + .lb-wipe-wave path {
+  fill: #13a03c;
+}
+
+@keyframes lb-wipe-a {
+  0%, 10% { translate: 250px 0; }
+  30%, 52% { translate: -60px 0; }
+  70%, 100% { translate: -330px 0; }
+}
+
+@keyframes lb-wipe-b {
+  0%, 16% { translate: 250px 0; }
+  34%, 46% { translate: -60px 0; }
+  64%, 100% { translate: -330px 0; }
+}
+
+@keyframes lb-wipe-page {
+  0% { opacity: 0; }
+  40% { opacity: 1; }
+  96% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-wipe-wave { animation: none; translate: 250px 0; }
+  .lb-wipe-next { animation: none; }
+}
+/* /demo */
