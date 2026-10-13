@@ -1,3 +1,5 @@
+import { typesetAll } from './typeset.js'
+
 const TRIMENSION_MEDIA = [
   { src: '/media/trimension/home-eons.webp', width: 1440, height: 900 },
   { src: '/media/trimension/home-godsent.webp', width: 1440, height: 900 },
@@ -393,6 +395,8 @@ const translations = {
     },
 
     footer: 'Designed and built in Toulouse.',
+    footer_nav: 'Footer',
+    footer_rss: 'RSS feed of the blog',
 
     case: {
       back: 'All projects',
@@ -814,6 +818,8 @@ const translations = {
     },
 
     footer: 'Conçu et développé à Toulouse.',
+    footer_nav: 'Pied de page',
+    footer_rss: 'Flux RSS du blog',
 
     case: {
       back: 'Tous les projets',
@@ -871,5 +877,8 @@ const translations = {
     },
   },
 }
+
+// French texts get their no-break spaces once, here
+translations.fr = typesetAll(translations.fr, 'fr')
 
 export default translations

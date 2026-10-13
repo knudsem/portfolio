@@ -7,8 +7,10 @@ export default function Process({ t }) {
         <p className="section-intro">{t.process_intro}</p>
       </div>
       <ol className="process">
+        {/* keyed by position: a step keeps its element (and its reveal)
+            when the language changes */}
         {t.process.map((step, i) => (
-          <li key={step.title} className="process-step" data-reveal style={{ '--reveal-delay': `${i * 80}ms` }}>
+          <li key={i} className="process-step" data-reveal style={{ '--reveal-delay': `${i * 80}ms` }}>
             <span className="process-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <h3 className="process-title">{step.title}</h3>
             <p className="process-text">{step.text}</p>

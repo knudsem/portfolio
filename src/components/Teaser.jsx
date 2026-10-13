@@ -1,6 +1,7 @@
 import { LAB_PATH, BLOG_PATH, postPath } from '../projects'
 import { LAB_COUNT } from '../lab/count'
 import { POST_META } from '../blog/meta'
+import { typeset } from '../typeset'
 
 const fill = (template, values) => template.replace(/\{(\w+)\}/g, (_, key) => values[key])
 
@@ -41,9 +42,9 @@ export default function Teaser({ t, lang }) {
               {t.teaser_blog_latest} <span aria-hidden="true">·</span> {fill(t.teaser_blog_count, { n: POST_META.length })}
             </p>
             <h3 className="teaser-title">
-              <a href={postPath(latest.slug)} className="teaser-link">{latest[lang].title}</a>
+              <a href={postPath(latest.slug)} className="teaser-link">{typeset(latest[lang].title, lang)}</a>
             </h3>
-            <p className="teaser-text">{latest[lang].description}</p>
+            <p className="teaser-text">{typeset(latest[lang].description, lang)}</p>
             <span className="teaser-cta" aria-hidden="true">{t.teaser_blog_cta}<Arrow /></span>
             <a href={BLOG_PATH} className="teaser-all">{t.teaser_blog_all}</a>
           </article>

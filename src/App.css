@@ -3134,6 +3134,23 @@ section {
   gap: 4px 16px;
 }
 
+.site-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
+}
+
+/* a comfortable target for a finger: 24px tall at least */
+.site-footer-nav a {
+  padding: 4px 0;
+  color: var(--text-2);
+  transition: color 0.2s ease;
+}
+
+.site-footer-nav a:hover {
+  color: var(--accent);
+}
+
 .site-footer-top {
   display: inline-flex;
   align-items: center;

@@ -2,13 +2,14 @@
 // they lead to, and title and description in both languages. Small, so the
 // home page can show the latest post without loading any article. The
 // articles themselves are in posts.js, which adds their bodies.
+import { LAB_COUNT } from '../lab/count.js'
 
 export const POST_META = [
   {
     slug: "motion-that-serves",
     date: "2026-10-13",
     tags: ["Animation", "CSS", "Accessibility"],
-    related: { href: "/lab", en: "Open the lab: 33 animations that follow these rules", fr: "Ouvrir le lab : 33 animations qui suivent ces règles" },
+    related: { href: "/lab", en: `Open the lab: ${LAB_COUNT} animations that follow these rules`, fr: `Ouvrir le lab : ${LAB_COUNT} animations qui suivent ces règles` },
     en: {
       title: "Motion that serves: eight rules for interface animation",
       description: "The eight rules I check every interface animation against: purpose, timing, easing, performance, reduced motion, pausing, resting off screen, and never hiding the content.",
