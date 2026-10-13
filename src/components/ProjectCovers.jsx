@@ -234,7 +234,9 @@ export default function ProjectCover({ id, ...rest }) {
   if (!Cover) return null
   return (
     <div className={`project-cover cover-${id}`} aria-hidden="true" {...rest}>
-      <Cover />
+      <div className="cover-art">
+        <Cover />
+      </div>
     </div>
   )
 }

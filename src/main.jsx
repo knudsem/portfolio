@@ -51,14 +51,17 @@ console.log(
 // for this script (blocking="render", added by scripts/prerender.mjs): they
 // show complete from their first frame, so the morph from the clicked card
 // finds the cover and the title. The home page, much bigger, renders as
-// usual so its first paint is not held back.
+// usual on a first visit so its first paint is not held back. Coming back to
+// it (back button, reload), it is rendered at once too: the browser puts the
+// visitor back where they were only if the page is already tall enough.
 const root = createRoot(document.getElementById('root'))
 const app = (
   <StrictMode>
     <App />
   </StrictMode>
 )
-if (parseRoute(window.location.pathname).name === 'home') root.render(app)
+const arrival = performance.getEntriesByType?.('navigation')?.[0]?.type
+if (parseRoute(window.location.pathname).name === 'home' && arrival === 'navigate') root.render(app)
 else flushSync(() => root.render(app))
 resetNames()
 window.addEventListener('pagereveal', handlePageReveal)
