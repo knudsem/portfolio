@@ -14,6 +14,9 @@ const Icon = ({ children }) => (
   </svg>
 )
 
+// Lower case, without accents, so "defilement" finds "Défilement"
+const fold = (text) => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+
 // One demo: it runs live on its stage, its script (if any) is started on the
 // stage and undone when it leaves. Replay mounts a fresh stage. It rests
 // while off screen.
@@ -33,7 +36,7 @@ function DemoCard({ demo, lang, l, onCode }) {
   }, [])
 
   return (
-    <li className="lab-card" ref={cardRef}>
+    <li className="lab-card" ref={cardRef} data-demo={demo.id}>
       {/* The demo's own markup, the same text the code panel shows */}
       <div key={run} ref={stageRef} className="lab-stage" dangerouslySetInnerHTML={{ __html: demo.html }} />
       <div className="lab-card-body">
@@ -109,12 +112,44 @@ function CodeDialog({ demo, lang, l, onClose }) {
 export default function LabPage({ t, lang }) {
   const l = t.lab
   const [filter, setFilter] = useState('all')
+  const [query, setQuery] = useState('')
   const [paused, setPaused] = useState(false)
   const [codeFor, setCodeFor] = useState(null)
   const [calm] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+  const mainRef = useRef(null)
+  const firstFilter = useRef(true)
 
-  const shown = DEMOS.filter((demo) => filter === 'all' || demo.cat === filter)
+  const words = fold(query.trim()).split(/\s+/).filter(Boolean)
+  const matches = (demo) => {
+    if (!words.length) return true
+    const text = fold([demo.title.en, demo.title.fr, demo.note[lang], l.cats[demo.cat], ...demo.tech].join(' '))
+    return words.every((word) => text.includes(word))
+  }
+  const shown = DEMOS.filter((demo) => (filter === 'all' || demo.cat === filter) && matches(demo))
   const countOf = (cat) => (cat === 'all' ? DEMOS.length : DEMOS.filter((demo) => demo.cat === cat).length)
+  const cats = ['all', ...CATEGORIES.filter((cat) => countOf(cat) > 0)]
+
+  // After a new filter, the results start at the top of the grid, when the
+  // visitor had scrolled past it
+  useEffect(() => {
+    if (firstFilter.current) { firstFilter.current = false; return }
+    const main = mainRef.current
+    if (main.getBoundingClientRect().top < 0) main.scrollIntoView({ block: 'start', behavior: calm ? 'auto' : 'smooth' })
+  }, [filter, calm])
+
+  const search = (id) => (
+    <div className="lab-search">
+      <label htmlFor={id} className="sr-only">{l.search_label}</label>
+      <Icon><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></Icon>
+      <input id={id} type="search" value={query} placeholder={l.search_placeholder} autoComplete="off" spellCheck="false" onChange={(e) => setQuery(e.target.value)} />
+    </div>
+  )
+  const pause = !calm && (
+    <button type="button" className="lab-pause" aria-pressed={paused} onClick={() => setPaused((on) => !on)}>
+      <Icon>{paused ? <path d="M8 5.5v13l10-6.5z" /> : <path d="M9 5v14M15 5v14" />}</Icon>
+      {l.pause_all}
+    </button>
+  )
 
   return (
     <article className="case lab">
@@ -127,27 +162,39 @@ export default function LabPage({ t, lang }) {
         {calm && <p className="lab-calm case-in" style={{ '--d': '120ms' }}>{l.reduced}</p>}
       </div>
 
-      <div className="lab-toolbar">
-        <div className="lab-filters" role="group" aria-label={l.filter_label}>
-          {['all', ...CATEGORIES].map((cat) => (
-            <button key={cat} type="button" className="lab-chip" aria-pressed={filter === cat} onClick={() => setFilter(cat)}>
-              {cat === 'all' ? l.all : l.cats[cat]}
-              <span className="lab-chip-count" aria-hidden="true">{countOf(cat)}</span>
-            </button>
-          ))}
-        </div>
-        {!calm && (
-          <button type="button" className="lab-pause" aria-pressed={paused} onClick={() => setPaused((on) => !on)}>
-            <Icon>{paused ? <path d="M8 5.5v13l10-6.5z" /> : <path d="M9 5v14M15 5v14" />}</Icon>
-            {l.pause_all}
-          </button>
-        )}
-      </div>
-      <p className="sr-only" role="status">{fill(l.shown, { n: shown.length })}</p>
+      <div className="lab-layout">
+        {/* Stays on screen: on the left on a wide screen, a bar on top on a phone */}
+        <aside className="lab-side" aria-label={l.filters}>
+          <div className="lab-side-wide">{search('lab-search-side')}</div>
+          <div className="lab-filters" role="group" aria-label={l.filter_label}>
+            {cats.map((cat) => (
+              <button key={cat} type="button" className="lab-chip" aria-pressed={filter === cat} onClick={() => setFilter(cat)}>
+                <span className="lab-chip-name">{cat === 'all' ? l.all : l.cats[cat]}</span>
+                <span className="lab-chip-count" aria-hidden="true">{countOf(cat)}</span>
+              </button>
+            ))}
+          </div>
+          {pause && <div className="lab-side-wide">{pause}</div>}
+        </aside>
 
-      <ul className="lab-grid" data-paused={paused ? '' : undefined}>
-        {shown.map((demo) => <DemoCard key={demo.id} demo={demo} lang={lang} l={l} onCode={setCodeFor} />)}
-      </ul>
+        <div className="lab-main" ref={mainRef}>
+          <div className="lab-tools-narrow">
+            {search('lab-search-top')}
+            {pause}
+          </div>
+          <p className="sr-only" role="status">{fill(l.shown, { n: shown.length })}</p>
+
+          <ul className="lab-grid" data-paused={paused ? '' : undefined}>
+            {shown.map((demo) => <DemoCard key={demo.id} demo={demo} lang={lang} l={l} onCode={setCodeFor} />)}
+          </ul>
+          {shown.length === 0 && (
+            <div className="lab-empty">
+              <p>{fill(l.empty, { q: query.trim() })}</p>
+              <button type="button" className="lab-action" onClick={() => setQuery('')}>{l.clear}</button>
+            </div>
+          )}
+        </div>
+      </div>
 
       <section className="case-cta" aria-labelledby="lab-cta">
         <h2 id="lab-cta" className="case-cta-title">{l.cta_title}</h2>
