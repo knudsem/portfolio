@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef, useCallback, useMemo, lazy, Suspense } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -14,7 +14,12 @@ import { detectLanguage, saveLanguage, isLanguageChosen } from './language'
 import { CONTACT_EMAIL } from './email'
 import { IS_APPLE, SHORTCUT } from './platform'
 import { startPointerEffects } from './pointerEffects'
-import { parseRoute, projectPath, SITE_URL } from './projects'
+import { parseRoute, projectPath, postPath, SITE_URL, LAB_PATH, BLOG_PATH } from './projects'
+
+// The lab and the blog carry their own content and styles: only downloaded
+// on their pages
+const LabPage = lazy(() => import('./lab/LabPage'))
+const BlogPage = lazy(() => import('./blog/BlogPage'))
 
 const SECTIONS = ['about', 'work', 'services', 'proof', 'contact']
 
@@ -38,6 +43,8 @@ const KEYWORDS = {
   email: 'email mail address copy courriel adresse copier',
   link: 'link url share copy address lien partager copier adresse',
   lang: 'language langue english french anglais francais switch passer',
+  lab: 'lab animations library demos buttons loaders laboratoire bibliotheque boutons chargements',
+  blog: 'blog articles posts notes writing advice ai motion conseils ia ecrits',
 }
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -79,6 +86,12 @@ export default function App() {
     document.documentElement.lang = lang
     if (ROUTE.name === 'project') {
       document.title = fill(t.case.title, { title: t.projects.find((p) => p.id === ROUTE.id).title })
+    } else if (ROUTE.name === 'lab') {
+      document.title = t.lab.title
+    } else if (ROUTE.name === 'blog') {
+      document.title = t.blog.title
+    } else if (ROUTE.name === 'post') {
+      // set by the post itself, which knows its title (BlogPage.jsx)
     } else if (ROUTE.name === 'notfound') {
       document.title = fill(t.case.title, { title: t.case.not_found_title })
     } else {
@@ -146,13 +159,30 @@ export default function App() {
     }
     const section = (id) => ({ id, group: 'go', icon: 'arrow', label: t.nav[id], hint: `#${id}`, run: () => goTo(id) })
     // The public address of this page, also when browsing a preview
-    const pageUrl = `${SITE_URL}${ROUTE.name === 'project' ? projectPath(ROUTE.id) : '/'}`
+    const PAGE_PATHS = { project: () => projectPath(ROUTE.id), lab: () => LAB_PATH, blog: () => BLOG_PATH, post: () => postPath(ROUTE.slug) }
+    const pageUrl = `${SITE_URL}${PAGE_PATHS[ROUTE.name]?.() ?? '/'}`
     const otherLang = lang === 'fr' ? 'en' : 'fr'
     return [
       section('about'),
       section('work'),
       section('services'),
       section('proof'),
+      ROUTE.name !== 'lab' && {
+        id: 'lab',
+        group: 'go',
+        icon: 'arrow',
+        label: t.nav.lab,
+        hint: LAB_PATH,
+        run: () => window.location.assign(LAB_PATH),
+      },
+      ROUTE.name !== 'blog' && {
+        id: 'blog',
+        group: 'go',
+        icon: 'arrow',
+        label: t.nav.blog,
+        hint: BLOG_PATH,
+        run: () => window.location.assign(BLOG_PATH),
+      },
       {
         id: 'top',
         group: 'go',
@@ -319,6 +349,7 @@ export default function App() {
         shortcut={SHORTCUT}
         onOpenPalette={() => setPaletteOpen(true)}
         home={HOME}
+        page={ROUTE.name}
       />
 
       {/* inert: while the phone menu is open, the page behind it cannot be
@@ -343,6 +374,16 @@ export default function App() {
             </>
           )}
           {ROUTE.name === 'project' && <ProjectPage t={t} id={ROUTE.id} />}
+          {ROUTE.name === 'lab' && (
+            <Suspense fallback={<div className="page-wait" />}>
+              <LabPage t={t} lang={lang} />
+            </Suspense>
+          )}
+          {(ROUTE.name === 'blog' || ROUTE.name === 'post') && (
+            <Suspense fallback={<div className="page-wait" />}>
+              <BlogPage t={t} lang={lang} slug={ROUTE.slug} />
+            </Suspense>
+          )}
           {ROUTE.name === 'notfound' && <NotFound t={t} />}
         </main>
         <Footer t={t} />

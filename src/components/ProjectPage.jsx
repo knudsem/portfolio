@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useState } from 'react'
 import ProjectCover from './ProjectCovers'
 import { projectPath } from '../projects'
 import { nameFrom, isPlainClick, backToHome } from '../viewTransitions'
-import { highlight, LANGUAGE_NAMES } from '../highlight'
 import { EXCERPTS } from '../demos/excerpts'
+import CodeBlock from './CodeBlock'
 import EonsDemos from './EonsDemos'
 
 const Icon = ({ children, size = 16 }) => (
@@ -12,61 +12,8 @@ const Icon = ({ children, size = 16 }) => (
   </svg>
 )
 
-// A code excerpt, coloured by highlight.js, with a copy button. Long lines
-// wrap, so the block never needs sideways scrolling. The colours (hundreds
-// of spans) wait until the block comes near the screen: the text is the
-// same, only the first paint is lighter.
-function CodeBlock({ c, code }) {
-  const source = code.source ?? EXCERPTS[code.excerpt]
-  const preRef = useRef(null)
-  const [near, setNear] = useState(false)
-  const tokens = useMemo(() => (near ? highlight(source, code.lang) : null), [near, source, code.lang])
-  const [copied, setCopied] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries.some((entry) => entry.isIntersecting)) {
-        setNear(true)
-        observer.disconnect()
-      }
-    }, { rootMargin: '50% 0px' })
-    observer.observe(preRef.current)
-    return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    if (!copied) return undefined
-    const timer = setTimeout(() => setCopied(false), 2000)
-    return () => clearTimeout(timer)
-  }, [copied])
-
-  const copy = () => {
-    navigator.clipboard?.writeText(source).then(() => setCopied(true), () => {})
-  }
-
-  return (
-    <figure className="case-code">
-      <div className="case-code-head">
-        <span className="case-code-file">{code.file}</span>
-        <span className="case-code-lang">{LANGUAGE_NAMES[code.lang]}</span>
-        <button type="button" className="case-code-copy" onClick={copy}>
-          {copied ? c.copied : c.copy}
-          <span className="sr-only"> {code.file}</span>
-        </button>
-      </div>
-      <pre className="case-code-body" ref={preRef}><code>
-        {tokens ? tokens.map((token, i) => (token.type === 'plain'
-          ? token.text
-          : <span key={i} className={`tok-${token.type}`}>{token.text}</span>)) : source}
-      </code></pre>
-      <figcaption>{code.caption}</figcaption>
-      <p className="sr-only" role="status">{copied ? c.copied : ''}</p>
-    </figure>
-  )
-}
-
-// Screens of the real site: the first one wide, then two by two, and the
-// phone views side by side.
+// Screens of the real site: the first one wide (and any marked wide), the
+// others two by two, and the phone views side by side.
 function Gallery({ c, images }) {
   const screens = images.filter((img) => !img.phone)
   const phones = images.filter((img) => img.phone)
@@ -78,7 +25,7 @@ function Gallery({ c, images }) {
       <h2 id="case-gallery" className="case-h2">{c.gallery}</h2>
       <div className="case-shots">
         {screens.map((img, i) => (
-          <figure key={img.src} className={`case-shot${i === 0 ? ' is-wide' : ''}`}>
+          <figure key={img.src} className={`case-shot${i === 0 || img.wide ? ' is-wide' : ''}`}>
             {picture(img)}
             {img.caption && <figcaption>{img.caption}</figcaption>}
           </figure>
@@ -221,7 +168,9 @@ export default function ProjectPage({ t, id }) {
         <section className="case-section" aria-labelledby="case-code">
           <h2 id="case-code" className="case-h2">{c.code}</h2>
           <div className="case-codes">
-            {project.code.map((code) => <CodeBlock key={code.file} c={c} code={code} />)}
+            {project.code.map((code) => (
+              <CodeBlock key={code.excerpt ?? code.file} c={c} code={{ ...code, source: code.source ?? EXCERPTS[code.excerpt] }} />
+            ))}
           </div>
         </section>
       )}
