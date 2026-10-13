@@ -3,7 +3,7 @@ import MKLogo from './MKLogo'
 
 const NAV_IDS = ['about', 'work', 'services', 'proof']
 // Pages of their own, after the sections of the home page
-const NAV_PAGES = [{ id: 'lab', href: '/lab' }]
+const NAV_PAGES = [{ id: 'lab', href: '/lab' }, { id: 'blog', href: '/blog' }]
 
 const LANGUAGES = [
   { code: 'fr', short: 'FR', name: 'Français' },
@@ -30,7 +30,9 @@ function LangToggle({ t, lang, setLang }) {
   )
 }
 
-export default function Header({ t, lang, setLang, activeSection, menuOpen, setMenuOpen, shortcut, onOpenPalette, home, page }) {
+export default function Header({ t, lang, setLang, activeSection, menuOpen, setMenuOpen, shortcut, onOpenPalette, home, page: route }) {
+  // A post belongs to the blog
+  const page = route === 'post' ? 'blog' : route
   const [scrolled, setScrolled] = useState(false)
   const menuButtonRef = useRef(null)
   const firstLinkRef = useRef(null)

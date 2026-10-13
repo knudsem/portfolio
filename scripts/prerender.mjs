@@ -2,12 +2,14 @@
 // project address opens directly and shows its own title and link preview
 // (LinkedIn, WhatsApp, Slack, search results). The page itself is drawn by
 // the same app script as the home page.
-// Also writes the lab's page, 404.html (any unknown address) and sitemap.xml.
+// Also writes the pages of the lab, the blog and its posts, 404.html (any
+// unknown address) and sitemap.xml.
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import translations from '../src/i18n.js'
-import { PROJECT_SLUGS, SITE_URL, projectPath, LAB_PATH } from '../src/projects.js'
+import { PROJECT_SLUGS, SITE_URL, projectPath, LAB_PATH, BLOG_PATH, postPath } from '../src/projects.js'
+import { POSTS } from '../src/blog/posts.js'
 
 const DIST = fileURLToPath(new URL('../dist', import.meta.url))
 const template = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8')
@@ -77,6 +79,23 @@ write(path.join(DIST, LAB_PATH.slice(1), 'index.html'), page({
 }))
 urls.push(`${SITE_URL}${LAB_PATH}`)
 
+// The blog and each post
+write(path.join(DIST, BLOG_PATH.slice(1), 'index.html'), page({
+  title: en.blog.title,
+  description: en.blog.meta,
+  url: `${SITE_URL}${BLOG_PATH}`,
+}))
+urls.push(`${SITE_URL}${BLOG_PATH}`)
+for (const post of POSTS) {
+  const url = `${SITE_URL}${postPath(post.slug)}`
+  write(path.join(DIST, postPath(post.slug).slice(1), 'index.html'), page({
+    title: en.case.title.replace('{title}', post.en.title),
+    description: post.en.description,
+    url,
+  }))
+  urls.push(url)
+}
+
 write(path.join(DIST, '404.html'), page({
   title: en.case.title.replace('{title}', en.case.not_found_title),
   description: en.case.not_found_text,
@@ -89,4 +108,4 @@ ${urls.map((url) => `  <url>\n    <loc>${url}</loc>\n  </url>`).join('\n')}
 </urlset>
 `)
 
-console.log(`prerender: ${en.projects.length} project pages, 404.html, sitemap.xml (${urls.length} addresses)`)
+console.log(`prerender: ${en.projects.length} project pages, the lab, the blog and ${POSTS.length} posts, 404.html, sitemap.xml (${urls.length} addresses)`)

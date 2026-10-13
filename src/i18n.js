@@ -25,7 +25,7 @@ const translations = {
   en: {
     page_title: 'Mathias Knudsen | Fullstack & Shopify Developer, UI/UX Designer',
     title: 'Fullstack & Shopify Developer, UI/UX Designer',
-    nav: { about: 'About', work: 'Work', services: 'Services', proof: 'Proof', lab: 'Lab', contact: 'Contact' },
+    nav: { about: 'About', work: 'Work', services: 'Services', proof: 'Proof', lab: 'Lab', blog: 'Blog', contact: 'Contact' },
     nav_label: 'Main navigation',
     skip: 'Skip to content',
     menu_open: 'Menu',
@@ -277,6 +277,21 @@ const translations = {
       cta_text: 'I design and build interface motion that serves the product: clear, fast, and accessible. Tell me what you have in mind.',
     },
 
+    blog: {
+      title: 'Blog | Mathias Knudsen',
+      meta: 'Notes on interface motion, accessibility and building with AI, drawn from real projects.',
+      heading: 'Blog',
+      intro: 'Notes on interface motion, accessibility and building with AI, drawn from my own projects: what worked, what I measured, and the code.',
+      count: '{n} posts',
+      minutes: '{n} min read',
+      all: 'All posts',
+      more: 'More posts',
+      copy: 'Copy',
+      copied: 'Copied',
+      cta_title: 'A project in mind?',
+      cta_text: 'Interfaces that move, Shopify stores, accessible products: tell me about it. I usually reply within 24 hours.',
+    },
+
     proof: {
       title: 'This site is the proof',
       intro: "A portfolio that talks about accessibility and performance has to live up to it. Don't take my word for it: check it yourself, live, in your browser.",
@@ -389,7 +404,7 @@ const translations = {
   fr: {
     page_title: 'Mathias Knudsen | Développeur Fullstack & Shopify, Designer UI/UX',
     title: 'Développeur Fullstack & Shopify, Designer UI/UX',
-    nav: { about: 'À propos', work: 'Projets', services: 'Services', proof: 'La preuve', lab: 'Lab', contact: 'Contact' },
+    nav: { about: 'À propos', work: 'Projets', services: 'Services', proof: 'La preuve', lab: 'Lab', blog: 'Blog', contact: 'Contact' },
     nav_label: 'Navigation principale',
     skip: 'Aller au contenu',
     menu_open: 'Menu',
@@ -639,6 +654,21 @@ const translations = {
       js_note: "Appelez la fonction avec l'élément qui contient la démo, par exemple document.body. Elle renvoie une fonction qui annule tout.",
       cta_title: 'Du mouvement pour votre produit ?',
       cta_text: "Je conçois et je développe des animations d'interface au service du produit : claires, rapides et accessibles. Parlez-moi de votre idée.",
+    },
+
+    blog: {
+      title: 'Blog | Mathias Knudsen',
+      meta: "Des notes sur l'animation d'interface, l'accessibilité et le développement avec l'IA, tirées de vrais projets.",
+      heading: 'Blog',
+      intro: "Des notes sur l'animation d'interface, l'accessibilité et le développement avec l'IA, tirées de mes propres projets : ce qui a marché, ce que j'ai mesuré, et le code.",
+      count: '{n} articles',
+      minutes: '{n} min de lecture',
+      all: 'Tous les articles',
+      more: "D'autres articles",
+      copy: 'Copier',
+      copied: 'Copié',
+      cta_title: 'Un projet en tête ?',
+      cta_text: "Des interfaces qui bougent, des boutiques Shopify, des produits accessibles : parlez-m'en. Je réponds en général sous 24 heures.",
     },
 
     proof: {

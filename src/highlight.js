@@ -31,7 +31,7 @@ const RULES = {
   ],
 }
 
-export const LANGUAGE_NAMES = { js: 'JavaScript', css: 'CSS', html: 'HTML' }
+export const LANGUAGE_NAMES = { js: 'JavaScript', css: 'CSS', html: 'HTML', text: 'Text' }
 
 export function highlight(source, lang) {
   const rules = RULES[lang] || []
