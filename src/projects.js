@@ -34,3 +34,10 @@ export function parseRoute(pathname) {
   const id = match && Object.keys(PROJECT_SLUGS).find((key) => PROJECT_SLUGS[key] === match[1])
   return id ? { name: 'project', id } : { name: 'notfound' }
 }
+
+// Screens of the projects come in two widths: name.webp (1440px) and
+// name-800.webp for small screens. The sizes say how wide each kind is shown
+// (see .case-hero and .case-shots in App.css), so a phone downloads the small
+// one; the prerendered preload uses the same values, so it is reused.
+export const SCREEN_SIZES = { full: '(min-width: 1240px) 1160px, 100vw', half: '(min-width: 1000px) 570px, 100vw' }
+export const screenSrcSet = (img) => (img.width === 1440 ? `${img.src.replace(/\.webp$/, '-800.webp')} 800w, ${img.src} 1440w` : undefined)

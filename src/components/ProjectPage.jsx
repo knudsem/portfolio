@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import ProjectCover from './ProjectCovers'
-import { projectPath } from '../projects'
+import { projectPath, SCREEN_SIZES, screenSrcSet } from '../projects'
 import { nameFrom, isPlainClick, backToHome } from '../viewTransitions'
 import { EXCERPTS } from '../demos/excerpts'
 import CodeBlock from './CodeBlock'
@@ -38,9 +38,10 @@ function Gallery({ c, images }) {
   const screens = images.filter((img) => !img.phone)
   const phones = images.filter((img) => img.phone)
   const wide = wideScreens(screens)
-  const picture = (img) => (
-    <img src={img.src} width={img.width} height={img.height} alt={img.alt} loading="lazy" decoding="async" />
-  )
+  const picture = (img) => {
+    const srcSet = img.phone ? undefined : screenSrcSet(img)
+    return <img src={img.src} srcSet={srcSet} sizes={srcSet && (wide.has(img) ? SCREEN_SIZES.full : SCREEN_SIZES.half)} width={img.width} height={img.height} alt={img.alt} loading="lazy" decoding="async" />
+  }
   return (
     <section className="case-section" aria-labelledby="case-gallery">
       <h2 id="case-gallery" className="case-h2">{c.gallery}</h2>
@@ -106,7 +107,7 @@ export default function ProjectPage({ t, id }) {
             {/* a window frame, so a screen reads as a product, not a picture */}
             <div className="case-hero-window" data-vt="cover">
               <div className="case-hero-bar" aria-hidden="true"><span /><span /><span /></div>
-              <img src={hero.src} width={hero.width} height={hero.height} alt={hero.alt} fetchpriority="high" decoding="async" />
+              <img src={hero.src} srcSet={screenSrcSet(hero)} sizes={screenSrcSet(hero) && SCREEN_SIZES.full} width={hero.width} height={hero.height} alt={hero.alt} fetchpriority="high" decoding="async" />
             </div>
             {hero.caption && <figcaption>{hero.caption}</figcaption>}
           </figure>
