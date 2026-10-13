@@ -130,8 +130,9 @@ const MERIDIANS = Array.from({ length: 8 }, (_, p) => {
   return { sx: Math.abs(Math.cos(angle)) < 0.01 ? 0.01 : Number(Math.cos(angle).toFixed(3)), shown: angle <= Math.PI }
 })
 
+// The languages of the live site, lit in turn
 function Globe() {
-  const langs = ['EN', 'DE', 'FR', 'IT', 'ES']
+  const langs = ['EN', 'DE']
   return (
     <svg viewBox="0 0 400 180" focusable="false">
       <g transform="translate(176 90)">
@@ -158,9 +159,9 @@ function Globe() {
         </g>
       </g>
       {langs.map((l, i) => (
-        <g key={l} style={{ '--i': i }} transform={`translate(282 ${34 + i * 26})`}>
-          <rect width="40" height="18" rx="9" className={`cv-lang-chip${i === 2 ? ' is-current' : ''}`} />
-          <text x="20" y="12.5" textAnchor="middle" className={`cv-lang-text${i === 2 ? ' is-current' : ''}`}>{l}</text>
+        <g key={l} style={{ '--i': i }} transform={`translate(276 ${62 + i * 32})`}>
+          <rect width="52" height="24" rx="12" className={`cv-lang-chip${i === 0 ? ' is-current' : ''}`} />
+          <text x="26" y="16" textAnchor="middle" className={`cv-lang-text${i === 0 ? ' is-current' : ''}`}>{l}</text>
         </g>
       ))}
     </svg>
