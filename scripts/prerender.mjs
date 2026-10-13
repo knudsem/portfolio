@@ -24,7 +24,7 @@ function replaceTag(html, pattern, replacement) {
   return html.replace(pattern, replacement)
 }
 
-function page({ title, description, url, image, imageAlt, noindex = false }) {
+function page({ title, description, url, image, imageAlt, noindex = false, preload }) {
   let html = template
   // These pages are light: the first paint waits for the app script, so the
   // page shows complete from its first frame and the morph from the clicked
@@ -38,6 +38,10 @@ function page({ title, description, url, image, imageAlt, noindex = false }) {
   if (image) {
     html = replaceTag(html, /<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${image}" />`)
     html = replaceTag(html, /<meta property="og:image:alt" content="[^"]*" \/>/, `<meta property="og:image:alt" content="${escape(imageAlt)}" />`)
+  }
+  // The screen that leads a project page starts downloading with the HTML
+  if (preload) {
+    html = replaceTag(html, /<\/head>/, `    <link rel="preload" as="image" href="${preload}" fetchpriority="high" />\n  </head>`)
   }
   if (noindex) {
     html = replaceTag(html, /\s*<link rel="canonical" href="[^"]*" \/>/, '\n    <meta name="robots" content="noindex" />')
@@ -67,6 +71,7 @@ for (const project of en.projects) {
     url,
     image: hasImage ? `${SITE_URL}/${ogFile}` : null,
     imageAlt: `${project.title}, ${project.type.toLowerCase()}. A project by Mathias Knudsen.`,
+    preload: project.gallery?.find((img) => !img.phone)?.src,
   }))
   urls.push(url)
 }

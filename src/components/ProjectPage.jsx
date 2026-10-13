@@ -12,11 +12,32 @@ const Icon = ({ children, size = 16 }) => (
   </svg>
 )
 
-// Screens of the real site: the first one wide (and any marked wide), the
-// others two by two, and the phone views side by side.
+// Which screens take the full width: those marked wide, and in a run of
+// half-width screens of odd length, its first one, so no screen is ever
+// left alone on half a row.
+function wideScreens(screens) {
+  const wide = new Set()
+  let run = []
+  const close = () => {
+    if (run.length % 2) wide.add(run[0])
+    run = []
+  }
+  for (const img of screens) {
+    if (img.wide) {
+      close()
+      wide.add(img)
+    } else run.push(img)
+  }
+  close()
+  return wide
+}
+
+// Screens of the real site, two by two (see wideScreens), and the phone
+// views side by side.
 function Gallery({ c, images }) {
   const screens = images.filter((img) => !img.phone)
   const phones = images.filter((img) => img.phone)
+  const wide = wideScreens(screens)
   const picture = (img) => (
     <img src={img.src} width={img.width} height={img.height} alt={img.alt} loading="lazy" decoding="async" />
   )
@@ -24,8 +45,8 @@ function Gallery({ c, images }) {
     <section className="case-section" aria-labelledby="case-gallery">
       <h2 id="case-gallery" className="case-h2">{c.gallery}</h2>
       <div className="case-shots">
-        {screens.map((img, i) => (
-          <figure key={img.src} className={`case-shot${i === 0 || img.wide ? ' is-wide' : ''}`}>
+        {screens.map((img) => (
+          <figure key={img.src} className={`case-shot${wide.has(img) ? ' is-wide' : ''}`}>
             {picture(img)}
             {img.caption && <figcaption>{img.caption}</figcaption>}
           </figure>
@@ -43,8 +64,9 @@ function Gallery({ c, images }) {
   )
 }
 
-// One page per project: what it is, the animated illustration, what I did,
-// and, when written, the story, screens, details and code. The illustration
+// One page per project: what it is, the real product (its best screen) or
+// else the animated illustration, what I did, and, when written, the story,
+// screens, details and code. The illustration
 // plays on its own here, so it has a pause button (WCAG 2.2.2). The cover
 // and the title morph in from the card that was clicked (viewTransitions.js).
 export default function ProjectPage({ t, id }) {
@@ -54,6 +76,8 @@ export default function ProjectPage({ t, id }) {
   const next = t.projects[(index + 1) % t.projects.length]
   const [motionAllowed] = useState(() => !window.matchMedia('(prefers-reduced-motion: reduce)').matches)
   const [playing, setPlaying] = useState(motionAllowed)
+  // The project comes first: its best screen leads the page when there is one
+  const hero = project.gallery?.find((img) => !img.phone)
 
   return (
     <article className="case">
@@ -77,17 +101,28 @@ export default function ProjectPage({ t, id }) {
           </a>
         )}
 
-        <div className="case-cover" data-playing={playing ? '' : undefined}>
-          <ProjectCover id={project.id} data-vt="cover" />
-          {motionAllowed && (
-            <button type="button" className="case-play" onClick={() => setPlaying((on) => !on)}>
-              <span className="sr-only">{playing ? c.pause : c.play}</span>
-              {playing
-                ? <Icon><path d="M9 5v14M15 5v14" /></Icon>
-                : <Icon><path d="M8 5.5v13l10-6.5z" /></Icon>}
-            </button>
-          )}
-        </div>
+        {hero ? (
+          <figure className="case-hero">
+            {/* a window frame, so a screen reads as a product, not a picture */}
+            <div className="case-hero-window" data-vt="cover">
+              <div className="case-hero-bar" aria-hidden="true"><span /><span /><span /></div>
+              <img src={hero.src} width={hero.width} height={hero.height} alt={hero.alt} fetchpriority="high" decoding="async" />
+            </div>
+            {hero.caption && <figcaption>{hero.caption}</figcaption>}
+          </figure>
+        ) : (
+          <div className="case-cover" data-playing={playing ? '' : undefined}>
+            <ProjectCover id={project.id} data-vt="cover" />
+            {motionAllowed && (
+              <button type="button" className="case-play" onClick={() => setPlaying((on) => !on)}>
+                <span className="sr-only">{playing ? c.pause : c.play}</span>
+                {playing
+                  ? <Icon><path d="M9 5v14M15 5v14" /></Icon>
+                  : <Icon><path d="M8 5.5v13l10-6.5z" /></Icon>}
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="case-body case-in" style={{ '--d': '220ms' }}>
@@ -131,7 +166,7 @@ export default function ProjectPage({ t, id }) {
         </aside>
       </div>
 
-      {project.gallery && <Gallery c={c} images={project.gallery} />}
+      {project.gallery && project.gallery.length > 1 && <Gallery c={c} images={project.gallery.filter((img) => img !== hero)} />}
 
       {project.highlights && (
         <section className="case-section" aria-labelledby="case-highlights">
