@@ -26,6 +26,33 @@
     <meta property="og:locale" content="en_GB" />
     <meta property="og:locale:alternate" content="fr_FR" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="alternate" type="application/rss+xml" title="Blog | Mathias Knudsen" href="/blog/rss.xml" />
+
+    <!-- Who this site is about, for search engines -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://mathias-knudsen.vercel.app/#website",
+            "url": "https://mathias-knudsen.vercel.app/",
+            "name": "Mathias Knudsen",
+            "inLanguage": ["en", "fr"],
+            "publisher": { "@id": "https://mathias-knudsen.vercel.app/#person" }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://mathias-knudsen.vercel.app/#person",
+            "name": "Mathias Knudsen",
+            "url": "https://mathias-knudsen.vercel.app/",
+            "jobTitle": "Fullstack and Shopify developer, UI/UX designer",
+            "address": { "@type": "PostalAddress", "addressLocality": "Toulouse", "addressCountry": "FR" },
+            "knowsAbout": ["Shopify", "React", "Django", "UI/UX design", "Web accessibility", "Interface animation"]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
