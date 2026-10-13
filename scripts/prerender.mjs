@@ -8,7 +8,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import translations from '../src/i18n.js'
-import { PROJECT_SLUGS, SITE_URL, projectPath, LAB_PATH, BLOG_PATH, postPath } from '../src/projects.js'
+import { PROJECT_SLUGS, SITE_URL, projectPath, LAB_PATH, BLOG_PATH, postPath, SCREEN_SIZES, screenSrcSet } from '../src/projects.js'
 import { POSTS } from '../src/blog/posts.js'
 
 const DIST = fileURLToPath(new URL('../dist', import.meta.url))
@@ -74,15 +74,17 @@ for (const project of en.projects) {
   const slug = PROJECT_SLUGS[project.id]
   if (!slug) throw new Error(`prerender: no address for project ${project.id}`)
   const url = `${SITE_URL}${projectPath(project.id)}`
-  // The screen that leads a project page starts downloading with the HTML
-  const hero = project.gallery?.find((img) => !img.phone)?.src
+  // The screen that leads a project page starts downloading with the HTML,
+  // in the width the page will pick (same srcset and sizes as its img)
+  const hero = project.gallery?.find((img) => !img.phone)
+  const heroSet = hero && screenSrcSet(hero)
   write(path.join(DIST, 'projects', slug, 'index.html'), page({
     title: en.case.title.replace('{title}', project.title),
     description: project.summary,
     url,
     image: ogImage(slug),
     imageAlt: `${project.title}, ${project.type.toLowerCase()}. A project by Mathias Knudsen.`,
-    head: hero ? [`<link rel="preload" as="image" href="${hero}" fetchpriority="high" />`] : [],
+    head: hero ? [`<link rel="preload" as="image" href="${hero.src}"${heroSet ? ` imagesrcset="${heroSet}" imagesizes="${SCREEN_SIZES.full}"` : ''} fetchpriority="high" />`] : [],
   }))
   urls.push(url)
 }
