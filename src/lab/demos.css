@@ -5508,7 +5508,7 @@
 .lb-rings a i {
   position: absolute;
   font-style: normal;
-  transform: rotate(calc(45deg - var(--k) * var(--step))) translateY(calc(var(--r) - 19px)) translate(-50%, -50%);
+  transform: rotate(calc(45deg - var(--a, var(--k) * var(--step)))) translateY(calc(var(--r) - 19px)) translate(-50%, -50%);
   transform-origin: 0 0;
 }
 

@@ -1100,7 +1100,28 @@ export function globe(root) {
 export function cornerRings(root) {
   const nav = root.querySelector('.lb-rings nav')
   const button = nav.querySelector('button')
-  const set = (open) => button.setAttribute('aria-expanded', String(open))
+  // the CSS spaces the letters evenly; on the first opening, each one gets
+  // the room its own width needs, measured along the middle of its ring
+  let spaced = false
+  const space = () => {
+    spaced = true
+    for (const link of nav.querySelectorAll('a')) {
+      const letters = [...link.querySelectorAll('i')]
+      const middle = parseFloat(link.style.getPropertyValue('--r')) - 19
+      const widths = letters.map((letter) => letter.offsetWidth + 1)
+      const total = widths.reduce((sum, w) => sum + w, 0)
+      let before = 0
+      letters.forEach((letter, i) => {
+        const along = before + widths[i] / 2 - total / 2
+        letter.style.setProperty('--a', `${((along / middle) * 180) / Math.PI}deg`)
+        before += widths[i]
+      })
+    }
+  }
+  const set = (open) => {
+    if (open && !spaced) space()
+    button.setAttribute('aria-expanded', String(open))
+  }
   const toggle = () => set(button.getAttribute('aria-expanded') !== 'true')
   const keys = (e) => {
     if (e.key !== 'Escape' || button.getAttribute('aria-expanded') !== 'true') return
@@ -1270,7 +1291,7 @@ export const SCRIPTS = {
   'fb-tooltip': tooltip,
   'arch-magnifier': magnifier,
   'arch-cat': luckyCat,
-  'arch-rings': cornerRings,
   'arch-water': sparklingWater,
   'arch-globe': globe,
+  'arch-rings': cornerRings,
 }
