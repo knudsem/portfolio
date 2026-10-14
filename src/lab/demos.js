@@ -3,13 +3,13 @@
 // both languages. Styles are in demos.css, behaviours in scripts.js, both
 // marked per demo.
 
-export const CATEGORIES = ['buttons', 'scroll', 'loaders', 'text', 'cards', 'inputs', 'feedback']
+export const CATEGORIES = ['buttons', 'icons', 'text', 'loaders', 'cards', 'navigation', 'inputs', 'feedback', 'scroll', 'backgrounds', 'archive']
 
 const letters = (text) => [...text].map((ch, i) => `<span style="--i:${i}">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('')
 // n empty elements numbered by --i, one per line, inside a parent indented by `indent`
 const each = (n, tag, indent) => `\n${Array.from({ length: n }, (_, i) => `${indent}  <${tag} style="--i:${i}"></${tag}>`).join('\n')}\n${indent}`
 
-export const DEMOS = [
+const LIST = [
   // Buttons
   {
     id: 'btn-shine',
@@ -344,7 +344,7 @@ export const DEMOS = [
   },
   {
     id: 'envelope',
-    cat: 'feedback',
+    cat: 'archive',
     tech: ['CSS'],
     replay: true,
     html: `<div class="lb-envelope" role="img" aria-label="An envelope opens and a letter comes out">
@@ -356,4 +356,790 @@ export const DEMOS = [
     title: { en: 'Envelope', fr: 'Enveloppe' },
     note: { en: 'From my archive (2021, then in anime.js), rebuilt in plain CSS: the flap opens, the letter rises.', fr: "Tirée de mes archives (2021, alors en anime.js), refaite en CSS pur : le rabat s'ouvre, la lettre sort." },
   },
+  // Buttons, more
+  {
+    id: 'btn-ripple',
+    cat: 'buttons',
+    tech: ['CSS', 'JS'],
+    html: '<button class="lb-ripple" type="button">Click anywhere on me</button>',
+    title: { en: 'Ripple', fr: 'Onde' },
+    note: { en: 'A wave grows from the exact point of the click (from the middle with the keyboard) and fades.', fr: "Une onde naît du point exact du clic (du centre au clavier) et s'efface." },
+  },
+  {
+    id: 'btn-arrow',
+    cat: 'buttons',
+    tech: ['CSS', 'SVG'],
+    html: `<button class="lb-arrow" type="button">
+  Read the case study
+  <span class="lb-arrow-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </span>
+</button>`,
+    title: { en: 'Arrow through', fr: 'Flèche qui traverse' },
+    note: { en: 'On hover or focus, the arrow leaves on the right and a new one comes in from the left.', fr: 'Au survol ou au focus, la flèche sort par la droite et une autre entre par la gauche.' },
+  },
+  {
+    id: 'btn-underline',
+    cat: 'buttons',
+    tech: ['CSS'],
+    html: '<p class="lb-uline-text">Read the <a class="lb-uline" href="/blog">notes on the blog</a> for the details.</p>',
+    title: { en: 'Link underline', fr: 'Soulignement de lien' },
+    note: { en: 'A quiet line at rest (a link must look like one), a bright one that draws in from the left and leaves on the right.', fr: "Un trait discret au repos (un lien doit se voir), un trait vif qui se dessine depuis la gauche et repart par la droite." },
+  },
+  {
+    id: 'btn-press',
+    cat: 'buttons',
+    tech: ['CSS'],
+    html: '<button class="lb-press" type="button"><span>Press me</span></button>',
+    title: { en: 'Pressable', fr: 'À enfoncer' },
+    note: { en: 'A key with depth: it rises a little when pointed at, and sinks when pressed.', fr: "Une touche avec de l'épaisseur : elle monte un peu au survol, et s'enfonce quand on appuie." },
+  },
+  {
+    id: 'btn-copy',
+    cat: 'buttons',
+    tech: ['CSS', 'JS', 'SVG'],
+    html: `<div class="lb-copy">
+  <code>npm create vite@latest</code>
+  <button type="button" aria-label="Copy the command">
+    <svg class="lb-copy-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h8"/></svg>
+    <svg class="lb-copy-done" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M5 12.5l4.5 4.5L19 7"/></svg>
+  </button>
+  <p class="lb-copy-status" role="status"></p>
+</div>`,
+    title: { en: 'Copy', fr: 'Copier' },
+    note: { en: 'Copies for real; the icon turns into a tick, and screen readers hear "Copied".', fr: "Copie pour de vrai ; l'icône devient une coche, et les lecteurs d'écran entendent « Copié »." },
+  },
+  {
+    id: 'btn-loading',
+    cat: 'buttons',
+    tech: ['CSS', 'JS', 'SVG'],
+    html: `<button class="lb-load" type="button">
+  <span class="lb-load-label">Save changes</span>
+  <span class="lb-load-spin" aria-hidden="true"></span>
+  <svg class="lb-load-done" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M5 12.5l4.5 4.5L19 7"/></svg>
+</button>
+<p class="lb-load-status" role="status"></p>`,
+    title: { en: 'Saving', fr: 'Enregistrement' },
+    note: { en: 'Click: the label gives way to a spinner, then to a tick. The button says it is busy, and the result is announced.', fr: "Au clic, le texte laisse place à un indicateur, puis à une coche. Le bouton signale qu'il travaille, et le résultat est annoncé." },
+  },
+  {
+    id: 'btn-expand',
+    cat: 'buttons',
+    tech: ['CSS', 'SVG'],
+    html: `<button class="lb-expand" type="button">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+  <span>Add to cart</span>
+</button>`,
+    title: { en: 'Expanding', fr: 'Qui se déploie' },
+    note: { en: 'A round icon button that opens into its full label on hover or focus. The name is always there for screen readers.', fr: "Un bouton rond qui s'ouvre sur son libellé complet au survol ou au focus. Le nom reste toujours lisible par les lecteurs d'écran." },
+  },
+  // Icons
+  {
+    id: 'icon-burger',
+    cat: 'icons',
+    tech: ['CSS', 'JS'],
+    html: `<button class="lb-burger" type="button" aria-expanded="false" aria-label="Menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>`,
+    title: { en: 'Menu to close', fr: 'Menu vers fermer' },
+    note: { en: 'Three lines fold into a cross. The state lives in aria-expanded, and the CSS reads it.', fr: "Trois traits se replient en croix. L'état vit dans aria-expanded, et le CSS le lit." },
+  },
+  {
+    id: 'icon-play',
+    cat: 'icons',
+    tech: ['CSS', 'JS', 'clip-path'],
+    html: `<button class="lb-play" type="button" aria-pressed="false" aria-label="Play">
+  <span class="lb-play-a"></span>
+  <span class="lb-play-b"></span>
+</button>`,
+    title: { en: 'Play and pause', fr: 'Lecture et pause' },
+    note: { en: 'Two halves of a triangle reshape into two bars: clip-path polygons with the same number of points can morph.', fr: "Deux moitiés de triangle deviennent deux barres : des polygones clip-path avec autant de points peuvent se transformer." },
+  },
+  {
+    id: 'icon-bell',
+    cat: 'icons',
+    tech: ['CSS', 'SVG'],
+    html: `<button class="lb-bell" type="button" aria-label="Notifications, 3 new">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path class="lb-bell-body" d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/>
+    <path class="lb-bell-clapper" d="M10 20.5a2 2 0 0 0 4 0"/>
+  </svg>
+  <span class="lb-bell-badge" aria-hidden="true">3</span>
+</button>`,
+    title: { en: 'Bell', fr: 'Cloche' },
+    note: { en: 'Rings now and then, the clapper a beat behind. The count is in the name, not only in the badge.', fr: 'Elle sonne de temps en temps, le battant en léger retard. Le nombre est dans le nom, pas seulement dans la pastille.' },
+  },
+  {
+    id: 'icon-trash',
+    cat: 'icons',
+    tech: ['CSS', 'SVG'],
+    html: `<button class="lb-trash" type="button" aria-label="Delete">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <g class="lb-trash-lid"><path d="M4 7h16"/><path d="M9 7V5h6v2"/></g>
+    <path d="M6.5 7l1 13h9l1-13"/>
+    <path d="M10 11v5M14 11v5"/>
+  </svg>
+</button>`,
+    title: { en: 'Delete', fr: 'Supprimer' },
+    note: { en: 'The lid lifts and tilts when pointed at: a small warning before the click.', fr: "Le couvercle se soulève et penche au survol : un petit avertissement avant le clic." },
+  },
+  {
+    id: 'icon-cart',
+    cat: 'icons',
+    tech: ['CSS', 'JS', 'SVG'],
+    html: `<div class="lb-cart">
+  <button class="lb-cart-add" type="button">Add to cart</button>
+  <span class="lb-cart-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 10.2a1 1 0 0 0 1 .8h8.6a1 1 0 0 0 1-.8L20 8H6.2"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></svg>
+    <span class="lb-cart-count">0</span>
+  </span>
+  <span class="lb-cart-item" aria-hidden="true"></span>
+  <p class="lb-cart-status" role="status"></p>
+</div>`,
+    title: { en: 'Add to cart', fr: 'Ajout au panier' },
+    note: { en: 'An item hops into the cart, the count bumps, and screen readers hear how many items it holds.', fr: "Un article saute dans le panier, le compteur bondit, et les lecteurs d'écran entendent combien il en contient." },
+  },
+  // Text, more
+  {
+    id: 'text-words',
+    cat: 'text',
+    tech: ['CSS'],
+    replay: true,
+    html: `<p class="lb-words">
+  <span class="lb-words-sr">Design that moves people</span>
+  <span aria-hidden="true"><span class="lb-word"><span style="--i:0">Design</span></span> <span class="lb-word"><span style="--i:1">that</span></span> <span class="lb-word"><span style="--i:2">moves</span></span> <span class="lb-word"><span style="--i:3">people</span></span></span>
+</p>`,
+    title: { en: 'Word by word', fr: 'Mot à mot' },
+    note: { en: 'Each word rises out of its own mask, one after the other, with a slight tilt that settles.', fr: "Chaque mot sort de son propre masque, l'un après l'autre, avec une légère inclinaison qui se redresse." },
+  },
+  {
+    id: 'text-glitch',
+    cat: 'text',
+    tech: ['CSS', 'clip-path'],
+    html: `<p class="lb-glitch">
+  <span>Signal lost</span>
+  <span aria-hidden="true">Signal lost</span>
+  <span aria-hidden="true">Signal lost</span>
+</p>`,
+    title: { en: 'Glitch', fr: 'Glitch' },
+    note: { en: 'Two shifted copies flicker through slices for a fraction of a second, then rest. Short and rare, so it never flashes.', fr: "Deux copies décalées clignotent par tranches une fraction de seconde, puis se reposent. Court et rare, pour ne jamais flasher." },
+  },
+  {
+    id: 'text-counter',
+    cat: 'text',
+    tech: ['CSS', 'JS'],
+    replay: true,
+    html: `<p class="lb-count">
+  <span class="lb-count-num" data-to="12480" aria-hidden="true">0</span>
+  <span class="lb-count-sr">12,480</span>
+  <span class="lb-count-label">orders shipped</span>
+</p>`,
+    title: { en: 'Counter', fr: 'Compteur' },
+    note: { en: 'Counts up when it comes into view, fast then slower. Screen readers get the final number straight away.', fr: "Compte jusqu'à sa valeur quand il apparaît, vite puis plus lentement. Les lecteurs d'écran ont le nombre final tout de suite." },
+  },
+  {
+    id: 'text-rotate',
+    cat: 'text',
+    tech: ['CSS'],
+    html: `<p class="lb-rotate">
+  <span class="lb-rotate-sr">I build websites, stores and apps.</span>
+  <span aria-hidden="true">I build <span class="lb-rotate-words"><span>websites</span><span>stores</span><span>apps</span><span>websites</span></span></span>
+</p>`,
+    title: { en: 'Rotating words', fr: 'Mots qui tournent' },
+    note: { en: 'The last word rolls through a list and loops seamlessly (the first word is repeated at the end).', fr: 'Le dernier mot défile dans une liste et boucle sans à-coup (le premier mot est répété à la fin).' },
+  },
+  {
+    id: 'text-outline',
+    cat: 'text',
+    tech: ['CSS'],
+    html: '<p class="lb-outline">Fill me up</p>',
+    title: { en: 'Outline fill', fr: 'Contour qui se remplit' },
+    note: { en: 'An outlined title fills with colour from left to right, then empties again: a background clipped to the text.', fr: "Un titre en contour se remplit de couleur de gauche à droite, puis se vide : un fond découpé à la forme du texte." },
+  },
+  {
+    id: 'text-price',
+    cat: 'text',
+    tech: ['CSS'],
+    replay: true,
+    html: `<p class="lb-price">
+  <span class="lb-price-old"><span class="lb-price-sr">Was</span> $1,249</span>
+  <span class="lb-price-new"><span class="lb-price-sr">Now</span> $999</span>
+  <span class="lb-price-tag">Save 20%</span>
+</p>`,
+    title: { en: 'Price drop', fr: 'Prix barré' },
+    note: { en: 'For a sale: the old price is struck through and steps back, the new one pops in, then the saving.', fr: "Pour une promotion : l'ancien prix se barre et recule, le nouveau surgit, puis l'économie." },
+  },
+  // Loaders, more
+  {
+    id: 'loader-ring',
+    cat: 'loaders',
+    tech: ['CSS', 'mask'],
+    html: '<div class="lb-ring" role="status" aria-label="Loading"></div>',
+    title: { en: 'Gradient ring', fr: 'Anneau dégradé' },
+    note: { en: 'A conic gradient fading into its own tail, cut into a ring by a radial mask, turning.', fr: 'Un dégradé conique qui se fond dans sa propre traîne, découpé en anneau par un masque radial, qui tourne.' },
+  },
+  {
+    id: 'loader-pulse',
+    cat: 'loaders',
+    tech: ['CSS'],
+    html: `<div class="lb-pulse" role="status" aria-label="Searching">${each(3, 'span', '')}<i></i>
+</div>`,
+    title: { en: 'Radar', fr: 'Radar' },
+    note: { en: 'Three rings leave the centre one after the other and fade as they grow: for searching, scanning, pairing.', fr: "Trois anneaux quittent le centre l'un après l'autre et s'effacent en grandissant : pour une recherche, un scan, un appairage." },
+  },
+  {
+    id: 'loader-skeleton',
+    cat: 'loaders',
+    tech: ['CSS'],
+    html: `<div class="lb-skel" role="status" aria-label="Loading a profile">
+  <span class="lb-skel-avatar"></span>
+  <span class="lb-skel-line"></span>
+  <span class="lb-skel-line"></span>
+  <span class="lb-skel-line"></span>
+</div>`,
+    title: { en: 'Skeleton', fr: 'Squelette' },
+    note: { en: 'The shape of the content before the content: one light sweeps across every block at once.', fr: "La forme du contenu avant le contenu : une seule lumière balaie tous les blocs à la fois." },
+  },
+  {
+    id: 'loader-progress',
+    cat: 'loaders',
+    tech: ['CSS'],
+    html: `<div class="lb-progress" role="progressbar" aria-label="Uploading">
+  <span></span>
+  <span></span>
+</div>`,
+    title: { en: 'Indeterminate bar', fr: 'Barre indéterminée' },
+    note: { en: 'Two segments chase each other, one long, one short: progress without a known end (no aria-valuenow).', fr: "Deux segments se poursuivent, un long, un court : une progression sans fin connue (pas d'aria-valuenow)." },
+  },
+  {
+    id: 'loader-bounce',
+    cat: 'loaders',
+    tech: ['CSS'],
+    html: `<div class="lb-bounce" role="status" aria-label="Loading">
+  <span class="lb-bounce-ball"></span>
+  <span class="lb-bounce-shadow"></span>
+</div>`,
+    title: { en: 'Bouncing ball', fr: 'Balle qui rebondit' },
+    note: { en: 'Squash and stretch: the ball flattens on the ground and stretches in the air; its shadow follows.', fr: "Écrasement et étirement : la balle s'aplatit au sol et s'allonge en l'air ; son ombre suit." },
+  },
+  {
+    id: 'loader-infinity',
+    cat: 'loaders',
+    tech: ['CSS', 'SVG'],
+    html: `<div class="lb-inf" role="status" aria-label="Loading">
+  <svg viewBox="0 0 120 60" aria-hidden="true">
+    <path class="lb-inf-track" d="M60 30C70 15 95 12 95 30S70 45 60 30 25 12 25 30s25 15 35 0"/>
+    <path class="lb-inf-run" pathLength="100" d="M60 30C70 15 95 12 95 30S70 45 60 30 25 12 25 30s25 15 35 0"/>
+  </svg>
+</div>`,
+    title: { en: 'Infinity', fr: 'Infini' },
+    note: { en: 'A stroke runs around an infinity sign, forever: a dash moved along the path by its offset.', fr: "Un trait parcourt un signe infini, sans fin : un tiret déplacé le long du tracé par son décalage." },
+  },
+  // Cards, more
+  {
+    id: 'card-fan',
+    cat: 'cards',
+    tech: ['CSS', '@property'],
+    html: `<div class="lb-fan" role="img" aria-label="Three cards fanning out and closing again">
+  <span style="--i:-1"></span>
+  <span style="--i:0"></span>
+  <span style="--i:1"></span>
+</div>`,
+    title: { en: 'Fan', fr: 'Éventail' },
+    note: { en: 'Three cards open like a hand of cards and close again. One typed property drives the angle and the spread of all three.', fr: "Trois cartes s'ouvrent comme une main de jeu, puis se referment. Une seule propriété typée règle l'angle et l'écart des trois." },
+  },
+  {
+    id: 'card-product',
+    cat: 'cards',
+    tech: ['CSS'],
+    html: `<div class="lb-product">
+  <div class="lb-product-media" aria-hidden="true">
+    <span class="lb-product-front"></span>
+    <span class="lb-product-side"></span>
+  </div>
+  <p class="lb-product-name">Turntable, walnut</p>
+  <p class="lb-product-price">$1,099</p>
+  <button class="lb-product-add" type="button">Add to cart</button>
+</div>`,
+    title: { en: 'Product card', fr: 'Carte produit' },
+    note: { en: 'Pointed at, the photo turns to a second view and the button slides up. On a touch screen, the button is simply there.', fr: "Au survol, la photo passe à une deuxième vue et le bouton remonte. Sur un écran tactile, le bouton est simplement là." },
+  },
+  {
+    id: 'card-pricing',
+    cat: 'cards',
+    tech: ['CSS', 'JS'],
+    html: `<div class="lb-pricing">
+  <fieldset class="lb-pricing-switch">
+    <legend class="lb-pricing-sr">Billing</legend>
+    <label><input type="radio" name="lb-billing" value="month" checked><span>Monthly</span></label>
+    <label><input type="radio" name="lb-billing" value="year"><span>Yearly</span></label>
+  </fieldset>
+  <p class="lb-pricing-price"><span class="lb-pricing-amount" data-month="29" data-year="23">$29</span> per month</p>
+  <p class="lb-pricing-note">Billed monthly</p>
+</div>`,
+    title: { en: 'Pricing switch', fr: 'Choix de facturation' },
+    note: { en: 'Two real radio buttons. Switching rolls the old price out and the new one in.', fr: "Deux vrais boutons radio. En changeant, l'ancien prix sort en roulant et le nouveau entre." },
+  },
+  {
+    id: 'card-gallery',
+    cat: 'cards',
+    tech: ['CSS', 'JS'],
+    html: `<div class="lb-gallery">
+  <button class="lb-gallery-panel" type="button" aria-pressed="true" style="--a:#ff9a62;--b:#c4467a"><span>Dawn</span></button>
+  <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#4ae0d2;--b:#1f5fa8"><span>Sea</span></button>
+  <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#c5f04a;--b:#1f7a4d"><span>Forest</span></button>
+  <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#8f6bff;--b:#1d1650"><span>Night</span></button>
+</div>`,
+    title: { en: 'Expanding gallery', fr: 'Galerie extensible' },
+    note: { en: 'The panel pointed at (or chosen) widens, the others make room; its label slides in.', fr: "Le panneau survolé (ou choisi) s'élargit, les autres lui font de la place ; son nom apparaît." },
+  },
+  {
+    id: 'card-stack',
+    cat: 'cards',
+    tech: ['CSS'],
+    html: `<ul class="lb-notes" tabindex="0" aria-label="Notifications">
+  <li style="--i:0"><strong>Order shipped</strong><span>Arrives on Thursday</span></li>
+  <li style="--i:1"><strong>New review</strong><span>Five stars: great sound</span></li>
+  <li style="--i:2"><strong>Payment received</strong><span>$1,099, thank you</span></li>
+</ul>`,
+    title: { en: 'Notification stack', fr: 'Pile de notifications' },
+    note: { en: 'Stacked, the newest in front; pointed at or focused, the stack spreads into a list.', fr: "Empilées, la plus récente devant ; au survol ou au focus, la pile s'étale en liste." },
+  },
+  // Navigation
+  {
+    id: 'nav-tabs',
+    cat: 'navigation',
+    tech: ['CSS', 'JS'],
+    html: `<div class="lb-tabs">
+  <div class="lb-tabs-list" role="tablist" aria-label="Product details">
+    <button id="lb-tab-1" role="tab" aria-selected="true" aria-controls="lb-panel-1" type="button">Overview</button>
+    <button id="lb-tab-2" role="tab" aria-selected="false" aria-controls="lb-panel-2" type="button" tabindex="-1">Specs</button>
+    <button id="lb-tab-3" role="tab" aria-selected="false" aria-controls="lb-panel-3" type="button" tabindex="-1">Reviews</button>
+    <span class="lb-tabs-ink" aria-hidden="true"></span>
+  </div>
+  <div id="lb-panel-1" role="tabpanel" aria-labelledby="lb-tab-1" tabindex="0">Everything you need to start.</div>
+  <div id="lb-panel-2" role="tabpanel" aria-labelledby="lb-tab-2" tabindex="0" hidden>33 and 45 rpm, belt drive.</div>
+  <div id="lb-panel-3" role="tabpanel" aria-labelledby="lb-tab-3" tabindex="0" hidden>4.8 out of 5, from 212 reviews.</div>
+</div>`,
+    title: { en: 'Tabs', fr: 'Onglets' },
+    note: { en: 'Real tabs: arrow keys move between them, Home and End jump. The line slides to the chosen one.', fr: "De vrais onglets : les flèches passent de l'un à l'autre, Début et Fin vont aux extrémités. Le trait glisse sous l'onglet choisi." },
+  },
+  {
+    id: 'nav-accordion',
+    cat: 'navigation',
+    tech: ['CSS', 'details'],
+    html: `<div class="lb-acc">
+  <details name="lb-acc" open>
+    <summary>Shipping</summary>
+    <p>Free over $100, in one to three days.</p>
+  </details>
+  <details name="lb-acc">
+    <summary>Returns</summary>
+    <p>Thirty days, no questions asked.</p>
+  </details>
+  <details name="lb-acc">
+    <summary>Warranty</summary>
+    <p>Two years, parts and labour.</p>
+  </details>
+</div>`,
+    title: { en: 'Accordion', fr: 'Accordéon' },
+    note: { en: 'No script: native details, one open at a time (the name attribute), and a height that animates to auto.', fr: "Sans script : des details natifs, un seul ouvert à la fois (l'attribut name), et une hauteur qui s'anime jusqu'à auto." },
+  },
+  {
+    id: 'nav-underline',
+    cat: 'navigation',
+    tech: ['CSS', 'JS'],
+    html: `<nav class="lb-navline" aria-label="Sample menu">
+  <a href="#" aria-current="page">Home</a>
+  <a href="#">Work</a>
+  <a href="#">About</a>
+  <a href="#">Contact</a>
+  <span class="lb-navline-ink" aria-hidden="true"></span>
+</nav>`,
+    title: { en: 'Sliding underline', fr: 'Soulignement qui glisse' },
+    note: { en: 'The line follows the pointer or the focus from link to link, and goes back to the current page when it leaves.', fr: "Le trait suit le curseur ou le focus de lien en lien, et revient sur la page courante quand il s'en va." },
+  },
+  {
+    id: 'nav-segmented',
+    cat: 'navigation',
+    tech: ['CSS', ':has()'],
+    html: `<fieldset class="lb-seg">
+  <legend class="lb-seg-sr">View</legend>
+  <label><input type="radio" name="lb-seg" value="day" checked><span>Day</span></label>
+  <label><input type="radio" name="lb-seg" value="week"><span>Week</span></label>
+  <label><input type="radio" name="lb-seg" value="month"><span>Month</span></label>
+  <span class="lb-seg-pill" aria-hidden="true"></span>
+</fieldset>`,
+    title: { en: 'Segmented control', fr: 'Contrôle segmenté' },
+    note: { en: 'Radio buttons underneath, so the keyboard works for free; :has() moves the pill to the checked one. No script.', fr: "Des boutons radio dessous, donc le clavier marche d'office ; :has() déplace la pastille vers l'option cochée. Sans script." },
+  },
+  {
+    id: 'nav-slides',
+    cat: 'navigation',
+    tech: ['CSS', 'JS'],
+    html: `<div class="lb-slides">
+  <div class="lb-slides-window">
+    <div class="lb-slides-track">
+      <span style="--c:#c5f04a">1</span>
+      <span style="--c:#4ae0d2">2</span>
+      <span style="--c:#8f6bff">3</span>
+      <span style="--c:#ff9a62">4</span>
+    </div>
+  </div>
+  <div class="lb-slides-dots" role="group" aria-label="Slides">
+    <button type="button" aria-label="Slide 1" aria-current="true"></button>
+    <button type="button" aria-label="Slide 2"></button>
+    <button type="button" aria-label="Slide 3"></button>
+    <button type="button" aria-label="Slide 4"></button>
+  </div>
+</div>`,
+    title: { en: 'Slides and dots', fr: 'Diapositives et points' },
+    note: { en: 'The current dot stretches into a pill; the slides follow. Nothing moves on its own.', fr: "Le point courant s'étire en pastille ; les diapositives suivent. Rien ne bouge tout seul." },
+  },
+  {
+    id: 'nav-menu',
+    cat: 'navigation',
+    tech: ['CSS', 'JS'],
+    html: `<div class="lb-menu">
+  <button class="lb-menu-button" type="button" aria-expanded="false" aria-controls="lb-menu-list">
+    Products
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+  </button>
+  <ul id="lb-menu-list" class="lb-menu-list">
+    <li style="--i:0"><a href="#">Turntables</a></li>
+    <li style="--i:1"><a href="#">Speakers</a></li>
+    <li style="--i:2"><a href="#">Cartridges</a></li>
+    <li style="--i:3"><a href="#">Accessories</a></li>
+  </ul>
+</div>`,
+    title: { en: 'Dropdown', fr: 'Menu déroulant' },
+    note: { en: 'The items arrive one after the other. Escape or a click outside closes it, and the focus goes back to the button.', fr: "Les éléments arrivent l'un après l'autre. Échap ou un clic à côté le ferme, et le focus revient au bouton." },
+  },
+  // Inputs, more
+  {
+    id: 'input-search',
+    cat: 'inputs',
+    tech: ['CSS', ':has()'],
+    html: `<label class="lb-search">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+  <span class="lb-search-sr">Search the shop</span>
+  <input type="search" placeholder="Search the shop">
+</label>`,
+    title: { en: 'Expanding search', fr: 'Recherche qui s\'ouvre' },
+    note: { en: 'A round button that opens into a field when clicked or tabbed to, and stays open while it holds text. No script.', fr: "Un bouton rond qui s'ouvre en champ au clic ou à la tabulation, et reste ouvert tant qu'il contient du texte. Sans script." },
+  },
+  {
+    id: 'input-password',
+    cat: 'inputs',
+    tech: ['CSS', 'JS', 'SVG'],
+    html: `<div class="lb-pass">
+  <label for="lb-pass-input">Password</label>
+  <div class="lb-pass-field">
+    <input id="lb-pass-input" type="password" value="vinyl-forever" autocomplete="off">
+    <button type="button" aria-pressed="false" aria-label="Show password">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/>
+        <circle cx="12" cy="12" r="3"/>
+        <path class="lb-pass-slash" pathLength="1" d="M4 4l16 16"/>
+      </svg>
+    </button>
+  </div>
+</div>`,
+    title: { en: 'Show password', fr: 'Afficher le mot de passe' },
+    note: { en: 'The eye blinks and its slash draws or withdraws. A real toggle: aria-pressed says whether the password shows.', fr: "L'œil cligne et sa barre se trace ou se retire. Un vrai bouton à bascule : aria-pressed dit si le mot de passe est visible." },
+  },
+  {
+    id: 'input-otp',
+    cat: 'inputs',
+    tech: ['CSS', 'JS'],
+    html: `<fieldset class="lb-otp">
+  <legend>Enter the code we sent</legend>
+  <div class="lb-otp-boxes">
+    <input inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1">
+    <input inputmode="numeric" maxlength="1" aria-label="Digit 2">
+    <input inputmode="numeric" maxlength="1" aria-label="Digit 3">
+    <input inputmode="numeric" maxlength="1" aria-label="Digit 4">
+  </div>
+  <p class="lb-otp-status" role="status"></p>
+</fieldset>`,
+    title: { en: 'One-time code', fr: 'Code à usage unique' },
+    note: { en: 'Type and the focus moves on, Backspace goes back, a paste fills every box. Complete, the boxes light up in a wave.', fr: "On tape et le focus avance, Retour arrière recule, un collage remplit toutes les cases. Complet, les cases s'allument en vague." },
+  },
+  {
+    id: 'input-range',
+    cat: 'inputs',
+    tech: ['CSS', 'JS'],
+    html: `<div class="lb-range">
+  <label for="lb-range-input">Volume</label>
+  <div class="lb-range-track" style="--v:40">
+    <input id="lb-range-input" type="range" min="0" max="100" value="40">
+    <output for="lb-range-input">40</output>
+  </div>
+</div>`,
+    title: { en: 'Range with a bubble', fr: 'Curseur avec bulle' },
+    note: { en: 'A native range input, restyled: the track fills up to the thumb and a bubble shows the value, bigger while you drag.', fr: "Un curseur natif, restylé : la piste se remplit jusqu'au curseur et une bulle montre la valeur, plus grande pendant le glissement." },
+  },
+  {
+    id: 'input-rating',
+    cat: 'inputs',
+    tech: ['CSS', ':has()'],
+    html: `<fieldset class="lb-rate">
+  <legend>Rate this product</legend>
+  <div class="lb-rate-stars">${[1, 2, 3, 4, 5].map((n) => `
+    <label><input type="radio" name="lb-rate" value="${n}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9-5.4 2.9 1.1-6-4.5-4.2 6.1-.8z"/></svg><span>${n} star${n > 1 ? 's' : ''}</span></label>`).join('')}
+  </div>
+</fieldset>`,
+    title: { en: 'Star rating', fr: 'Notation en étoiles' },
+    note: { en: 'Five radio buttons. Pointing lights the stars up to the one under the pointer; choosing one makes it pop. No script.', fr: "Cinq boutons radio. Le survol allume les étoiles jusqu'à celle pointée ; en choisir une la fait bondir. Sans script." },
+  },
+  // Feedback, more
+  {
+    id: 'fb-confetti',
+    cat: 'feedback',
+    tech: ['CSS', 'JS'],
+    html: `<div class="lb-confetti">
+  <button type="button">Celebrate</button>
+</div>`,
+    title: { en: 'Confetti', fr: 'Confettis' },
+    note: { en: 'Thirty pieces burst from the button, each with its own angle, speed, spin and colour, then fall and vanish.', fr: "Trente morceaux jaillissent du bouton, chacun avec son angle, sa vitesse, sa rotation et sa couleur, puis retombent et disparaissent." },
+  },
+  {
+    id: 'fb-shake',
+    cat: 'feedback',
+    tech: ['CSS', 'JS'],
+    html: `<form class="lb-shake" novalidate>
+  <label for="lb-shake-email">Email</label>
+  <div class="lb-shake-row">
+    <input id="lb-shake-email" type="email" placeholder="you@example.com" aria-describedby="lb-shake-message">
+    <button type="submit">Join</button>
+  </div>
+  <p id="lb-shake-message" class="lb-shake-message" aria-live="polite"></p>
+</form>`,
+    title: { en: 'Error shake', fr: 'Erreur qui secoue' },
+    note: { en: 'Submit it empty: the field shakes, turns red and says why, the focus goes back to it. A valid email gets a thank you.', fr: "Envoyez-le vide : le champ tremble, passe au rouge et dit pourquoi, le focus y revient. Un email valide reçoit un merci." },
+  },
+  {
+    id: 'fb-steps',
+    cat: 'feedback',
+    tech: ['CSS', 'JS'],
+    html: `<div class="lb-steps">
+  <ol class="lb-steps-list" style="--step:0">
+    <li aria-current="step"><span>Cart</span></li>
+    <li><span>Shipping</span></li>
+    <li><span>Payment</span></li>
+  </ol>
+  <div class="lb-steps-actions">
+    <button type="button" data-step="-1" disabled>Back</button>
+    <button type="button" data-step="1">Next</button>
+  </div>
+</div>`,
+    title: { en: 'Steps', fr: 'Étapes' },
+    note: { en: 'The line fills towards the next step, done steps get a tick, and aria-current says where you are.', fr: "Le trait se remplit vers l'étape suivante, les étapes faites reçoivent une coche, et aria-current dit où l'on en est." },
+  },
+  {
+    id: 'fb-tooltip',
+    cat: 'feedback',
+    tech: ['CSS', 'JS'],
+    html: `<div class="lb-tip">
+  <button type="button" aria-describedby="lb-tip-text">Shipping</button>
+  <span id="lb-tip-text" role="tooltip">Free over $100, in 1 to 3 days</span>
+</div>`,
+    title: { en: 'Tooltip', fr: 'Infobulle' },
+    note: { en: 'Springs in on hover or focus, stays while the pointer is on it, and Escape dismisses it, as WCAG 1.4.13 asks.', fr: "Elle surgit au survol ou au focus, reste tant que le curseur est dessus, et Échap la ferme, comme le demande le critère WCAG 1.4.13." },
+  },
+  // Scroll, more
+  {
+    id: 'scroll-reveal',
+    cat: 'scroll',
+    tech: ['CSS', 'scroll-driven'],
+    html: `<div class="lb-reveal" role="region" tabindex="0" aria-label="Sample list, scroll it">
+  <p>Scroll this box</p>${['Design', 'Prototype', 'Build', 'Test', 'Launch', 'Measure'].map((step, i) => `
+  <div class="lb-reveal-item" style="--i:${i}">${step}</div>`).join('')}
+</div>`,
+    title: { en: 'Reveal on scroll', fr: 'Apparition au défilement' },
+    note: { en: 'Each row fades and slides in as it enters the box: a view timeline, no observer, no script.', fr: "Chaque ligne apparaît en glissant quand elle entre dans la boîte : une view timeline, ni observateur, ni script." },
+  },
+  {
+    id: 'scroll-parallax',
+    cat: 'scroll',
+    tech: ['CSS', 'scroll-driven'],
+    html: `<div class="lb-plx" role="region" tabindex="0" aria-label="A landscape, scroll it">
+  <div class="lb-plx-scene" aria-hidden="true">
+    <span class="lb-plx-sun"></span>
+    <span class="lb-plx-far"></span>
+    <span class="lb-plx-near"></span>
+  </div>
+  <div class="lb-plx-length"></div>
+</div>`,
+    title: { en: 'Parallax', fr: 'Parallaxe' },
+    note: { en: 'Scroll the box: the far hills move slowly, the near ones fast, the sun sets. All driven by the box\'s own scroll.', fr: "Faites défiler la boîte : les collines lointaines bougent lentement, les proches vite, le soleil se couche. Tout est piloté par le défilement de la boîte." },
+  },
+  {
+    id: 'scroll-carousel',
+    cat: 'scroll',
+    tech: ['CSS', 'scroll-driven', 'scroll-snap'],
+    html: `<div class="lb-snap" role="region" tabindex="0" aria-label="Carousel, scroll it sideways">${['#c5f04a', '#4ae0d2', '#8f6bff', '#ff9a62', '#ff5f7e', '#c5f04a'].map((c, i) => `
+  <span style="--c:${c}">${i + 1}</span>`).join('')}
+</div>`,
+    title: { en: 'Snap carousel', fr: 'Carrousel aimanté' },
+    note: { en: 'Swipe or scroll sideways: each card snaps to the centre, and grows as it gets there (a view timeline on the inline axis).', fr: "Balayez ou faites défiler de côté : chaque carte s'aimante au centre, et grandit en y arrivant (une view timeline sur l'axe horizontal)." },
+  },
+  // Backgrounds
+  {
+    id: 'bg-aurora',
+    cat: 'backgrounds',
+    tech: ['CSS'],
+    html: `<div class="lb-aurora" role="img" aria-label="Soft colours drifting like an aurora">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>`,
+    title: { en: 'Aurora', fr: 'Aurore' },
+    note: { en: 'Three soft lights drift and blend. Radial gradients fading to transparent, not blur filters, so it stays light to draw.', fr: "Trois lumières douces dérivent et se mêlent. Des dégradés radiaux qui s'estompent, pas des filtres de flou, pour rester léger à dessiner." },
+  },
+  {
+    id: 'bg-grid',
+    cat: 'backgrounds',
+    tech: ['CSS', '@property', 'mask'],
+    html: '<div class="lb-gridglow" role="img" aria-label="A grid lit by a moving glow"></div>',
+    title: { en: 'Grid glow', fr: 'Grille lumineuse' },
+    note: { en: 'A second, bright grid sits on the first, seen only through a round mask that wanders across.', fr: "Une seconde grille, vive, recouvre la première, visible seulement à travers un masque rond qui se promène." },
+  },
+  {
+    id: 'bg-mesh',
+    cat: 'backgrounds',
+    tech: ['CSS', '@property'],
+    html: '<div class="lb-mesh" role="img" aria-label="A gradient slowly shifting its colours"></div>',
+    title: { en: 'Living gradient', fr: 'Dégradé vivant' },
+    note: { en: 'Four radial gradients whose centres are typed properties, each on its own slow loop: the colours never repeat the same way.', fr: "Quatre dégradés radiaux dont les centres sont des propriétés typées, chacun sur sa propre boucle lente : les couleurs ne se répètent jamais pareil." },
+  },
+  {
+    id: 'bg-waves',
+    cat: 'backgrounds',
+    tech: ['CSS'],
+    html: `<div class="lb-waves" role="img" aria-label="Waves rolling by">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>`,
+    title: { en: 'Waves', fr: 'Vagues' },
+    note: { en: 'Three rows of waves, each a repeating radial gradient, rolling at three speeds for depth.', fr: "Trois rangées de vagues, chacune un dégradé radial répété, qui roulent à trois vitesses pour la profondeur." },
+  },
+  // From my archive (CodePen), rebuilt
+  {
+    id: 'arch-magnifier',
+    cat: 'archive',
+    tech: ['CSS', 'JS', '@property'],
+    html: `<div class="lb-loupe" role="img" aria-label="A magnifying glass passes over a bank card and enlarges its numbers">
+  <div class="lb-loupe-scene">
+    <div class="lb-loupe-card"><i></i><b>0000 0000 0000</b><u></u></div>
+  </div>
+  <div class="lb-loupe-lens">
+    <div class="lb-loupe-scene">
+      <div class="lb-loupe-card"><i></i><b>0000 0000 0000</b><u></u></div>
+    </div>
+  </div>
+</div>`,
+    title: { en: 'Magnifying glass', fr: 'Loupe' },
+    note: { en: 'From my CodePen: the glass used to slide by changing margins. Now it truly magnifies (a scaled copy seen through the lens), moves on a smooth path, and follows the pointer.', fr: "Tirée de mon CodePen : la loupe glissait en changeant des marges. Elle grossit maintenant pour de vrai (une copie agrandie vue à travers la lentille), suit un trajet fluide, et suit le curseur." },
+  },
+  {
+    id: 'arch-cat',
+    cat: 'archive',
+    tech: ['CSS'],
+    html: `<div class="lb-cat" role="img" aria-label="A lucky cat waving its paw">
+  <span class="lb-cat-tail"></span>
+  <span class="lb-cat-body"></span>
+  <span class="lb-cat-paw"></span>
+  <span class="lb-cat-head">
+    <i class="lb-cat-ear"></i>
+    <i class="lb-cat-ear"></i>
+    <i class="lb-cat-eye"></i>
+    <i class="lb-cat-eye"></i>
+    <i class="lb-cat-nose"></i>
+  </span>
+  <span class="lb-cat-collar"><i></i></span>
+  <span class="lb-cat-coin"></span>
+</div>`,
+    title: { en: 'Lucky cat', fr: 'Chat porte-bonheur' },
+    note: { en: 'From my CodePen, redrawn as my own character, in CSS shapes only: the paw waves, the tail swishes, the bell swings.', fr: "Tiré de mon CodePen, redessiné en personnage à moi, uniquement en formes CSS : la patte salue, la queue balance, le grelot oscille." },
+  },
+  {
+    id: 'arch-water',
+    cat: 'archive',
+    tech: ['CSS'],
+    html: `<div class="lb-tube" role="img" aria-label="A test tube two thirds full of bubbling water">
+  <div class="lb-tube-glass">
+    <span class="lb-tube-water"></span>
+    <span class="lb-tube-wave"></span>
+    <span class="lb-tube-wave"></span>${each(5, 'i', '    ').replace(/\n {4}$/, '')}
+  </div>
+  <span class="lb-tube-level">65%</span>
+</div>`,
+    title: { en: 'Bubbly water', fr: 'Eau pétillante' },
+    note: { en: 'From my CodePen, where the surface was a morphing SVG path. Now two turning rounded squares make the wave, and bubbles rise at their own pace.', fr: "Tirée de mon CodePen, où la surface était un tracé SVG qui se déformait. Deux carrés arrondis qui tournent font maintenant la vague, et les bulles montent chacune à son rythme." },
+  },
+  {
+    id: 'arch-globe',
+    cat: 'archive',
+    tech: ['CSS', 'JS'],
+    html: `<div class="lb-globe-band">
+  <p class="lb-globe-stat"><strong data-to="160">160</strong> countries</p>
+  <p class="lb-globe-stat"><strong data-to="35">35</strong> cities</p>
+  <div class="lb-globe" role="img" aria-label="A spinning globe"></div>
+  <p class="lb-globe-stat"><strong data-to="12">12</strong>k users</p>
+  <p class="lb-globe-stat"><strong data-to="98">98</strong>% uptime</p>
+</div>`,
+    title: { en: 'Globe and figures', fr: 'Globe et chiffres' },
+    note: { en: 'From my CodePen, which spun a photo of the Earth. Now the globe is drawn in CSS (a sliding map under an inner shadow), and the figures count up when they come into view.', fr: "Tiré de mon CodePen, qui faisait tourner une photo de la Terre. Le globe est maintenant dessiné en CSS (une carte qui glisse sous une ombre intérieure), et les chiffres comptent quand ils apparaissent." },
+  },
+  {
+    id: 'arch-rings',
+    cat: 'archive',
+    tech: ['CSS', 'JS'],
+    html: `<nav class="lb-rings" aria-label="Games">
+  <button type="button" aria-expanded="false" aria-controls="lb-rings-list"><span>Games</span></button>
+  <ul id="lb-rings-list">
+    <li style="--i:0"><a href="#"><span>Eons</span></a></li>
+    <li style="--i:1"><a href="#"><span>Towerz</span></a></li>
+    <li style="--i:2"><a href="#"><span>All games</span></a></li>
+  </ul>
+</nav>`,
+    title: { en: 'Corner rings', fr: 'Anneaux en coin' },
+    note: { en: 'From my CodePen (a games menu for a studio): rings swing out of the corner with a little overshoot. Now a real disclosure: closed rings are out of the tab order, Escape closes.', fr: "Tiré de mon CodePen (un menu de jeux pour un studio) : les anneaux sortent du coin en pivotant, avec un léger rebond. Maintenant un vrai bouton d'ouverture : fermés, les anneaux sortent de la tabulation, Échap referme." },
+  },
+  {
+    id: 'arch-signal',
+    cat: 'archive',
+    tech: ['CSS', 'SVG'],
+    html: `<div class="lb-signal" role="status" aria-label="Connecting">
+  <svg viewBox="0 0 48 48" aria-hidden="true">
+    <circle cx="12" cy="36" r="5"/>
+    <path d="M12 22a14 14 0 0 1 14 14"/>
+    <path d="M12 10a26 26 0 0 1 26 26"/>
+  </svg>
+</div>`,
+    title: { en: 'Signal', fr: 'Signal' },
+    note: { en: 'From my CodePen, where a logo lit up its arcs. Kept the idea, made it neutral: the dot, then each arc, lights up in turn.', fr: "Tiré de mon CodePen, où un logo allumait ses arcs. L'idée est gardée, rendue neutre : le point, puis chaque arc, s'allument tour à tour." },
+  },
+  {
+    id: 'arch-mask',
+    cat: 'archive',
+    tech: ['CSS', 'SVG'],
+    html: `<div class="lb-wipe" role="img" aria-label="A page transition: waves of colour sweep across and reveal the next page">
+  <div class="lb-wipe-page"><b>Home</b><span></span><span></span></div>
+  <div class="lb-wipe-page lb-wipe-next"><b>About</b><span></span><span></span></div>
+  <svg class="lb-wipe-wave" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M20 0h180v100H20C0 80 34 62 16 46S8 12 20 0z"/></svg>
+  <svg class="lb-wipe-wave" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M20 0h180v100H20C0 80 34 62 16 46S8 12 20 0z"/></svg>
+</div>`,
+    title: { en: 'Wave transition', fr: 'Transition en vagues' },
+    note: { en: 'From my CodePen "The Mask": two waves of colour sweep across a page and reveal the next one. Rebuilt as one short timeline, with a long rest between two passes.', fr: "Tirée de mon CodePen « The Mask » : deux vagues de couleur balaient une page et révèlent la suivante. Refaite en une seule timeline courte, avec une longue pause entre deux passages." },
+  },
 ]
+
+// Shown category by category, in the order of CATEGORIES
+export const DEMOS = CATEGORIES.flatMap((cat) => LIST.filter((demo) => demo.cat === cat))
+if (DEMOS.length !== LIST.length) throw new Error('lab: a demo has an unknown category')

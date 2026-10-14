@@ -12,25 +12,114 @@
   color: var(--text-2);
 }
 
-.lab-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 48px;
+/* The filters stay on screen: a column on the left on a wide screen, a bar
+   under the header on a narrow one (search and pause then sit above the
+   grid, so the bar stays one row high) */
+.lab-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  margin-top: 40px;
+}
+
+.lab-side {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 5;
+  margin-inline: calc(-1 * var(--gutter));
+  padding: 10px var(--gutter);
+  border-bottom: 1px solid var(--border);
+  background: rgb(11 11 16 / 0.88);
+  backdrop-filter: blur(12px);
+}
+
+.lab-side-wide {
+  display: none;
 }
 
 .lab-filters {
   display: flex;
-  flex-wrap: wrap;
   gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.lab-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.lab-tools-narrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.lab-tools-narrow .lab-search {
+  flex: 1 1 220px;
+}
+
+/* No scroll anchoring here: when a filter swaps the cards, the browser
+   would jump to an anchor of its own choosing (often the top of the page).
+   The page script brings the results into view instead. */
+.lab-main {
+  min-width: 0;
+  overflow-anchor: none;
+  /* the page already leaves room for the header (scroll-padding-top on
+     html); this adds the filter bar above the results on a phone */
+  scroll-margin-top: 52px;
+}
+
+.lab-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lab-search svg {
+  position: absolute;
+  left: 15px;
+  color: var(--text-2);
+  pointer-events: none;
+}
+
+.lab-search input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 16px 0 42px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 14.5px;
+}
+
+.lab-search input::placeholder {
+  color: var(--text-2);
+}
+
+.lab-search input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.lab-empty {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+  margin-top: 28px;
+  color: var(--text-2);
 }
 
 .lab-chip,
 .lab-pause,
 .lab-action {
   display: inline-flex;
+  flex-shrink: 0;
+  white-space: nowrap;
   align-items: center;
   gap: 8px;
   min-height: 40px;
@@ -60,9 +149,13 @@
 }
 
 .lab-chip-count {
+  color: var(--text-2);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
-  opacity: 0.7;
+}
+
+.lab-chip[aria-pressed='true'] .lab-chip-count {
+  color: inherit;
 }
 
 .lab-pause[aria-pressed='true'] {
@@ -72,16 +165,85 @@
 
 .lab-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 264px), 1fr));
   gap: 20px;
-  margin-top: 28px;
   list-style: none;
 }
 
+/* Wide screens: the filters become a column on the left */
+@media (min-width: 1024px) {
+  .lab-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+    align-items: start;
+    gap: 40px;
+  }
+
+  .lab-side {
+    top: calc(var(--header-h) + 24px);
+    display: grid;
+    /* the column keeps its width, whatever the length of a label in it */
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    max-height: calc(100vh - var(--header-h) - 48px);
+    margin: 0;
+    padding: 2px;
+    overflow-y: auto;
+    border: 0;
+    background: none;
+    backdrop-filter: none;
+    scrollbar-width: thin;
+  }
+
+  .lab-side-wide {
+    display: block;
+  }
+
+  .lab-tools-narrow {
+    display: none;
+  }
+
+  .lab-filters {
+    flex-direction: column;
+    gap: 2px;
+    overflow: visible;
+  }
+
+  .lab-filters .lab-chip {
+    justify-content: space-between;
+    width: 100%;
+    border-color: transparent;
+    border-radius: 10px;
+  }
+
+  .lab-filters .lab-chip:hover {
+    border-color: var(--border-strong);
+  }
+
+  .lab-filters .lab-chip[aria-pressed='true'] {
+    border-color: var(--accent);
+  }
+
+  .lab-side .lab-pause {
+    justify-content: center;
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .lab-main {
+    scroll-margin-top: 0;
+  }
+}
+
+/* clip rather than hidden: nothing focused inside a demo can scroll the
+   card sideways. Cards far off screen are not rendered at all
+   (content-visibility), with their usual height kept in reserve. */
 .lab-card {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: clip;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 470px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
@@ -101,6 +263,13 @@
   font-size: 16px;
   line-height: 1.5;
   color: var(--text);
+}
+
+/* The smallest phones: a little more room for the demo */
+@media (max-width: 360px) {
+  .lab-stage {
+    padding-inline: 12px;
+  }
 }
 
 /* Paused by the visitor, or resting off screen */
