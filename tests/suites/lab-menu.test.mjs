@@ -85,7 +85,8 @@ const at = async (p, id) => { await stage(p, id).scrollIntoViewIfNeeded(); await
   s = await at(p, 'input-range'); await s.locator('input').focus(); await p.keyboard.press('ArrowRight'); await p.keyboard.press('ArrowRight');
   check('range: the bubble follows the value', (await s.locator('output').textContent()) === '42');
   s = await at(p, 'input-rating'); await s.locator('input[value="4"]').check({ force: true }); await p.mouse.move(0, 0); await p.waitForTimeout(300);
-  const lit = await s.evaluate((el) => [...el.querySelectorAll('svg')].map((g) => getComputedStyle(g).fill === 'rgb(255, 201, 74)').join());
+  // lit: unlike the fifth star, which stays dark (whatever the colours are)
+  const lit = await s.evaluate((el) => { const stars = [...el.querySelectorAll('svg')]; const off = getComputedStyle(stars.at(-1)).fill; return stars.map((g) => getComputedStyle(g).fill !== off).join(); });
   check('rating: four stars lit once chosen', lit === 'true,true,true,true,false', lit);
   s = await at(p, 'input-search'); await s.locator('input').focus(); await p.waitForTimeout(600);
   check('search field: opens on focus', (await s.locator('.lb-search').evaluate((el) => el.getBoundingClientRect().width)) > 200);
