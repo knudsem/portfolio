@@ -236,8 +236,18 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   const shown = await bring(dots)
   const shownRan = await ran()
   check('lab: an animation runs while its card is on screen', shown.onScreen && shown.inview && shownRan > 300, `${JSON.stringify(shown)}, ran ${shownRan} ms in 700`)
+  // a visitor scrolls on a little at each frame, not in one jump (a card
+  // that is no longer drawn keeps the style it had, in Firefox)
   await still()
-  await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight))
+  await page.evaluate(async () => {
+    const frame = () => new Promise((done) => requestAnimationFrame(() => done()))
+    for (let i = 0; i < 30; i++) {
+      scrollBy(0, 60)
+      await frame()
+      await frame()
+    }
+    scrollTo(0, document.documentElement.scrollHeight)
+  })
   await still()
   await page.waitForTimeout(600)
   const away = await where(dots)
