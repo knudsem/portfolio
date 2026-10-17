@@ -828,25 +828,29 @@ export function tooltip(root) {
 /* /demo */
 
 /* demo:arch-magnifier */
-// The pointer (or a finger) takes the lens: its position, in the drawing's
-// own units, goes to --lb-px and --lb-py, and the CSS glides there. Let go,
-// and the lens glides back to its round.
+// With a mouse or a trackpad, the lens follows the pointer (its own path
+// stops meanwhile); it goes back to its path when the pointer leaves
 export function magnifier(root) {
-  const svg = root.querySelector('.lb-loupe')
-  const follow = (e) => {
-    const point = new DOMPoint(e.clientX, e.clientY).matrixTransform(svg.getScreenCTM().inverse())
-    svg.style.setProperty('--lb-px', point.x.toFixed(1))
-    svg.style.setProperty('--lb-py', point.y.toFixed(1))
-    svg.setAttribute('data-follow', '')
+  const box = root.querySelector('.lb-loupe')
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return () => {}
+  const move = (e) => {
+    const r = box.getBoundingClientRect()
+    const x = Math.min(Math.max(e.clientX - r.left, 30), r.width - 30)
+    const y = Math.min(Math.max(e.clientY - r.top, 30), r.height - 30)
+    box.setAttribute('data-follow', '')
+    box.style.setProperty('--lb-lx', `${x}px`)
+    box.style.setProperty('--lb-ly', `${y}px`)
   }
-  const leave = () => svg.removeAttribute('data-follow')
-  svg.addEventListener('pointermove', follow)
-  svg.addEventListener('pointerleave', leave)
-  svg.addEventListener('pointercancel', leave)
+  const leave = () => {
+    box.removeAttribute('data-follow')
+    box.style.removeProperty('--lb-lx')
+    box.style.removeProperty('--lb-ly')
+  }
+  box.addEventListener('pointermove', move)
+  box.addEventListener('pointerleave', leave)
   return () => {
-    svg.removeEventListener('pointermove', follow)
-    svg.removeEventListener('pointerleave', leave)
-    svg.removeEventListener('pointercancel', leave)
+    box.removeEventListener('pointermove', move)
+    box.removeEventListener('pointerleave', leave)
   }
 }
 /* /demo */
@@ -1103,32 +1107,14 @@ export function globe(root) {
 /* /demo */
 
 /* demo:arch-rings */
-// The button opens and closes the rings (aria-expanded; the CSS swaps its
-// label). Escape closes them and puts the focus back on the button.
+// The button opens and closes the rings (aria-expanded, and its label);
+// Escape closes them and puts the focus back on the button
 export function cornerRings(root) {
-  const nav = root.querySelector('.lb-rings nav')
+  const nav = root.querySelector('.lb-rings')
   const button = nav.querySelector('button')
-  // the CSS spaces the letters evenly; on the first opening, each one gets
-  // the room its own width needs, measured along the middle of its ring
-  let spaced = false
-  const space = () => {
-    spaced = true
-    for (const link of nav.querySelectorAll('a')) {
-      const letters = [...link.querySelectorAll('i')]
-      const middle = parseFloat(link.style.getPropertyValue('--r')) - 19
-      const widths = letters.map((letter) => letter.offsetWidth + 1)
-      const total = widths.reduce((sum, w) => sum + w, 0)
-      let before = 0
-      letters.forEach((letter, i) => {
-        const along = before + widths[i] / 2 - total / 2
-        letter.style.setProperty('--a', `${((along / middle) * 180) / Math.PI}deg`)
-        before += widths[i]
-      })
-    }
-  }
   const set = (open) => {
-    if (open && !spaced) space()
     button.setAttribute('aria-expanded', String(open))
+    button.querySelector('span').textContent = open ? 'Close' : 'Games'
   }
   const toggle = () => set(button.getAttribute('aria-expanded') !== 'true')
   const keys = (e) => {
@@ -1154,80 +1140,6 @@ export function cornerRings(root) {
 }
 /* /demo */
 
-/* demo:arch-water */
-// The tube fills up when it comes into view. Then it tilts towards the
-// pointer (or a finger) on a stiff spring; the water stays level but rides
-// a softer spring of its own, so it lags behind the glass and sloshes
-// before it settles.
-export function sparklingWater(root) {
-  const box = root.querySelector('.lb-tube')
-  const glass = box.querySelector('.lb-tube-glass')
-  const inside = box.querySelector('#lb-tube-in path')
-  const water = box.querySelector('.lb-tube-water')
-  const label = box.querySelector('.lb-tube-level')
-  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches
-  const FULL = 0.65, TOP = 18, BOTTOM = 190
-  let level = calm ? FULL : 0, start = 0
-  let tilt = 0, aim = 0, speed = 0
-  let lag = 0, lagSpeed = 0
-  let frame = 0, last = 0
-
-  const place = () => {
-    const y = BOTTOM - level * (BOTTOM - TOP)
-    const slosh = (lag - tilt) * 1.5
-    glass.setAttribute('transform', `rotate(${tilt.toFixed(2)} 50 100)`)
-    inside.setAttribute('transform', `rotate(${tilt.toFixed(2)} 50 100)`)
-    water.setAttribute('transform', `translate(0 ${y.toFixed(2)}) rotate(${slosh.toFixed(2)} 50 0)`)
-    label.textContent = `${Math.round(level * 100)}%`
-  }
-  const step = (now) => {
-    const dt = Math.min((now - (last || now)) / 1000, 1 / 30)
-    last = now
-    if (level < FULL) level = FULL * (1 - (1 - Math.min((now - start) / 1800, 1)) ** 3)
-    speed += ((aim - tilt) * 120 - speed * 18) * dt
-    tilt += speed * dt
-    lagSpeed += ((tilt - lag) * 60 - lagSpeed * 3.4) * dt
-    lag += lagSpeed * dt
-    place()
-    const still = level >= FULL && Math.abs(aim - tilt) + Math.abs(speed) + Math.abs(tilt - lag) + Math.abs(lagSpeed) < 0.02
-    frame = still ? 0 : requestAnimationFrame(step)
-  }
-  const wake = () => {
-    if (frame) return
-    last = 0
-    frame = requestAnimationFrame(step)
-  }
-
-  place()
-  if (calm) return () => {}
-  const toward = (e) => {
-    const r = box.getBoundingClientRect()
-    aim = Math.max(-1, Math.min(1, (e.clientX - r.left - r.width / 2) / (r.width / 2))) * 18
-    wake()
-  }
-  const away = () => {
-    aim = 0
-    wake()
-  }
-  const observer = new IntersectionObserver(([entry]) => {
-    if (!entry.isIntersecting) return
-    observer.disconnect()
-    start = performance.now()
-    wake()
-  })
-  observer.observe(box)
-  box.addEventListener('pointermove', toward)
-  box.addEventListener('pointerleave', away)
-  box.addEventListener('pointercancel', away)
-  return () => {
-    observer.disconnect()
-    cancelAnimationFrame(frame)
-    box.removeEventListener('pointermove', toward)
-    box.removeEventListener('pointerleave', away)
-    box.removeEventListener('pointercancel', away)
-  }
-}
-/* /demo */
 
 /* demo:arch-cat */
 // The eyes follow the pointer over the stage. A pet (a click, a tap, Enter
@@ -1299,7 +1211,6 @@ export const SCRIPTS = {
   'fb-tooltip': tooltip,
   'arch-magnifier': magnifier,
   'arch-cat': luckyCat,
-  'arch-water': sparklingWater,
   'arch-globe': globe,
   'arch-rings': cornerRings,
 }
