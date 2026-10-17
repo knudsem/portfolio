@@ -3,6 +3,7 @@
 // the mini demos rest until pointed at, both languages, phone width.
 import { chromium } from 'playwright';
 import { BASE, ROOT } from '../lib.mjs';
+import { POST_META } from '../../src/blog/meta.js';
 const b = await chromium.launch();
 let fail = 0;
 const check = (label, ok, info = '') => { if (!ok) fail++; console.log(`${ok ? 'ok  ' : 'FAIL'} ${label}${info ? '  [' + info + ']' : ''}`); };
@@ -47,7 +48,7 @@ const open = async (lang, width = 1440, extra = {}) => {
   const lab = await ctx.newPage(); await lab.goto(BASE + '/lab'); await lab.waitForTimeout(500);
   const demos = await lab.locator('.lab-card').count(); await lab.close();
   check('the lab count on the home page matches the lab', teaser.labKicker === `${demos} animations`, `${teaser.labKicker} vs ${demos}`);
-  check('the blog count on the home page matches the blog', /· 3 posts$/.test(teaser.kicker.replace(/\s+/g, ' ').trim()), teaser.kicker);
+  check('the blog count on the home page matches the blog', teaser.kicker.replace(/\s+/g, ' ').trim().endsWith(`· ${POST_META.length} posts`), teaser.kicker);
   const post = await ctx.newPage(); await post.goto(BASE + teaser.postHref); await post.waitForTimeout(400);
   const postH1 = (await post.locator('h1').textContent()).replace(/ /g, ' '); await post.close();
   check('latest post link opens that post', postH1 === teaser.postTitle.replace(/ /g, ' '), `${teaser.postHref} > ${postH1}`);

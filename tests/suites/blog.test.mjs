@@ -3,7 +3,8 @@
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 import { BASE, AXE, PRIVATE, skipPrivate } from '../lib.mjs';
-const SLUGS = ['motion-that-serves', 'scroll-driven-animations', 'ai-suggests-people-decide'];
+import { POST_META } from '../../src/blog/meta.js';
+const SLUGS = POST_META.map((post) => post.slug);
 const b = await chromium.launch();
 let fail = 0;
 const check = (label, ok, info = '') => { if (!ok) fail++; console.log(`${ok ? 'ok  ' : 'FAIL'} ${label}${info ? '  [' + info + ']' : ''}`); };
@@ -15,7 +16,7 @@ for (const [lang, locale] of [['fr', 'fr-FR'], ['en', 'en-GB']]) {
   const errors = []; p.on('pageerror', (e) => errors.push(e.message)); p.on('console', (m) => { if (['error', 'warning'].includes(m.type())) errors.push(m.text()); });
   await p.goto(`${BASE}/blog`); await p.waitForTimeout(700);
   const idx = await p.evaluate(() => ({ title: document.title, h1: document.querySelector('h1')?.textContent, cards: [...document.querySelectorAll('.blog-card-link')].map((a) => a.getAttribute('href')), current: document.querySelector('.header-link[aria-current="page"]')?.textContent, text: document.body.innerText }));
-  check(`${lang}: blog list, 3 posts linked, Blog current`, idx.title === 'Blog | Mathias Knudsen' && idx.h1 === 'Blog' && idx.cards.join() === SLUGS.map((s) => `/blog/${s}`).join() && idx.current === 'Blog', JSON.stringify({ ...idx, text: undefined }));
+  check(`${lang}: blog list, ${SLUGS.length} posts linked, Blog current`, idx.title === 'Blog | Mathias Knudsen' && idx.h1 === 'Blog' && idx.cards.join() === SLUGS.map((s) => `/blog/${s}`).join() && idx.current === 'Blog', JSON.stringify({ ...idx, text: undefined }));
   const axIdx = await axeRun(p);
   check(`${lang}: blog list, axe finds nothing`, axIdx.length === 0, axIdx.join(' || '));
   for (const slug of SLUGS) {
@@ -35,7 +36,7 @@ for (const [lang, locale] of [['fr', 'fr-FR'], ['en', 'en-GB']]) {
       nbsp: [...document.querySelectorAll('.post-body > p, .post-body > h2, .post-body li, .post-body figcaption')].map((e) => e.textContent).join(' ').match(/ [:;?!%»]/g)?.length ?? 0,
       textOnly: [...document.querySelectorAll('.post-body .case-code-lang')].every((e) => e.textContent === 'Text'),
     }));
-    check(`${lang} ${slug}: title, code coloured, related link, 2 other posts, Blog current`, post.title.replace(/\u00a0/g, ' ') === `${post.h1.replace(/\u00a0/g, ' ')} | Mathias Knudsen` && post.codes >= 1 && (post.textOnly || post.spans > 5) && !!post.related && post.others === 2 && post.current === 'Blog' && post.time === '2026-10-13', JSON.stringify({ ...post, text: undefined }));
+    check(`${lang} ${slug}: title, code coloured, related link, ${SLUGS.length - 1} other posts, Blog current`, post.title.replace(/\u00a0/g, ' ') === `${post.h1.replace(/\u00a0/g, ' ')} | Mathias Knudsen` && post.codes >= 1 && (post.textOnly || post.spans > 5) && !!post.related && post.others === SLUGS.length - 1 && post.current === 'Blog' && post.time === POST_META.find((meta) => meta.slug === slug).date, JSON.stringify({ ...post, text: undefined }));
     if (lang === 'fr') check(`fr ${slug}: no line can start with : ; ? ! % or »`, post.nbsp === 0, `${post.nbsp} plain spaces before signs`);
     check(`${lang} ${slug}: no long dashes`, !/[\u2013\u2014]/.test(post.text));
     if (PRIVATE) check(`${lang} ${slug}: nothing about the location or the team`, !PRIVATE.test(post.text));
@@ -74,7 +75,7 @@ for (const [w, h] of [[320, 640], [390, 844], [768, 1024], [1440, 900]]) {
     check(`prerendered ${slug}: own title, address, article type`, ok);
   }
   const sitemap = await (await fetch(`${BASE}/sitemap.xml`)).text();
-  check('sitemap lists the blog and its 3 posts', ['/blog', ...SLUGS.map((s) => `/blog/${s}`)].every((path) => sitemap.includes(`<loc>https://mathias-knudsen.vercel.app${path}</loc>`)));
+  check(`sitemap lists the blog and its ${SLUGS.length} posts`, ['/blog', ...SLUGS.map((s) => `/blog/${s}`)].every((path) => sitemap.includes(`<loc>https://mathias-knudsen.vercel.app${path}</loc>`)));
   await p.goto(`${BASE}/`); await p.waitForTimeout(500);
   await p.keyboard.press('Control+k'); await p.waitForTimeout(300);
   const cmds = await p.evaluate(() => [...document.querySelectorAll('[role=option]')].map((o) => o.textContent));

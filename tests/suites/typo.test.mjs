@@ -3,7 +3,8 @@
 // Code is left out: it keeps its own spacing. English pages are untouched.
 import { chromium } from 'playwright';
 import { BASE } from '../lib.mjs';
-const PAGES = ['/', '/lab', '/blog', '/blog/motion-that-serves', '/blog/scroll-driven-animations', '/blog/ai-suggests-people-decide', '/projects/accesseu', '/projects/interdyn-dealer-portal', '/projects/pro-ject-audio-australia', '/projects/pro-ject-audio-systems', '/projects/exclusive-construction', '/projects/trimension-studio', '/does-not-exist'];
+import { POST_META } from '../../src/blog/meta.js';
+const PAGES = ['/', '/lab', '/blog', ...POST_META.map((post) => `/blog/${post.slug}`), '/projects/accesseu', '/projects/interdyn-dealer-portal', '/projects/pro-ject-audio-australia', '/projects/pro-ject-audio-systems', '/projects/exclusive-construction', '/projects/trimension-studio', '/does-not-exist'];
 const b = await chromium.launch();
 let fail = 0;
 const check = (label, ok, info = '') => { if (!ok) fail++; console.log(`${ok ? 'ok  ' : 'FAIL'} ${label}${info ? '  [' + info + ']' : ''}`); };

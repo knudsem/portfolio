@@ -4,6 +4,8 @@
 // links to it.
 import { chromium } from 'playwright';
 import { BASE } from '../lib.mjs';
+import { POST_META } from '../../src/blog/meta.js';
+import { PROJECT_SLUGS } from '../../src/projects.js';
 const SITE = 'https://mathias-knudsen.vercel.app';
 let fail = 0;
 const check = (label, ok, info = '') => { if (!ok) fail++; console.log(`${ok ? 'ok  ' : 'FAIL'} ${label}${info ? '  [' + info + ']' : ''}`); };
@@ -13,7 +15,9 @@ const pngSize = (buf) => [buf.readUInt32BE(16), buf.readUInt32BE(20)];
 
 const sitemap = await (await fetch(BASE + '/sitemap.xml')).text();
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-check('sitemap lists 12 addresses', urls.length === 12, String(urls.length));
+// the home page, the projects, the lab, the blog and its posts
+const pages = 3 + Object.keys(PROJECT_SLUGS).length + POST_META.length;
+check(`sitemap lists ${pages} addresses`, urls.length === pages, String(urls.length));
 const robots = await (await fetch(BASE + '/robots.txt')).text();
 check('robots.txt points to the sitemap', robots.includes(`Sitemap: ${SITE}/sitemap.xml`));
 
