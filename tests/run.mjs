@@ -76,6 +76,7 @@ for (const file of suites) {
   } else {
     console.log(`✓ ${name}: ${ok} checks`)
   }
+  for (const line of lines.filter((line) => line.startsWith('info'))) console.log(`    ${line}`)
 }
 
 server?.kill()

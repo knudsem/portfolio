@@ -38,9 +38,15 @@ const hiddenText = (page) => page.evaluate(async () => {
   document.documentElement.style.scrollBehavior = 'auto'
   const hidden = new Set()
   const opacity = (el) => { let o = 1; for (let e = el; e; e = e.parentElement) o *= Number(getComputedStyle(e).opacity); return o }
+  const inView = () => [...document.querySelectorAll('main h1, main h2, main h3, main p')].filter((el) => {
+    const r = el.getBoundingClientRect()
+    return r.height && r.bottom >= 60 && r.top <= innerHeight - 60 && !el.closest('[aria-hidden="true"], [hidden], .sr-only, dialog:not([open]), .lab-stage')
+  })
+  const faded = (el) => opacity(el) < 0.5 || getComputedStyle(el).visibility === 'hidden'
   for (let y = 0; y < document.documentElement.scrollHeight; y += Math.round(innerHeight * 0.8)) {
     scrollTo(0, y)
-    await new Promise((done) => setTimeout(done, 700))
+    // a slow engine gets up to 5 seconds to show what is in view
+    for (let wait = 0; wait < 5000 && (wait < 700 || inView().some(faded)); wait += 250) await new Promise((done) => setTimeout(done, 250))
     for (const el of document.querySelectorAll('main h1, main h2, main h3, main p')) {
       const r = el.getBoundingClientRect()
       if (!r.height || r.bottom < 60 || r.top > innerHeight - 60) continue
@@ -57,6 +63,13 @@ const hiddenText = (page) => page.evaluate(async () => {
   return [...hidden]
 })
 
+const framesPerSecond = (page) => page.evaluate(() => new Promise((done) => {
+  let frames = 0
+  const start = performance.now()
+  const count = () => (performance.now() - start < 1000 ? (frames++, requestAnimationFrame(count)) : done(frames))
+  requestAnimationFrame(count)
+}))
+
 const axe = async (page) => {
   await page.addScriptTag({ content: AXE })
   return page.evaluate(async () => (await window.axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] } })).violations.map((v) => `${v.id} (${v.nodes.length})`))
@@ -72,6 +85,7 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
       wide: document.documentElement.scrollWidth - innerWidth,
     }))
     check(`${layout} ${path}: loads, with a heading and nothing sideways`, response.ok() && !!state.h1 && state.wide <= 0, JSON.stringify(state))
+    if (path === '/' || path === '/lab') console.log(`info ${layout} ${path}: ${await framesPerSecond(page)} frames a second in ${ENGINE} here`)
     const hidden = await hiddenText(page)
     check(`${layout} ${path}: all its text shows up while scrolling`, hidden.length === 0, hidden.slice(0, 4).join(', '))
     if (layout === 'desktop') {
@@ -165,8 +179,11 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
     return { land, sum }
   })
   const first = await look()
-  await page.waitForTimeout(900)
-  const second = await look()
+  let second = first
+  for (let wait = 0; wait < 6000 && second.sum === first.sum; wait += 300) {
+    await page.waitForTimeout(300)
+    second = await look()
+  }
   const property = await stage('arch-globe').locator('canvas').evaluate((el) => getComputedStyle(el).getPropertyValue('--lb-turn'))
   check('lab: the globe draws land and turns', first.land > 100 && first.sum !== second.sum, `${first.land} land samples; --lb-turn reads ${property}`)
   check('lab: no script error', errors.length === 0, errors.slice(0, 3).join(' | '))
