@@ -100,11 +100,18 @@ for (const [lang, locale, tz] of [['en', 'en-GB', 'Europe/London'], ['fr', 'fr-F
   check(`${lang}: clicking the backdrop closes, focus back in the field`, !s.open && s.focus === 'cf-name', s.focus);
 
   // Audit from the menu
+  // the busy state is caught when it happens, however fast the machine
+  await p.evaluate(() => {
+    window.__busy = null;
+    const button = document.querySelector('.proof-button');
+    new MutationObserver(() => {
+      if (!window.__busy && button.getAttribute('aria-disabled') === 'true') window.__busy = { cls: document.activeElement.className, aria: 'true' };
+    }).observe(button, { attributes: true, attributeFilter: ['aria-disabled'] });
+  });
   await p.keyboard.press('Control+k'); await p.waitForTimeout(200);
   await p.keyboard.type('audit'); await p.keyboard.press('Enter');
-  await p.waitForTimeout(300);
-  const mid = await p.evaluate(() => ({ cls: document.activeElement.className, aria: document.activeElement.getAttribute('aria-disabled') }));
   await p.waitForFunction(() => document.querySelector('.console-result'), null, { timeout: 30000 });
+  const mid = await p.evaluate(() => window.__busy || { cls: '', aria: null });
   const after = await p.evaluate(() => ({ n: document.querySelector('.console-number').textContent, focus: document.activeElement.className, issues: [...document.querySelectorAll('.console-issues li')].map((l) => l.textContent) }));
   check(`${lang}: audit command runs the audit, focus stays on its button`, /proof-button/.test(mid.cls) && mid.aria === 'true' && after.n === '0' && /proof-button/.test(after.focus), JSON.stringify({ mid, after }));
 
