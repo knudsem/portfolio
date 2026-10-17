@@ -68,7 +68,7 @@
   padding: 2px;
   border: 0;
   border-radius: 999px;
-  background: conic-gradient(from var(--lb-angle), #ffd84a, #4ae0d2, #8f6bff, #ffd84a);
+  background: conic-gradient(from var(--lb-angle), #ffd84a, #fff3bf 25%, #c48f0f 50%, #fff3bf 75%, #ffd84a);
   font: inherit;
   cursor: pointer;
   animation: lb-border-turn 4s linear infinite;
@@ -217,8 +217,8 @@
   padding: 14px 26px;
   border: 0;
   border-radius: 14px;
-  background: #6d4ae6;
-  color: #fff;
+  background: #ffd84a;
+  color: #0b0b10;
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -255,7 +255,7 @@
 
 /* Sent: the confirmation rises, the plane is gone */
 .lb-send[data-state='sent'] {
-  background: #1f9d6a;
+  background: #f2f2f5;
   color: #0b0b10;
 }
 
@@ -414,7 +414,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(90deg, rgb(74 224 210 / 0.3), rgb(255 216 74 / 0.3));
+  background: rgb(255 216 74 / 0.3);
   transform-origin: left;
   scale: 0 1;
 }
@@ -696,7 +696,7 @@
   position: sticky;
   top: 0;
   height: 4px;
-  background: linear-gradient(90deg, #4ae0d2, #ffd84a);
+  background: #ffd84a;
   transform-origin: left;
   scale: var(--p, 0) 1;
 }
@@ -783,9 +783,9 @@
   height: 8px;
   margin-left: -4px;
   border-radius: 50%;
-  background: hsl(calc(47 + var(--i) * 70) 100% 65%);
+  background: #ffd84a;
   box-shadow: 0 0 12px currentColor;
-  color: hsl(calc(47 + var(--i) * 70) 100% 65%);
+  color: #ffd84a;
 }
 
 @keyframes lb-orbit {
@@ -810,7 +810,7 @@
   width: 8px;
   height: 100%;
   border-radius: 4px;
-  background: linear-gradient(#ffd84a, #4ae0d2);
+  background: #ffd84a;
   transform-origin: bottom;
   animation: lb-bar calc(0.6s + var(--i) * 0.17s) ease-in-out infinite alternate;
 }
@@ -829,16 +829,14 @@
 .lb-morph {
   width: 54px;
   height: 54px;
-  background: #8f6bff;
+  background: #ffd84a;
   animation: lb-morph 2.4s cubic-bezier(0.7, 0, 0.3, 1) infinite;
 }
 
 @keyframes lb-morph {
-  0%, 100% { border-radius: 12px; rotate: 0deg; background: #8f6bff; }
-  33% { border-radius: 50%; rotate: 180deg; background: #4ae0d2; }
-  66% { border-radius: 50% 12px; rotate: 270deg; background: #ffd84a; }
-  /* by way of pink: straight from yellow to violet, it would turn grey */
-  83% { background: #ff7ab8; }
+  0%, 100% { border-radius: 12px; rotate: 0deg; }
+  33% { border-radius: 50%; rotate: 180deg; }
+  66% { border-radius: 50% 12px; rotate: 270deg; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -931,7 +929,7 @@
 }
 
 .lb-scramble [aria-hidden] span {
-  color: #4ae0d2;
+  color: rgb(255 216 74 / 0.5);
 }
 
 .lb-scramble-sr {
@@ -947,7 +945,7 @@
 /* demo:text-gradient */
 .lb-gradient-text {
   margin: 0;
-  background: linear-gradient(90deg, #ffd84a, #4ae0d2, #8f6bff, #ff7ab8, #ffd84a) 0 0 / 300% 100%;
+  background: linear-gradient(90deg, #ffd84a, #fff3bf, #e0a020, #ffd84a) 0 0 / 300% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1052,8 +1050,8 @@
   padding: 16px;
   overflow: hidden;
   border-radius: 16px;
-  background: radial-gradient(120% 120% at 0% 0%, #8f6bff, transparent 60%), radial-gradient(120% 120% at 100% 100%, #4ae0d2, transparent 55%), #17171f;
-  color: #fff;
+  background: #ffd84a;
+  color: #0b0b10;
   font-weight: 700;
   transform: rotateX(var(--rx)) rotateY(var(--ry));
   transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -1160,7 +1158,7 @@
 }
 
 .lb-flip-back {
-  background: #8f6bff;
+  background: #f2f2f5;
   color: #0b0b10;
   transform: rotateY(180deg);
 }
@@ -1202,9 +1200,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(60% 80% at 30% 30%, #ff7ab8, transparent 60%),
-    radial-gradient(70% 90% at 80% 70%, #4ae0d2, transparent 60%),
-    linear-gradient(135deg, #8f6bff, #1b1b45);
+    radial-gradient(60% 80% at 30% 30%, #fff3bf, transparent 60%),
+    radial-gradient(70% 90% at 80% 70%, #ffd84a, transparent 60%),
+    linear-gradient(135deg, #c48f0f, #24170f);
   clip-path: inset(0 0 0 100%);
   transition: clip-path 0.7s cubic-bezier(0.7, 0, 0.2, 1);
 }
@@ -1596,7 +1594,7 @@
   height: 7px;
   margin: -3.5px;
   border-radius: 2px;
-  background: hsl(calc(var(--i) * 52 + 47) 100% 65%);
+  background: #ffd84a;
   opacity: 0;
   animation: lb-success-spark 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) 0.9s;
 }
@@ -1637,7 +1635,7 @@
 }
 
 .lb-envelope-back {
-  background: #8f6bff;
+  background: #ffd84a;
 }
 
 .lb-envelope-letter {
@@ -1660,9 +1658,9 @@
 .lb-envelope-front {
   z-index: 2;
   background:
-    linear-gradient(to top right, #7a57f0 50%, transparent 50.5%) left bottom / 51% 100% no-repeat,
-    linear-gradient(to top left, #7a57f0 50%, transparent 50.5%) right bottom / 51% 100% no-repeat,
-    linear-gradient(to top, #6c4ae3 45%, transparent 45.5%);
+    linear-gradient(to top right, #f0c43a 50%, transparent 50.5%) left bottom / 51% 100% no-repeat,
+    linear-gradient(to top left, #f0c43a 50%, transparent 50.5%) right bottom / 51% 100% no-repeat,
+    linear-gradient(to top, #e0b030 45%, transparent 45.5%);
 }
 
 .lb-envelope-flap {
@@ -1671,7 +1669,7 @@
   right: 0;
   top: 0;
   height: 70px;
-  background: #a68bff;
+  background: #ffe680;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform-origin: top;
   animation: lb-envelope-flap 0.7s cubic-bezier(0.6, 0, 0.3, 1) both;
@@ -1702,8 +1700,8 @@
   padding: 15px 28px;
   border: 0;
   border-radius: 12px;
-  background: #6d4ae6;
-  color: #fff;
+  background: #ffd84a;
+  color: #0b0b10;
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -1718,7 +1716,7 @@
 .lb-ripple-wave {
   position: absolute;
   border-radius: 50%;
-  background: rgb(255 255 255 / 0.35);
+  background: rgb(11 11 16 / 0.2);
   pointer-events: none;
   translate: -50% -50%;
   scale: 0;
@@ -1842,7 +1840,7 @@
   padding: 0;
   border: 0;
   border-radius: 14px;
-  background: #4a8a12;
+  background: #b8860b;
   font: inherit;
   cursor: pointer;
 }
@@ -2027,7 +2025,7 @@
 }
 
 .lb-load[data-state='done'] {
-  background: #4ae0d2;
+  background: #f2f2f5;
 }
 
 .lb-load[data-state='done'] .lb-load-done {
@@ -2416,7 +2414,7 @@
   height: 22px;
   padding: 0 6px;
   border-radius: 999px;
-  background: #4ae0d2;
+  background: #ffd84a;
   color: #0b0b10;
   font-size: 12px;
   font-weight: 800;
@@ -2549,12 +2547,12 @@
 }
 
 .lb-glitch span:nth-child(2) {
-  color: #4ae0d2;
+  color: #ffd84a;
   translate: -3px 0;
 }
 
 .lb-glitch span:nth-child(3) {
-  color: #ff5f7e;
+  color: #c48f0f;
   translate: 3px 0;
   animation-delay: 0.05s;
 }
@@ -2711,7 +2709,7 @@
   position: absolute;
   inset: 50% -3px auto;
   height: 2px;
-  background: #ff5f7e;
+  background: #a1a1b3;
   transform-origin: left;
   animation: lb-price-strike 0.45s cubic-bezier(0.6, 0, 0.2, 1) 0.3s both;
 }
@@ -2762,7 +2760,7 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, transparent 0 15%, #4ae0d2 60%, #ffd84a);
+  background: conic-gradient(from 0deg, transparent 0 15%, #ffd84a);
   /* keep only a ring 7px thick */
   mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
   animation: lb-ring 0.9s linear infinite;
@@ -2789,7 +2787,7 @@
 .lb-pulse span {
   position: absolute;
   inset: 0;
-  border: 2px solid #4ae0d2;
+  border: 2px solid #ffd84a;
   border-radius: 50%;
   opacity: 0;
   animation: lb-pulse 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) calc(var(--i) * 0.8s) infinite;
@@ -2799,8 +2797,8 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #4ae0d2;
-  box-shadow: 0 0 20px #4ae0d2;
+  background: #ffd84a;
+  box-shadow: 0 0 20px #ffd84a;
 }
 
 @keyframes lb-pulse {
@@ -2880,7 +2878,7 @@
   position: absolute;
   inset: 0 auto 0 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, #4ae0d2, #ffd84a);
+  background: #ffd84a;
 }
 
 .lb-progress span:first-child {
@@ -3011,7 +3009,7 @@
   inset: 0;
   border: 1px solid rgb(255 255 255 / 0.18);
   border-radius: 14px;
-  background: linear-gradient(150deg, #8f6bff, #3d2c8f);
+  background: #2a2a35;
   box-shadow: 0 12px 30px -10px rgb(0 0 0 / 0.7);
   transform-origin: 50% 120%;
   rotate: calc(var(--i) * var(--lb-fan) * 16deg);
@@ -3020,11 +3018,11 @@
 }
 
 .lb-fan span:nth-child(1) {
-  background: linear-gradient(150deg, #4ae0d2, #1f6f86);
+  background: #3a3a48;
 }
 
 .lb-fan span:nth-child(3) {
-  background: linear-gradient(150deg, #ffd84a, #a3660a);
+  background: #ffd84a;
 }
 
 @keyframes lb-fan {
@@ -3256,7 +3254,7 @@
   padding: 10px;
   border: 0;
   border-radius: 12px;
-  background: linear-gradient(170deg, var(--a), var(--b));
+  background: var(--a);
   color: #fff;
   font: inherit;
   cursor: pointer;
@@ -3647,7 +3645,7 @@
   flex: 0 0 100%;
   place-items: center;
   height: 110px;
-  background: linear-gradient(150deg, var(--c), #15151d 140%);
+  background: var(--c);
   color: #0b0b10;
   font-size: 34px;
   font-weight: 800;
@@ -4043,8 +4041,8 @@
 
 /* Complete: the boxes light up one after the other */
 .lb-otp[data-done] input {
-  border-color: #4ae0d2;
-  background: #4ae0d2;
+  border-color: #ffd84a;
+  background: #ffd84a;
   color: #0b0b10;
   animation: lb-otp-done 0.4s cubic-bezier(0.3, 0.7, 0.4, 1.6) backwards;
 }
@@ -4099,7 +4097,7 @@
   height: 8px;
   margin: 0;
   border-radius: 999px;
-  background: linear-gradient(90deg, #4ae0d2, #ffd84a) 0 0 / calc(var(--v) * 1%) 100% no-repeat, #2a2a35;
+  background: linear-gradient(#ffd84a, #ffd84a) 0 0 / calc(var(--v) * 1%) 100% no-repeat, #2a2a35;
   cursor: pointer;
   appearance: none;
 }
@@ -4227,8 +4225,8 @@
 .lb-rate-stars label:hover svg,
 .lb-rate-stars:not(:hover) label:has(~ label input:checked) svg,
 .lb-rate-stars:not(:hover) label:has(input:checked) svg {
-  fill: #ffc94a;
-  stroke: #ffc94a;
+  fill: #ffd84a;
+  stroke: #ffd84a;
 }
 
 .lb-rate input:checked + svg {
@@ -4371,7 +4369,7 @@
 }
 
 .lb-shake-message[data-ok] {
-  color: #4ae0d2;
+  color: #ffd84a;
 }
 
 /* The shake: quick, decreasing, sideways only */
@@ -4744,7 +4742,7 @@
   place-items: center;
   height: 140px;
   border-radius: 14px;
-  background: linear-gradient(150deg, var(--c), #15151d 150%);
+  background: var(--c);
   color: #0b0b10;
   font-size: 30px;
   font-weight: 800;
@@ -4793,21 +4791,21 @@
 .lb-aurora span:nth-child(1) {
   top: -70px;
   left: -50px;
-  background: radial-gradient(circle, rgb(74 224 210 / 0.7), transparent 65%);
+  background: radial-gradient(circle, rgb(255 216 74 / 0.6), transparent 65%);
   animation: lb-aurora-a 11s ease-in-out infinite alternate;
 }
 
 .lb-aurora span:nth-child(2) {
   top: -40px;
   right: -70px;
-  background: radial-gradient(circle, rgb(143 107 255 / 0.75), transparent 65%);
+  background: radial-gradient(circle, rgb(224 160 32 / 0.6), transparent 65%);
   animation: lb-aurora-b 13s ease-in-out infinite alternate;
 }
 
 .lb-aurora span:nth-child(3) {
   bottom: -110px;
   left: 20px;
-  background: radial-gradient(circle, rgb(255 216 74 / 0.55), transparent 65%);
+  background: radial-gradient(circle, rgb(255 243 191 / 0.35), transparent 65%);
   animation: lb-aurora-c 9s ease-in-out infinite alternate;
 }
 
@@ -4890,10 +4888,10 @@
   height: 160px;
   border-radius: 16px;
   background:
-    radial-gradient(at var(--lb-m1) var(--lb-m3), #8f6bff, transparent 55%),
-    radial-gradient(at var(--lb-m2) var(--lb-m1), #4ae0d2, transparent 55%),
+    radial-gradient(at var(--lb-m1) var(--lb-m3), #e0a020, transparent 55%),
+    radial-gradient(at var(--lb-m2) var(--lb-m1), #fff3bf, transparent 55%),
     radial-gradient(at var(--lb-m3) var(--lb-m4), #ffd84a, transparent 50%),
-    radial-gradient(at var(--lb-m4) var(--lb-m2), #ff5f7e, transparent 55%),
+    radial-gradient(at var(--lb-m4) var(--lb-m2), #8a5a00, transparent 55%),
     #0b0b18;
   animation:
     lb-mesh-1 9s ease-in-out infinite alternate,
@@ -4919,7 +4917,7 @@
   width: min(250px, 100%);
   height: 160px;
   border-radius: 16px;
-  background: linear-gradient(#141a3a, #2b3f7a);
+  background: #121219;
 }
 
 /* A row of crests (half ellipses, repeated) on top of a solid band; the
@@ -4935,9 +4933,9 @@
   animation: lb-waves var(--t) linear infinite;
 }
 
-.lb-waves span:nth-child(1) { --c: #2f63b8; --t: 7s; bottom: 34px; }
-.lb-waves span:nth-child(2) { --c: #2f90c9; --t: 5s; bottom: 14px; animation-direction: reverse; }
-.lb-waves span:nth-child(3) { --c: #4ae0d2; --t: 3.6s; bottom: -10px; }
+.lb-waves span:nth-child(1) { --c: #2a2a35; --t: 7s; bottom: 34px; }
+.lb-waves span:nth-child(2) { --c: #4a4a58; --t: 5s; bottom: 14px; animation-direction: reverse; }
+.lb-waves span:nth-child(3) { --c: #ffd84a; --t: 3.6s; bottom: -10px; }
 
 @keyframes lb-waves {
   to { background-position: 56px 0, 0 12px; }
@@ -5542,7 +5540,7 @@
 /* The wedges light up one after the other, with a small pop, then fade
    in the same order: a wave that runs through the monogram */
 .lb-mk-wedge {
-  fill: #6cd0c6;
+  fill: #ffd84a;
   opacity: 0.16;
   transform-box: fill-box;
   transform-origin: center;

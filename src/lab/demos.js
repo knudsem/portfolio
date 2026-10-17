@@ -177,7 +177,7 @@ const LIST = [
     tech: ['CSS'],
     html: '<div class="lb-morph" role="status" aria-label="Loading"></div>',
     title: { en: 'Morph', fr: 'Métamorphose' },
-    note: { en: 'A square becomes a circle, then a leaf, turning and changing colour.', fr: 'Un carré devient cercle puis feuille, en tournant et en changeant de couleur.' },
+    note: { en: 'A square becomes a circle, then a leaf, turning as it goes.', fr: 'Un carré devient cercle puis feuille, en tournant.' },
   },
   {
     id: 'loader-draw',
@@ -274,8 +274,8 @@ const LIST = [
     tech: ['CSS'],
     html: `<figure class="lb-reveal" tabindex="0">
   <span class="lb-reveal-hint" aria-hidden="true">Hover me</span>
-  <span class="lb-reveal-picture" role="img" aria-label="An aurora of pink, teal and violet light"></span>
-  <figcaption class="lb-reveal-caption">Aurora, 2026</figcaption>
+  <span class="lb-reveal-picture" role="img" aria-label="A warm glow of yellow light"></span>
+  <figcaption class="lb-reveal-caption">Golden hour, 2026</figcaption>
 </figure>`,
     title: { en: 'Curtain reveal', fr: 'Rideau' },
     note: { en: 'The picture opens like a curtain (clip-path), the caption slides in after it.', fr: "L'image s'ouvre comme un rideau (clip-path), la légende glisse juste après." },
@@ -688,10 +688,10 @@ const LIST = [
     cat: 'cards',
     tech: ['CSS', 'JS'],
     html: `<div class="lb-gallery">
-  <button class="lb-gallery-panel" type="button" aria-pressed="true" style="--a:#ff9a62;--b:#c4467a"><span>Dawn</span></button>
-  <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#4ae0d2;--b:#1f5fa8"><span>Sea</span></button>
-  <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#5fcf6b;--b:#1f7a4d"><span>Forest</span></button>
-  <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#8f6bff;--b:#1d1650"><span>Night</span></button>
+  <button class="lb-gallery-panel" type="button" aria-pressed="true" style="--a:#ffd84a"><span>Lemon</span></button>
+  <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#e0a020"><span>Honey</span></button>
+  <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#b8860b"><span>Amber</span></button>
+  <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#2a2a35"><span>Night</span></button>
 </div>`,
     title: { en: 'Expanding gallery', fr: 'Galerie extensible' },
     note: { en: 'The panel pointed at (or chosen) widens, the others make room; its label slides in.', fr: "Le panneau survolé (ou choisi) s'élargit, les autres lui font de la place ; son nom apparaît." },
@@ -784,9 +784,9 @@ const LIST = [
   <div class="lb-slides-window">
     <div class="lb-slides-track">
       <span style="--c:#ffd84a">1</span>
-      <span style="--c:#4ae0d2">2</span>
-      <span style="--c:#8f6bff">3</span>
-      <span style="--c:#ff9a62">4</span>
+      <span style="--c:#fff3bf">2</span>
+      <span style="--c:#e0a020">3</span>
+      <span style="--c:#f2f2f5">4</span>
     </div>
   </div>
   <div class="lb-slides-dots" role="group" aria-label="Slides">
@@ -981,7 +981,7 @@ const LIST = [
     id: 'scroll-carousel',
     cat: 'scroll',
     tech: ['CSS', 'scroll-driven', 'scroll-snap'],
-    html: `<div class="lb-snap" role="region" tabindex="0" aria-label="Carousel, scroll it sideways">${['#ffd84a', '#4ae0d2', '#8f6bff', '#ff9a62', '#ff5f7e', '#ffd84a'].map((c, i) => `
+    html: `<div class="lb-snap" role="region" tabindex="0" aria-label="Carousel, scroll it sideways">${['#ffd84a', '#fff3bf', '#e0a020', '#f2f2f5', '#ffd84a', '#fff3bf'].map((c, i) => `
   <span style="--c:${c}">${i + 1}</span>`).join('')}
 </div>`,
     title: { en: 'Snap carousel', fr: 'Carrousel aimanté' },
