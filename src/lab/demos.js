@@ -1126,17 +1126,49 @@ const LIST = [
   {
     id: 'arch-water',
     cat: 'archive',
-    tech: ['CSS'],
-    html: `<div class="lb-tube" role="img" aria-label="A test tube two thirds full of bubbling water">
-  <div class="lb-tube-glass">
-    <span class="lb-tube-water"></span>
-    <span class="lb-tube-wave"></span>
-    <span class="lb-tube-wave"></span>${each(5, 'i', '    ').replace(/\n {4}$/, '')}
-  </div>
-  <span class="lb-tube-level">65%</span>
+    tech: ['SVG', 'CSS', 'JS'],
+    replay: true,
+    html: `<div class="lb-tube" role="img" aria-label="A test tube filling up to 65% with sparkling water. It tilts towards the pointer, and the water sloshes.">
+  <svg viewBox="0 0 100 200" aria-hidden="true">
+    <defs>
+      <clipPath id="lb-tube-in"><path d="M33 16v157a17 17 0 0 0 34 0V16z"/></clipPath>
+      <linearGradient id="lb-tube-deep" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#6ccac6"/>
+        <stop offset="1" stop-color="#2f8d98"/>
+      </linearGradient>
+    </defs>
+    <ellipse class="lb-tube-shadow" cx="50" cy="197" rx="20" ry="2.5"/>
+    <g clip-path="url(#lb-tube-in)">
+      <rect class="lb-tube-air" x="0" y="0" width="100" height="200"/>
+      <g class="lb-tube-water" transform="translate(0 78)">
+        <path class="lb-tube-back" d="M0 0q10-2.4 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0V200H0z"/>
+        <g class="lb-tube-front">
+          <path d="M0 0q10-2.8 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0V200H0z"/>
+          <path class="lb-tube-line" d="M0 0q10-2.8 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0"/>
+        </g>
+        <g class="lb-tube-bubbles">
+          <g style="--x:-1.5px; --s:1.9s"><circle cx="41" cy="0" r="2.6" style="--t:3.1s; --w:-0.4s"/></g>
+          <g style="--x:2px; --s:2.3s"><circle cx="47" cy="0" r="1.6" style="--t:2.6s; --w:-1.9s"/></g>
+          <g style="--x:-2px; --s:1.7s"><circle cx="53" cy="0" r="3.2" style="--t:3.6s; --w:-2.6s"/></g>
+          <g style="--x:1.5px; --s:2.1s"><circle cx="59" cy="0" r="2" style="--t:2.9s; --w:-1.1s"/></g>
+          <g style="--x:-1px; --s:1.6s"><circle cx="44" cy="0" r="1.3" style="--t:2.4s; --w:-0.9s"/></g>
+          <g style="--x:2.5px; --s:2.5s"><circle cx="56" cy="0" r="1.8" style="--t:3.3s; --w:-3s"/></g>
+          <g style="--x:-2px; --s:1.8s"><circle cx="50" cy="0" r="2.3" style="--t:2.8s; --w:-2.2s"/></g>
+          <g style="--x:1px; --s:2.2s"><circle cx="62" cy="0" r="1.2" style="--t:2.2s; --w:-0.2s"/></g>
+        </g>
+      </g>
+    </g>
+    <g class="lb-tube-glass">
+      <path class="lb-tube-wall" d="M31 12v161a19 19 0 0 0 38 0V12"/>
+      <rect class="lb-tube-lip" x="26" y="7" width="48" height="7" rx="3.5"/>
+      <path class="lb-tube-marks" d="M59 147h8M62 125.5h5M59 104h8M62 82.5h5M59 61h8"/>
+      <rect class="lb-tube-shine" x="36" y="24" width="3" height="136" rx="1.5"/>
+    </g>
+  </svg>
+  <p class="lb-tube-level" aria-hidden="true">65%</p>
 </div>`,
-    title: { en: 'Bubbly water', fr: 'Eau pétillante' },
-    note: { en: 'From my CodePen, where the surface was a morphing SVG path. Now two turning rounded squares make the wave, and bubbles rise at their own pace.', fr: "Tirée de mon CodePen, où la surface était un tracé SVG qui se déformait. Deux carrés arrondis qui tournent font maintenant la vague, et les bulles montent chacune à son rythme." },
+    title: { en: 'Sparkling water', fr: 'Eau pétillante' },
+    note: { en: 'From my CodePen, where the surface was a morphing SVG path. Now two waves drift at their own pace, the bubbles sway and burst at the surface, and the tube tilts towards the pointer: the water stays level, lags behind the glass, and sloshes before it settles (two springs).', fr: "Tirée de mon CodePen, où la surface était un tracé SVG qui se déformait. Deux vagues dérivent maintenant chacune à son rythme, les bulles ondulent et éclatent à la surface, et le tube penche vers le curseur : l'eau reste à niveau, prend du retard sur le verre et clapote avant de se poser (deux ressorts)." },
   },
   {
     id: 'arch-globe',
@@ -1180,6 +1212,23 @@ const LIST = [
 </div>`,
     title: { en: 'Signal', fr: 'Signal' },
     note: { en: 'From my CodePen, where a logo lit up its arcs. Kept the idea, made it neutral: the dot, then each arc, lights up in turn.', fr: "Tiré de mon CodePen, où un logo allumait ses arcs. L'idée est gardée, rendue neutre : le point, puis chaque arc, s'allument tour à tour." },
+  },
+  {
+    id: 'arch-logo',
+    cat: 'archive',
+    tech: ['SVG', 'CSS'],
+    html: `<div class="lb-mk" role="status" aria-label="Loading">
+  <svg viewBox="-2 -2 203 109" aria-hidden="true">
+    <path class="lb-mk-line" d="M108.5-.5h3v105h-6c.17-31.34 0-62.67-.5-94C88.36 32.64 71.53 54.64 54.5 76.5A21 21 0 0 1 50 72.5C34.72 51.55 19.05 30.88 3 10.5c-.5 31.33-.67 62.66-.5 94h-3V.5C18.19 23.7 36.35 47.36 54 71.5 72 47.34 90.17 23.34 108.5-.5z"/>
+    <path class="lb-mk-line" d="M190.5-.5h5c.13.74-.04 1.4-.5 2-16.71 16.21-32.88 32.88-48.5 50 17.08 17.74 34.41 35.08 52 52v1h-5c-17.16-17.99-34.83-35.49-53-52.5 16.87-17.37 33.54-34.87 50-52.5z"/>
+    <path class="lb-mk-wedge" d="M49.5 104.5h-15c-1.99-3.96-4.49-7.62-7.5-11-.5 3.65-.67 7.32-.5 11h-12c-.33-15.68 0-31.35 1-47 11.59 15.52 22.92 31.19 34 47z"/>
+    <path class="lb-mk-wedge" d="M93.5 104.5h-12c.17-3.68 0-7.35-.5-11-2.51 3.7-5.01 7.36-7.5 11h-15c10.95-15.62 22.29-30.95 34-46 1 15.32 1.33 30.65 1 46z"/>
+    <path class="lb-mk-wedge" d="M128.5-.5h11c-.17 5.01 0 10.01.5 15 5.04-4.87 9.87-9.87 14.5-15h17c-13.58 15.08-27.75 29.75-42.5 44-.5-14.66-.67-29.33-.5-44z"/>
+    <path class="lb-mk-wedge" d="M170.5 104.5h-16c-4.63-5.13-9.46-10.13-14.5-15-.5 4.99-.67 9.99-.5 15h-11c-.33-14.02 0-28.02 1-42 13.66 13.99 27.33 27.99 41 42z"/>
+  </svg>
+</div>`,
+    title: { en: 'Logo loader', fr: 'Chargement au logo' },
+    note: { en: 'From my CodePen, where a client’s logo lit up its accents one by one while a page loaded. Same idea with my own monogram: the four solid wedges of MK light up in turn and fade in the same order, like a signal.', fr: "Tiré de mon CodePen, où le logo d'un client allumait ses accents un à un pendant un chargement. Même idée avec mon propre monogramme : les quatre coins pleins de MK s'allument tour à tour et s'éteignent dans le même ordre, comme un signal." },
   },
   {
     id: 'arch-mask',

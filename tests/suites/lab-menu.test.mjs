@@ -2,6 +2,8 @@
 // search, and the interactions of the new demos.
 import { chromium } from 'playwright';
 import { BASE } from '../lib.mjs';
+import { DEMOS } from '../../src/lab/demos.js';
+import { LAB_COUNT } from '../../src/lab/count.js';
 const URL_ = BASE + '/lab';
 const b = await chromium.launch();
 let fail = 0;
@@ -23,7 +25,7 @@ const at = async (p, id) => { await stage(p, id).scrollIntoViewIfNeeded(); await
     return { label: side.getAttribute('aria-label'), left: side.getBoundingClientRect().right <= main.getBoundingClientRect().left, chips: chips.map((c) => c.textContent), counts: chips.slice(1).reduce((n, c) => n + Number(c.querySelector('.lab-chip-count').textContent), 0), all: Number(chips[0].querySelector('.lab-chip-count').textContent), search: getComputedStyle(document.querySelector('.lab-side-wide')).display, narrow: getComputedStyle(document.querySelector('.lab-tools-narrow')).display };
   });
   check('wide screen: a labelled menu on the left of the grid, search and pause in it', menu.label === 'Filters' && menu.left && menu.search === 'block' && menu.narrow === 'none', JSON.stringify(menu));
-  check('eleven categories, their counts add up to all 91', menu.chips.length === 12 && menu.all === 91 && menu.counts === 91, menu.chips.join(' | '));
+  check(`eleven categories, their counts add up to all ${DEMOS.length} (the count the home page shows)`, menu.chips.length === 12 && menu.all === DEMOS.length && menu.counts === DEMOS.length && LAB_COUNT === DEMOS.length, menu.chips.join(' | '));
 
   await p.evaluate(() => scrollTo(0, 4000)); await p.waitForTimeout(400);
   const stuck = await p.evaluate(() => Math.round(document.querySelector('.lab-side').getBoundingClientRect().top));
@@ -37,12 +39,12 @@ const at = async (p, id) => { await stage(p, id).scrollIntoViewIfNeeded(); await
   const search = p.locator('#lab-search-side');
   await search.fill('loader'); await p.waitForTimeout(300);
   const found = await p.evaluate(() => [...document.querySelectorAll('.lab-card')].map((c) => c.dataset.demo));
-  check('search "loader": the eleven loaders (the category name counts too)', found.filter((id) => id.startsWith('loader-')).length === 11 && found.length === 11, found.join(','));
+  check('search "loader": the eleven loaders (the category name counts too) and the logo loader', found.filter((id) => id.startsWith('loader-')).length === 11 && found.length === 12 && found.includes('arch-logo'), found.join(','));
   await search.fill('zzzz'); await p.waitForTimeout(300);
   const empty = await p.evaluate(() => ({ cards: document.querySelectorAll('.lab-card').length, text: document.querySelector('.lab-empty p')?.textContent }));
   check('search with no match: says so, with a way to clear it', empty.cards === 0 && empty.text === 'No animation matches “zzzz”.', JSON.stringify(empty));
   await p.locator('.lab-empty button').click(); await p.waitForTimeout(300);
-  check('clearing the search brings every demo back', (await p.locator('.lab-card').count()) === 91 && (await search.inputValue()) === '');
+  check('clearing the search brings every demo back', (await p.locator('.lab-card').count()) === DEMOS.length && (await search.inputValue()) === '');
 
   // the new demos, one by one
   let s = await at(p, 'icon-burger'); await s.locator('button').click();

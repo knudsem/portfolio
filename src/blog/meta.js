@@ -20,17 +20,31 @@ export const POST_META = [
     },
   },
   {
-    slug: "91-live-animations-one-page",
+    slug: "two-springs-make-water-slosh",
+    date: "2026-10-17",
+    tags: ["Animation", "JavaScript", "SVG"],
+    related: { href: "/lab", en: "Tilt the test tube in the lab, under From my archive", fr: "Pencher le tube à essai dans le lab, rubrique Mes archives" },
+    en: {
+      title: "Two springs make water slosh",
+      description: "The test tube in the lab leans towards the pointer and its water sloshes before it settles. Two springs, a dozen lines of JavaScript, and why the water must not turn with the glass.",
+    },
+    fr: {
+      title: "Deux ressorts pour faire clapoter de l'eau",
+      description: "Le tube à essai du lab penche vers le curseur et son eau clapote avant de se poser. Deux ressorts, une douzaine de lignes de JavaScript, et pourquoi l'eau ne doit pas tourner avec le verre.",
+    },
+  },
+  {
+    slug: "live-animations-one-page",
     date: "2026-10-17",
     tags: ["Performance", "CSS", "Animation"],
     related: { href: "/lab", en: `Open the lab: ${LAB_COUNT} live animations`, fr: `Ouvrir le lab : ${LAB_COUNT} animations en direct` },
     en: {
-      title: "91 live animations on one page, and still fast",
-      description: "The lab runs 91 live demos on a single page and scores 97 on Lighthouse's mobile test. What keeps it there: not drawing what is off screen, pausing what cannot be seen, and three traps I fell into.",
+      title: `${LAB_COUNT} live animations on one page, and still fast`,
+      description: `The lab runs ${LAB_COUNT} live demos on a single page and scores 97 on Lighthouse's mobile test. What keeps it there: not drawing what is off screen, pausing what cannot be seen, and three traps I fell into.`,
     },
     fr: {
-      title: "91 animations en direct sur une page, et toujours rapide",
-      description: "Le lab fait tourner 91 démos en direct sur une seule page et obtient 97 au test mobile de Lighthouse. Ce qui l'y maintient : ne pas dessiner ce qui est hors de l'écran, mettre en pause ce qu'on ne voit pas, et trois pièges dans lesquels je suis tombé.",
+      title: `${LAB_COUNT} animations en direct sur une page, et toujours rapide`,
+      description: `Le lab fait tourner ${LAB_COUNT} démos en direct sur une seule page et obtient 97 au test mobile de Lighthouse. Ce qui l'y maintient : ne pas dessiner ce qui est hors de l'écran, mettre en pause ce qu'on ne voit pas, et trois pièges dans lesquels je suis tombé.`,
     },
   },
   {

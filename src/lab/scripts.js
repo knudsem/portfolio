@@ -1177,6 +1177,86 @@ export function luckyCat(root) {
 }
 /* /demo */
 
+/* demo:arch-water */
+// The tube fills up when it comes into view. Then it tilts towards the
+// pointer (or a finger) anywhere on the stage, on a stiff spring; the water
+// stays level but rides a softer spring of its own, so it lags behind the
+// glass and sloshes before it settles.
+export function sparklingWater(root) {
+  const box = root.querySelector('.lb-tube')
+  const glass = box.querySelector('.lb-tube-glass')
+  const inside = box.querySelector('#lb-tube-in path')
+  const water = box.querySelector('.lb-tube-water')
+  const label = box.querySelector('.lb-tube-level')
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches
+  const FULL = 0.65, TOP = 18, BOTTOM = 190
+  let level = calm ? FULL : 0, start = 0
+  let tilt = 0, aim = 0, speed = 0
+  let lag = 0, lagSpeed = 0
+  let frame = 0, last = 0
+
+  const place = () => {
+    const y = BOTTOM - level * (BOTTOM - TOP)
+    const slosh = (lag - tilt) * 1.5
+    glass.setAttribute('transform', `rotate(${tilt.toFixed(2)} 50 100)`)
+    inside.setAttribute('transform', `rotate(${tilt.toFixed(2)} 50 100)`)
+    water.setAttribute('transform', `translate(0 ${y.toFixed(2)}) rotate(${slosh.toFixed(2)} 50 0)`)
+    label.textContent = `${Math.round(level * 100)}%`
+  }
+  const step = (now) => {
+    const dt = Math.min((now - (last || now)) / 1000, 1 / 30)
+    last = now
+    if (level < FULL) level = FULL * (1 - (1 - Math.min((now - start) / 1800, 1)) ** 3)
+    speed += ((aim - tilt) * 120 - speed * 18) * dt
+    tilt += speed * dt
+    lagSpeed += ((tilt - lag) * 60 - lagSpeed * 3.4) * dt
+    lag += lagSpeed * dt
+    place()
+    const still = level >= FULL && Math.abs(aim - tilt) + Math.abs(speed) + Math.abs(tilt - lag) + Math.abs(lagSpeed) < 0.02
+    frame = still ? 0 : requestAnimationFrame(step)
+  }
+  const wake = () => {
+    if (frame) return
+    last = 0
+    frame = requestAnimationFrame(step)
+  }
+
+  place()
+  if (calm) return () => {}
+  // measured from the point the glass turns around (not the middle of the
+  // box, which the label pushes to the right), out to the stage's edge on
+  // that side: leaning all the way at the edge, upright under the pointer
+  const toward = (e) => {
+    const r = root.getBoundingClientRect()
+    const pivot = new DOMPoint(50, 100).matrixTransform(glass.ownerSVGElement.getScreenCTM())
+    const dx = e.clientX - pivot.x
+    aim = Math.max(-1, Math.min(1, dx / (dx < 0 ? pivot.x - r.left : r.right - pivot.x))) * 18
+    wake()
+  }
+  const away = () => {
+    aim = 0
+    wake()
+  }
+  const observer = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return
+    observer.disconnect()
+    start = performance.now()
+    wake()
+  })
+  observer.observe(box)
+  root.addEventListener('pointermove', toward)
+  root.addEventListener('pointerleave', away)
+  root.addEventListener('pointercancel', away)
+  return () => {
+    observer.disconnect()
+    cancelAnimationFrame(frame)
+    root.removeEventListener('pointermove', toward)
+    root.removeEventListener('pointerleave', away)
+    root.removeEventListener('pointercancel', away)
+  }
+}
+/* /demo */
+
 export const SCRIPTS = {
   'btn-fill': fillFromPointer,
   'btn-magnetic': magnetic,
@@ -1211,6 +1291,7 @@ export const SCRIPTS = {
   'fb-tooltip': tooltip,
   'arch-magnifier': magnifier,
   'arch-cat': luckyCat,
+  'arch-water': sparklingWater,
   'arch-globe': globe,
   'arch-rings': cornerRings,
 }
