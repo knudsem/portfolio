@@ -858,9 +858,10 @@ const LAND = 'M-360 138l11-5 0 1 5 0 4-2-5-1-1-2-11 3-3-2 720 0-5-1 3-4-11-2-6-3
 
 // A real globe. Each shape is turned with the sphere and projected
 // (orthographic); what passes behind is cut where it crosses the edge, and
-// the cut follows the edge round. The turn is a CSS animation of --lb-turn,
-// read at each frame, so the globe pauses and calms down like the rest of
-// the lab; a drag adds a spin of its own, which slows down when let go.
+// the cut follows the edge round. The turn is a CSS animation (lb-turn):
+// at each frame the canvas reads how far it has run, so the globe pauses
+// and calms down like the rest of the lab; a drag adds a spin of its own,
+// which slows down when let go.
 export function globe(root) {
   const band = root.querySelector('.lb-globe-band')
   const canvas = band.querySelector('.lb-globe')
@@ -1017,9 +1018,16 @@ export function globe(root) {
     last = ''
   }
 
+  // the clock: how far the CSS animation has run in its turn (paused with
+  // it, and nothing at all without it)
+  const clock = () => {
+    const turn = canvas.getAnimations().find((animation) => animation.animationName === 'lb-turn')
+    return (turn?.effect.getComputedTiming().progress ?? 0) * 360
+  }
+
   let frame = 0
   const tick = () => {
-    const turn = parseFloat(getComputedStyle(canvas).getPropertyValue('--lb-turn')) || 0
+    const turn = clock()
     if (!drag && Math.abs(velocity) > 0.01) {
       spin += velocity
       velocity *= 0.92

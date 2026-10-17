@@ -45,7 +45,12 @@ const hiddenText = (page) => page.evaluate(async () => {
       const r = el.getBoundingClientRect()
       if (!r.height || r.bottom < 60 || r.top > innerHeight - 60) continue
       if (el.closest('[aria-hidden="true"], [hidden], .sr-only, dialog:not([open]), .lab-stage')) continue
-      if (opacity(el) < 0.5 || getComputedStyle(el).visibility === 'hidden') hidden.add(`${el.tagName.toLowerCase()} "${el.textContent.trim().slice(0, 40)}"`)
+      if (opacity(el) < 0.5 || getComputedStyle(el).visibility === 'hidden') {
+        // what the reveal effect knows about it, to tell why
+        const reveal = el.closest('[data-reveal]')
+        const state = reveal ? `reveal ${reveal.dataset.visible ? 'seen' : 'not seen'}, ${reveal.getAnimations().map((a) => `${a.animationName} ${a.playState}`).join(' ') || 'no animation'}` : 'no reveal'
+        hidden.add(`${el.tagName.toLowerCase()} "${el.textContent.trim().slice(0, 30)}" (opacity ${opacity(el).toFixed(2)}, top ${Math.round(r.top)} of ${innerHeight}, ${state})`)
+      }
     }
   }
   scrollTo(0, 0)
@@ -162,7 +167,8 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   const first = await look()
   await page.waitForTimeout(900)
   const second = await look()
-  check('lab: the globe draws land and turns', first.land > 100 && first.sum !== second.sum, `${first.land} land samples`)
+  const property = await stage('arch-globe').locator('canvas').evaluate((el) => getComputedStyle(el).getPropertyValue('--lb-turn'))
+  check('lab: the globe draws land and turns', first.land > 100 && first.sum !== second.sum, `${first.land} land samples; --lb-turn reads ${property}`)
   check('lab: no script error', errors.length === 0, errors.slice(0, 3).join(' | '))
   await context.close()
 }
