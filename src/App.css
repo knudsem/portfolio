@@ -134,12 +134,12 @@ em {
   transition: opacity 0.4s ease;
 }
 
-/* A dot grid, only visible in a circle around the cursor */
+/* A dot grid in the accent, only visible in a circle around the cursor */
 .glow-layer::after {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1.6px);
+  background-image: radial-gradient(rgba(var(--accent-rgb), 0.6) 1.35px, transparent 2px);
   background-size: 22px 22px;
   -webkit-mask-image: radial-gradient(240px circle at var(--glow-x, 50%) var(--glow-y, 50%), #000, transparent);
   mask-image: radial-gradient(240px circle at var(--glow-x, 50%) var(--glow-y, 50%), #000, transparent);

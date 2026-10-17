@@ -20,20 +20,6 @@ export const POST_META = [
     },
   },
   {
-    slug: "two-springs-make-water-slosh",
-    date: "2026-10-17",
-    tags: ["Animation", "JavaScript", "SVG"],
-    related: { href: "/lab", en: "Tilt the test tube in the lab, under From my archive", fr: "Pencher le tube à essai dans le lab, rubrique Mes archives" },
-    en: {
-      title: "Two springs make water slosh",
-      description: "The test tube in the lab leans towards the pointer and its water sloshes before it settles. Two springs, a dozen lines of JavaScript, and why the water must not turn with the glass.",
-    },
-    fr: {
-      title: "Deux ressorts pour faire clapoter de l'eau",
-      description: "Le tube à essai du lab penche vers le curseur et son eau clapote avant de se poser. Deux ressorts, une douzaine de lignes de JavaScript, et pourquoi l'eau ne doit pas tourner avec le verre.",
-    },
-  },
-  {
     slug: "91-live-animations-one-page",
     date: "2026-10-17",
     tags: ["Performance", "CSS", "Animation"],

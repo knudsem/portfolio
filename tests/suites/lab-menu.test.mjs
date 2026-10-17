@@ -37,7 +37,7 @@ const at = async (p, id) => { await stage(p, id).scrollIntoViewIfNeeded(); await
   const search = p.locator('#lab-search-side');
   await search.fill('loader'); await p.waitForTimeout(300);
   const found = await p.evaluate(() => [...document.querySelectorAll('.lab-card')].map((c) => c.dataset.demo));
-  check('search "loader": the eleven loaders (category name counts too) and the logo loader', found.filter((id) => id.startsWith('loader-')).length === 11 && found.length === 12 && found.includes('arch-signal'), found.join(','));
+  check('search "loader": the eleven loaders (the category name counts too)', found.filter((id) => id.startsWith('loader-')).length === 11 && found.length === 11, found.join(','));
   await search.fill('zzzz'); await p.waitForTimeout(300);
   const empty = await p.evaluate(() => ({ cards: document.querySelectorAll('.lab-card').length, text: document.querySelector('.lab-empty p')?.textContent }));
   check('search with no match: says so, with a way to clear it', empty.cards === 0 && empty.text === 'No animation matches “zzzz”.', JSON.stringify(empty));
