@@ -155,7 +155,7 @@ const slosh = (lag - tilt) * 1.5`],
     slug: '91-live-animations-one-page',
     en: {
       body: [
-        ['p', "[The lab](/lab) is a single page with 91 animations, all live: buttons that ripple, loaders that turn, a globe, a test tube full of bubbles. Each one is real HTML and CSS, sometimes with a little JavaScript, not a video. A page like that can easily make a phone hot and slow. It scores 97 for performance on Lighthouse's mobile test, with around 30 milliseconds of blocking time. Three things keep it there."],
+        ['p', "[The lab](/lab) is a single page with 91 animations, all live: buttons that ripple, loaders that turn, a globe, a test tube full of bubbles. Each one is real HTML and CSS, sometimes with a little JavaScript, not a video. A page like that can easily make a phone hot and slow. In my runs it scores 97 for performance on Lighthouse's mobile test, with 25 to 60 milliseconds of blocking time. Three things keep it there."],
         ['h2', "1. Don't draw what nobody sees"],
         ['p', "With `content-visibility: auto`, the browser skips the layout and the painting of a card while it is far off screen. Before it, the page scored between 90 and 95; after, 97. The catch is the scroll bar: a skipped card has no size, so the page would jump as cards come into view. `contain-intrinsic-size` gives each card a size to keep in reserve, and the `auto` keyword remembers its real size once it has been seen."],
         ['code', 'css', `.lab-card {
@@ -182,7 +182,7 @@ const slosh = (lag - tilt) * 1.5`],
     },
     fr: {
       body: [
-        ['p', "[Le lab](/lab) est une seule page avec 91 animations, toutes en direct : des boutons qui ondulent, des chargements qui tournent, un globe, un tube à essai plein de bulles. Chacune est du vrai HTML et du CSS, parfois avec un peu de JavaScript, pas une vidéo. Une page pareille peut vite faire chauffer et ralentir un téléphone. Elle obtient 97 en performance au test mobile de Lighthouse, avec environ 30 millisecondes de blocage. Trois choses l'y maintiennent."],
+        ['p', "[Le lab](/lab) est une seule page avec 91 animations, toutes en direct : des boutons qui ondulent, des chargements qui tournent, un globe, un tube à essai plein de bulles. Chacune est du vrai HTML et du CSS, parfois avec un peu de JavaScript, pas une vidéo. Une page pareille peut vite faire chauffer et ralentir un téléphone. Dans mes mesures, elle obtient 97 en performance au test mobile de Lighthouse, avec 25 à 60 millisecondes de blocage. Trois choses l'y maintiennent."],
         ['h2', '1. Ne pas dessiner ce que personne ne voit'],
         ['p', "Avec `content-visibility: auto`, le navigateur saute la mise en page et le dessin d'une carte tant qu'elle est loin de l'écran. Avant, la page obtenait entre 90 et 95 ; après, 97. Le piège, c'est la barre de défilement : une carte sautée n'a pas de taille, et la page sauterait à mesure que les cartes apparaissent. `contain-intrinsic-size` donne à chaque carte une taille à garder en réserve, et le mot-clé `auto` retient sa vraie taille une fois qu'elle a été vue."],
         ['code', 'css', `.lab-card {

@@ -184,8 +184,32 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
     await page.waitForTimeout(300)
     second = await look()
   }
-  const property = await stage('arch-globe').locator('canvas').evaluate((el) => getComputedStyle(el).getPropertyValue('--lb-turn'))
-  check('lab: the globe draws land and turns', first.land > 100 && first.sum !== second.sum, `${first.land} land samples; --lb-turn reads ${property}`)
+  const clock = await stage('arch-globe').locator('canvas').evaluate((el) => {
+    const card = el.closest('.lab-card')
+    const turn = el.getAnimations().find((a) => a.animationName === 'lb-turn')
+    return `--lb-turn ${getComputedStyle(el).getPropertyValue('--lb-turn')}, animation ${turn ? `${turn.playState} at ${Math.round(turn.currentTime)} ms` : 'none'}, card ${card.hasAttribute('data-inview') ? 'in view' : 'not in view'}, play state ${getComputedStyle(el).animationPlayState}`
+  })
+  check('lab: the globe draws land and turns', first.land > 100 && first.sum !== second.sum, `${first.land} land samples; ${clock}`)
+
+  // A CSS animation must pick up again when its card comes back on screen
+  // (the lab skips the drawing of cards far away, and pauses them)
+  await page.locator('.lab-filters .lab-chip').first().click()
+  await page.waitForTimeout(600)
+  const dots = page.locator('.lab-card[data-demo="loader-dots"] .lab-stage span').first()
+  await dots.scrollIntoViewIfNeeded()
+  await page.waitForTimeout(600)
+  await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight))
+  await page.waitForTimeout(1500)
+  await dots.scrollIntoViewIfNeeded()
+  await page.waitForTimeout(800)
+  const time = () => dots.evaluate((el) => {
+    const a = el.getAnimations()[0]
+    return { t: a ? a.currentTime : null, state: a?.playState, inview: el.closest('.lab-card').hasAttribute('data-inview') }
+  })
+  const before = await time()
+  await page.waitForTimeout(700)
+  const after = await time()
+  check('lab: an animation picks up again after its card was far off screen', after.t > before.t + 300, `${JSON.stringify(before)} then ${JSON.stringify(after)}`)
   check('lab: no script error', errors.length === 0, errors.slice(0, 3).join(' | '))
   await context.close()
 }
