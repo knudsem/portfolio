@@ -783,9 +783,9 @@ const LIST = [
     html: `<div class="lb-slides">
   <div class="lb-slides-window">
     <div class="lb-slides-track">
-      <span style="--c:#a970ff">1</span>
+      <span style="--c:#ffd84a">1</span>
       <span style="--c:#4ae0d2">2</span>
-      <span style="--c:#5b8cff">3</span>
+      <span style="--c:#8f6bff">3</span>
       <span style="--c:#ff9a62">4</span>
     </div>
   </div>
@@ -981,7 +981,7 @@ const LIST = [
     id: 'scroll-carousel',
     cat: 'scroll',
     tech: ['CSS', 'scroll-driven', 'scroll-snap'],
-    html: `<div class="lb-snap" role="region" tabindex="0" aria-label="Carousel, scroll it sideways">${['#a970ff', '#4ae0d2', '#5b8cff', '#ff9a62', '#ff5f7e', '#a970ff'].map((c, i) => `
+    html: `<div class="lb-snap" role="region" tabindex="0" aria-label="Carousel, scroll it sideways">${['#ffd84a', '#4ae0d2', '#8f6bff', '#ff9a62', '#ff5f7e', '#ffd84a'].map((c, i) => `
   <span style="--c:${c}">${i + 1}</span>`).join('')}
 </div>`,
     title: { en: 'Snap carousel', fr: 'Carrousel aimanté' },

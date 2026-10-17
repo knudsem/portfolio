@@ -727,7 +727,7 @@ export function rangeBubble(root) {
 export function confetti(root) {
   const box = root.querySelector('.lb-confetti')
   const button = box.querySelector('button')
-  const colours = ['#a970ff', '#4ae0d2', '#5b8cff', '#ff9a62', '#ff5f7e', '#ffd36e']
+  const colours = ['#ffd84a', '#4ae0d2', '#8f6bff', '#ff9a62', '#ff5f7e', '#5b8cff']
   const calm = matchMedia('(prefers-reduced-motion: reduce)').matches
   const burst = () => {
     if (calm) return
