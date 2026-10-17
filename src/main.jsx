@@ -43,7 +43,7 @@ const CONSOLE_NOTE = {
 const [hello, ...note] = CONSOLE_NOTE[detectLanguage()]
 console.log(
   `%c MK %c ${hello}\n\n${note.join('\n\n').replace('{keys}', SHORTCUT.join(' '))}`,
-  'background:#c5f04a;color:#0b0b10;font-weight:700;border-radius:4px;padding:2px 4px',
+  'background:#a970ff;color:#0b0b10;font-weight:700;border-radius:4px;padding:2px 4px',
   'font-weight:600',
 )
 

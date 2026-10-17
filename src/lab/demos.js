@@ -690,7 +690,7 @@ const LIST = [
     html: `<div class="lb-gallery">
   <button class="lb-gallery-panel" type="button" aria-pressed="true" style="--a:#ff9a62;--b:#c4467a"><span>Dawn</span></button>
   <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#4ae0d2;--b:#1f5fa8"><span>Sea</span></button>
-  <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#c5f04a;--b:#1f7a4d"><span>Forest</span></button>
+  <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#5fcf6b;--b:#1f7a4d"><span>Forest</span></button>
   <button class="lb-gallery-panel" type="button" aria-pressed="false" style="--a:#8f6bff;--b:#1d1650"><span>Night</span></button>
 </div>`,
     title: { en: 'Expanding gallery', fr: 'Galerie extensible' },
@@ -783,9 +783,9 @@ const LIST = [
     html: `<div class="lb-slides">
   <div class="lb-slides-window">
     <div class="lb-slides-track">
-      <span style="--c:#c5f04a">1</span>
+      <span style="--c:#a970ff">1</span>
       <span style="--c:#4ae0d2">2</span>
-      <span style="--c:#8f6bff">3</span>
+      <span style="--c:#5b8cff">3</span>
       <span style="--c:#ff9a62">4</span>
     </div>
   </div>
@@ -981,7 +981,7 @@ const LIST = [
     id: 'scroll-carousel',
     cat: 'scroll',
     tech: ['CSS', 'scroll-driven', 'scroll-snap'],
-    html: `<div class="lb-snap" role="region" tabindex="0" aria-label="Carousel, scroll it sideways">${['#c5f04a', '#4ae0d2', '#8f6bff', '#ff9a62', '#ff5f7e', '#c5f04a'].map((c, i) => `
+    html: `<div class="lb-snap" role="region" tabindex="0" aria-label="Carousel, scroll it sideways">${['#a970ff', '#4ae0d2', '#5b8cff', '#ff9a62', '#ff5f7e', '#a970ff'].map((c, i) => `
   <span style="--c:${c}">${i + 1}</span>`).join('')}
 </div>`,
     title: { en: 'Snap carousel', fr: 'Carrousel aimanté' },
@@ -1032,111 +1032,252 @@ const LIST = [
   {
     id: 'arch-magnifier',
     cat: 'archive',
-    tech: ['CSS', 'JS', '@property'],
-    html: `<div class="lb-loupe" role="img" aria-label="A magnifying glass passes over a bank card and enlarges its numbers">
-  <div class="lb-loupe-scene">
-    <div class="lb-loupe-card"><i></i><b>0000 0000 0000</b><u></u></div>
-  </div>
-  <div class="lb-loupe-lens">
-    <div class="lb-loupe-scene">
-      <div class="lb-loupe-card"><i></i><b>0000 0000 0000</b><u></u></div>
-    </div>
-  </div>
-</div>`,
+    tech: ['SVG', 'CSS', '@property'],
+    html: `<svg class="lb-loupe" viewBox="-6 24 462 356" role="img" aria-label="A magnifying glass travels over a bank card, enlarging the chip, the numbers and the signature in turn. It follows the pointer.">
+  <defs>
+    <g id="lb-loupe-art">
+      <rect x="-6" y="24" width="462" height="356" fill="#dff1f5"/>
+      <circle cx="224.5" cy="224.5" r="224.5" fill="#fcf7ef"/>
+      <g transform="translate(-43.64 -129.25)" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M153.87 451.85l-40.1-169.92a13 13 0 0 1 10.09-15.74L405 215a12.74 12.74 0 0 1 14.74 9.19l49.33 154.57a13 13 0 0 1-9.46 16l-290.36 66.5a12.74 12.74 0 0 1-15.38-9.42z" fill="#f4d24b" stroke="#804a58" stroke-width="6"/>
+        <path d="M439.13 385.37l-72.92 16.94a5.24 5.24 0 0 1-6-3.6L356.64 385a4.84 4.84 0 0 1 3.6-6L433 361.45a5.23 5.23 0 0 1 6 3.59l3.74 14.53a4.45 4.45 0 0 1-3.61 5.8z" fill="#804a58"/>
+        <path d="M310.47 255.35l94.81-18.5" stroke="#804a58" stroke-width="6.6" fill="none"/>
+        <path d="M153.82 340.86L142.2 298.39a3.56 3.56 0 0 1 2.8-4.39l55-12.11a3.6 3.6 0 0 1 4.27 2.6l10.41 41.76a3.63 3.63 0 0 1-2.61 4.4l-53.92 12.82a3.6 3.6 0 0 1-4.33-2.61z" fill="#804a58"/>
+        <path d="M206 295.16l-60.49 13.55M209.12 307.94l-60.22 13.55M213.75 320.08l-60.23 13.56" stroke="#f4d24b" stroke-width="4" fill="none"/>
+        <path d="M169.19 314.85c2.39 9.48 9.1 16.52 13.08 19.92a3 3 0 0 0 4.68-1.19c1.81-5 4.32-14.29 1.92-23.76-2.52-9.9-9.77-17.23-13.61-20.49a2.44 2.44 0 0 0-3.85.95c-1.81 4.98-4.74 14.72-2.22 24.57z" fill="#804a58" stroke="#f4d24b" stroke-width="4"/>
+        <g fill="#804a58" font-family="ui-monospace, Menlo, monospace" font-size="21" font-weight="700" letter-spacing="1">
+          <text transform="translate(255 345) rotate(-12.6)">0000</text>
+          <text transform="translate(316 331) rotate(-12.6)">0000</text>
+          <text transform="translate(378 317) rotate(-12.6)">0000</text>
+        </g>
+      </g>
+    </g>
+    <clipPath id="lb-loupe-glass"><circle r="44"/></clipPath>
+  </defs>
+  <use href="#lb-loupe-art"/>
+  <g class="lb-loupe-lens">
+    <circle class="lb-loupe-shade" cx="7" cy="10" r="48"/>
+    <g clip-path="url(#lb-loupe-glass)">
+      <use class="lb-loupe-zoom" href="#lb-loupe-art"/>
+    </g>
+    <path class="lb-loupe-shine" d="M-29 -14a32 32 0 0 1 21-18"/>
+    <circle class="lb-loupe-ring" r="46"/>
+    <path class="lb-loupe-neck" d="M34 34l12 12"/>
+    <path class="lb-loupe-handle" d="M50 50l34 34"/>
+  </g>
+</svg>`,
     title: { en: 'Magnifying glass', fr: 'Loupe' },
-    note: { en: 'From my CodePen: the glass used to slide by changing margins. Now it truly magnifies (a scaled copy seen through the lens), moves on a smooth path, and follows the pointer.', fr: "Tirée de mon CodePen : la loupe glissait en changeant des marges. Elle grossit maintenant pour de vrai (une copie agrandie vue à travers la lentille), suit un trajet fluide, et suit le curseur." },
+    note: { en: 'From my CodePen, with its own drawing. The glass used to slide by changing margins and showed nothing bigger. Now it truly magnifies (the same picture, twice as big, seen through the lens), stops on the chip, the numbers and the signature, and glides after the pointer, then back to its round, without a jump.', fr: "Tirée de mon CodePen, avec son propre dessin. La loupe glissait en changeant des marges et ne grossissait rien. Elle grossit maintenant pour de vrai (la même image, deux fois plus grande, vue à travers la lentille), s'arrête sur la puce, les chiffres et la signature, et glisse vers le curseur puis reprend sa ronde, sans à-coup." },
   },
   {
     id: 'arch-cat',
     cat: 'archive',
-    tech: ['CSS'],
-    html: `<div class="lb-cat" role="img" aria-label="A lucky cat waving its paw">
-  <span class="lb-cat-tail"></span>
-  <span class="lb-cat-body"></span>
-  <span class="lb-cat-paw"></span>
-  <span class="lb-cat-head">
-    <i class="lb-cat-ear"></i>
-    <i class="lb-cat-ear"></i>
-    <i class="lb-cat-eye"></i>
-    <i class="lb-cat-eye"></i>
-    <i class="lb-cat-nose"></i>
-  </span>
-  <span class="lb-cat-collar"><i></i></span>
-  <span class="lb-cat-coin"></span>
-</div>`,
+    tech: ['SVG', 'CSS', 'JS'],
+    html: `<button type="button" class="lb-cat" aria-label="Pet the lucky cat">
+  <svg viewBox="0 0 200 210" aria-hidden="true">
+    <circle class="lb-cat-disc" cx="100" cy="106" r="98"/>
+    <g class="lb-cat-tail">
+      <path class="lb-cat-line" d="M138 188c30 2 42-16 36-38-4-15 4-27 16-30"/>
+      <path class="lb-cat-fur" d="M138 188c30 2 42-16 36-38-4-15 4-27 16-30"/>
+    </g>
+    <g class="lb-cat-body">
+      <path class="lb-cat-ginger" d="M56 192c-12-44 4-86 44-90 40 4 56 46 44 90z"/>
+      <path class="lb-cat-cream" d="M74 190c-7-30 4-60 26-64 22 4 33 34 26 64z"/>
+      <ellipse class="lb-cat-cream" cx="77" cy="192" rx="16" ry="8"/>
+      <ellipse class="lb-cat-cream" cx="123" cy="192" rx="16" ry="8"/>
+      <path class="lb-cat-thin" d="M71 189v6M79 189v6M117 189v6M125 189v6"/>
+      <g class="lb-cat-coin">
+        <ellipse class="lb-cat-gold" cx="118" cy="156" rx="15" ry="20" transform="rotate(-12 118 156)"/>
+        <path class="lb-cat-mark" d="M110 148l14-3M111 156l14-3M112 164l14-3"/>
+        <ellipse class="lb-cat-ginger" cx="105" cy="168" rx="11" ry="9"/>
+      </g>
+    </g>
+    <path class="lb-cat-collar" d="M66 104c22 12 46 12 68 0"/>
+    <g class="lb-cat-bell">
+      <circle class="lb-cat-gold" cx="100" cy="117" r="7"/>
+      <path class="lb-cat-thin" d="M100 119v4M95 116h10"/>
+    </g>
+    <g class="lb-cat-head">
+      <g class="lb-cat-ear">
+        <path class="lb-cat-ginger" d="M62 48 56 10l34 22z"/>
+        <path class="lb-cat-pink" d="M65 40l-3-20 18 12z"/>
+      </g>
+      <g class="lb-cat-ear lb-cat-ear-right">
+        <path class="lb-cat-ginger" d="M138 48l6-38-34 22z"/>
+        <path class="lb-cat-pink" d="M135 40l3-20-18 12z"/>
+      </g>
+      <ellipse class="lb-cat-ginger" cx="100" cy="62" rx="48" ry="40"/>
+      <path class="lb-cat-stripe" d="M100 24v11M89 27l3 9M111 27l-3 9"/>
+      <ellipse class="lb-cat-muzzle" cx="100" cy="80" rx="29" ry="18"/>
+      <g class="lb-cat-eye">
+        <ellipse class="lb-cat-white" cx="80" cy="58" rx="12" ry="13"/>
+        <g class="lb-cat-look"><circle cx="80" cy="59" r="5.5"/><circle class="lb-cat-glint" cx="82" cy="56.5" r="1.8"/></g>
+      </g>
+      <g class="lb-cat-eye">
+        <ellipse class="lb-cat-white" cx="120" cy="58" rx="12" ry="13"/>
+        <g class="lb-cat-look"><circle cx="120" cy="59" r="5.5"/><circle class="lb-cat-glint" cx="122" cy="56.5" r="1.8"/></g>
+      </g>
+      <path class="lb-cat-nose" d="M94.5 73h11L100 79.5z"/>
+      <path class="lb-cat-thin" d="M100 80c0 6-8 8-12 4M100 80c0 6 8 8 12 4"/>
+      <path class="lb-cat-dots" d="M82 82h.1M86 86h.1M80 88h.1M118 82h.1M114 86h.1M120 88h.1"/>
+      <g class="lb-cat-whiskers">
+        <path class="lb-cat-thin" d="M72 76c-5-3-9 2-14-1s-9 2-14-1M72 82c-5-2-9 3-14 0s-9 3-14 0M73 88c-5-1-8 4-13 2s-8 3-13 1"/>
+        <path class="lb-cat-thin" d="M128 76c5-3 9 2 14-1s9 2 14-1M128 82c5-2 9 3 14 0s9 3 14 0M127 88c5-1 8 4 13 2s8 3 13 1"/>
+      </g>
+    </g>
+    <g class="lb-cat-arm">
+      <path class="lb-cat-line" d="M76 130c-8-14-16-30-28-46"/>
+      <path class="lb-cat-fur" d="M76 130c-8-14-16-30-28-46"/>
+      <g class="lb-cat-paw">
+        <circle class="lb-cat-cream" cx="44" cy="76" r="12"/>
+        <path class="lb-cat-thin" d="M39 66v5M45 65v5M51 67v5"/>
+        <ellipse class="lb-cat-pink" cx="44" cy="80" rx="4.5" ry="3.5"/>
+      </g>
+    </g>
+    <g class="lb-cat-luck">
+      <path d="M150 128l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/>
+      <path d="M166 104l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/>
+      <path d="M140 102l2 4 4 2-4 2-2 4-2-4-4-2 4-2z"/>
+      <path d="M28 46l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/>
+      <path d="M22 96l2 4 4 2-4 2-2 4-2-4-4-2 4-2z"/>
+    </g>
+  </svg>
+</button>`,
     title: { en: 'Lucky cat', fr: 'Chat porte-bonheur' },
-    note: { en: 'From my CodePen, redrawn as my own character, in CSS shapes only: the paw waves, the tail swishes, the bell swings.', fr: "Tiré de mon CodePen, redessiné en personnage à moi, uniquement en formes CSS : la patte salue, la queue balance, le grelot oscille." },
+    note: { en: 'From my CodePen, redrawn as a character of my own, in the same cartoon spirit: the paw beckons (the paw itself lags behind the arm), the bell and the tail follow, the cat blinks and watches the pointer. Pet it for a burst of luck.', fr: "Tiré de mon CodePen, redessiné en personnage à moi, dans le même esprit cartoon : la patte fait signe (la main traîne un peu derrière le bras), le grelot et la queue suivent, le chat cligne des yeux et suit le curseur du regard. Caressez-le pour un éclat de chance." },
   },
   {
     id: 'arch-water',
     cat: 'archive',
-    tech: ['CSS'],
-    html: `<div class="lb-tube" role="img" aria-label="A test tube two thirds full of bubbling water">
-  <div class="lb-tube-glass">
-    <span class="lb-tube-water"></span>
-    <span class="lb-tube-wave"></span>
-    <span class="lb-tube-wave"></span>${each(5, 'i', '    ').replace(/\n {4}$/, '')}
-  </div>
-  <span class="lb-tube-level">65%</span>
+    tech: ['SVG', 'CSS', 'JS'],
+    replay: true,
+    html: `<div class="lb-tube" role="img" aria-label="A test tube filling up to 65% with sparkling water. It tilts towards the pointer, and the water sloshes.">
+  <svg viewBox="0 0 100 200" aria-hidden="true">
+    <defs>
+      <clipPath id="lb-tube-in"><path d="M33 16v157a17 17 0 0 0 34 0V16z"/></clipPath>
+      <linearGradient id="lb-tube-deep" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#6ccac6"/>
+        <stop offset="1" stop-color="#2f8d98"/>
+      </linearGradient>
+    </defs>
+    <ellipse class="lb-tube-shadow" cx="50" cy="197" rx="20" ry="2.5"/>
+    <g clip-path="url(#lb-tube-in)">
+      <rect class="lb-tube-air" x="0" y="0" width="100" height="200"/>
+      <g class="lb-tube-water" transform="translate(0 78)">
+        <path class="lb-tube-back" d="M0 0q10-2.4 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0V200H0z"/>
+        <g class="lb-tube-front">
+          <path d="M0 0q10-2.8 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0V200H0z"/>
+          <path class="lb-tube-line" d="M0 0q10-2.8 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0"/>
+        </g>
+        <g class="lb-tube-bubbles">
+          <g style="--x:-1.5px; --s:1.9s"><circle cx="41" cy="0" r="2.6" style="--t:3.1s; --w:-0.4s"/></g>
+          <g style="--x:2px; --s:2.3s"><circle cx="47" cy="0" r="1.6" style="--t:2.6s; --w:-1.9s"/></g>
+          <g style="--x:-2px; --s:1.7s"><circle cx="53" cy="0" r="3.2" style="--t:3.6s; --w:-2.6s"/></g>
+          <g style="--x:1.5px; --s:2.1s"><circle cx="59" cy="0" r="2" style="--t:2.9s; --w:-1.1s"/></g>
+          <g style="--x:-1px; --s:1.6s"><circle cx="44" cy="0" r="1.3" style="--t:2.4s; --w:-0.9s"/></g>
+          <g style="--x:2.5px; --s:2.5s"><circle cx="56" cy="0" r="1.8" style="--t:3.3s; --w:-3s"/></g>
+          <g style="--x:-2px; --s:1.8s"><circle cx="50" cy="0" r="2.3" style="--t:2.8s; --w:-2.2s"/></g>
+          <g style="--x:1px; --s:2.2s"><circle cx="62" cy="0" r="1.2" style="--t:2.2s; --w:-0.2s"/></g>
+        </g>
+      </g>
+    </g>
+    <g class="lb-tube-glass">
+      <path class="lb-tube-wall" d="M31 12v161a19 19 0 0 0 38 0V12"/>
+      <rect class="lb-tube-lip" x="26" y="7" width="48" height="7" rx="3.5"/>
+      <path class="lb-tube-marks" d="M59 147h8M62 125.5h5M59 104h8M62 82.5h5M59 61h8"/>
+      <rect class="lb-tube-shine" x="36" y="24" width="3" height="136" rx="1.5"/>
+    </g>
+  </svg>
+  <p class="lb-tube-level" aria-hidden="true">65%</p>
 </div>`,
-    title: { en: 'Bubbly water', fr: 'Eau pétillante' },
-    note: { en: 'From my CodePen, where the surface was a morphing SVG path. Now two turning rounded squares make the wave, and bubbles rise at their own pace.', fr: "Tirée de mon CodePen, où la surface était un tracé SVG qui se déformait. Deux carrés arrondis qui tournent font maintenant la vague, et les bulles montent chacune à son rythme." },
+    title: { en: 'Sparkling water', fr: 'Eau pétillante' },
+    note: { en: 'From my CodePen, where the surface was a morphing SVG path. Now two waves drift at their own pace, the bubbles sway and burst at the surface, and the tube tilts towards the pointer: the water stays level, lags behind the glass, and sloshes before it settles (two springs).', fr: "Tirée de mon CodePen, où la surface était un tracé SVG qui se déformait. Deux vagues dérivent maintenant chacune à son rythme, les bulles ondulent et éclatent à la surface, et le tube penche vers le curseur : l'eau reste à niveau, prend du retard sur le verre et clapote avant de se poser (deux ressorts)." },
   },
   {
     id: 'arch-globe',
     cat: 'archive',
-    tech: ['CSS', 'JS'],
+    tech: ['Canvas', 'JS', '@property'],
     html: `<div class="lb-globe-band">
-  <p class="lb-globe-stat"><strong data-to="160">160</strong> countries</p>
-  <p class="lb-globe-stat"><strong data-to="35">35</strong> cities</p>
-  <div class="lb-globe" role="img" aria-label="A spinning globe"></div>
-  <p class="lb-globe-stat"><strong data-to="12">12</strong>k users</p>
-  <p class="lb-globe-stat"><strong data-to="98">98</strong>% uptime</p>
+  <p class="lb-globe-stat"><strong><span data-to="160">160</span></strong> countries</p>
+  <p class="lb-globe-stat"><strong><span data-to="35">35</span></strong> cities</p>
+  <canvas class="lb-globe" role="img" aria-label="The Earth, turning slowly. Drag it to spin it."></canvas>
+  <p class="lb-globe-stat"><strong><span data-to="12">12</span><small>k</small></strong> members</p>
+  <p class="lb-globe-stat"><strong><span data-to="98">98</span><small>TB</small></strong> shared</p>
 </div>`,
     title: { en: 'Globe and figures', fr: 'Globe et chiffres' },
-    note: { en: 'From my CodePen, which spun a photo of the Earth. Now the globe is drawn in CSS (a sliding map under an inner shadow), and the figures count up when they come into view.', fr: "Tiré de mon CodePen, qui faisait tourner une photo de la Terre. Le globe est maintenant dessiné en CSS (une carte qui glisse sous une ombre intérieure), et les chiffres comptent quand ils apparaissent." },
+    note: { en: 'From my CodePen, which slid a photo of a map behind a round mask. Now a real globe: the coastlines (Natural Earth) are projected onto a sphere and cut at its edge. Drag it to spin it; the figures count up as they come into view.', fr: "Tiré de mon CodePen, qui faisait glisser la photo d'une carte derrière un masque rond. C'est maintenant un vrai globe : les côtes (Natural Earth) sont projetées sur une sphère et coupées à son bord. On peut le faire tourner à la main ; les chiffres comptent quand ils apparaissent." },
   },
   {
     id: 'arch-rings',
     cat: 'archive',
     tech: ['CSS', 'JS'],
-    html: `<nav class="lb-rings" aria-label="Games">
-  <button type="button" aria-expanded="false" aria-controls="lb-rings-list"><span>Games</span></button>
-  <ul id="lb-rings-list">
-    <li style="--i:0"><a href="#"><span>Eons</span></a></li>
-    <li style="--i:1"><a href="#"><span>Towerz</span></a></li>
-    <li style="--i:2"><a href="#"><span>All games</span></a></li>
-  </ul>
-</nav>`,
+    html: `<div class="lb-rings">
+  <div class="lb-rings-page" aria-hidden="true"><b></b><i></i><i></i><i></i></div>
+  <nav aria-label="Games">
+    <button type="button" aria-expanded="false" aria-controls="lb-rings-list"><span>Games</span><span>Close</span></button>
+    <ul id="lb-rings-list">
+      <li><a href="#" aria-label="Eons" style="--r:76px; --step:10deg"><span aria-hidden="true"><i style="--k:-1.5">E</i><i style="--k:-0.5">o</i><i style="--k:0.5">n</i><i style="--k:1.5">s</i></span></a></li>
+      <li><a href="#" aria-label="Towerz" style="--r:114px; --step:6deg"><span aria-hidden="true"><i style="--k:-2.5">T</i><i style="--k:-1.5">o</i><i style="--k:-0.5">w</i><i style="--k:0.5">e</i><i style="--k:1.5">r</i><i style="--k:2.5">z</i></span></a></li>
+    </ul>
+  </nav>
+</div>`,
     title: { en: 'Corner rings', fr: 'Anneaux en coin' },
-    note: { en: 'From my CodePen (a games menu for a studio): rings swing out of the corner with a little overshoot. Now a real disclosure: closed rings are out of the tab order, Escape closes.', fr: "Tiré de mon CodePen (un menu de jeux pour un studio) : les anneaux sortent du coin en pivotant, avec un léger rebond. Maintenant un vrai bouton d'ouverture : fermés, les anneaux sortent de la tabulation, Échap referme." },
+    note: { en: 'From my CodePen (a games menu for a studio). The rings still ripple out of the corner with a bounce, now from the button outwards, and close the other way; each name follows the curve of its ring, letter by letter. A real disclosure button: closed rings are out of reach, Escape closes.', fr: "Tiré de mon CodePen (un menu de jeux pour un studio). Les anneaux sortent toujours du coin avec un rebond, maintenant depuis le bouton vers l'extérieur, et se referment dans l'autre sens ; chaque nom suit la courbe de son anneau, lettre par lettre. Un vrai bouton d'ouverture : fermés, les anneaux sont hors d'atteinte, Échap referme." },
   },
   {
     id: 'arch-signal',
     cat: 'archive',
-    tech: ['CSS', 'SVG'],
-    html: `<div class="lb-signal" role="status" aria-label="Connecting">
-  <svg viewBox="0 0 48 48" aria-hidden="true">
-    <circle cx="12" cy="36" r="5"/>
-    <path d="M12 22a14 14 0 0 1 14 14"/>
-    <path d="M12 10a26 26 0 0 1 26 26"/>
+    tech: ['SVG', 'CSS'],
+    html: `<div class="lb-mk" role="status" aria-label="Loading">
+  <svg viewBox="-2 -2 203 109" aria-hidden="true">
+    <path class="lb-mk-line" d="M108.5-.5h3v105h-6c.17-31.34 0-62.67-.5-94C88.36 32.64 71.53 54.64 54.5 76.5A21 21 0 0 1 50 72.5C34.72 51.55 19.05 30.88 3 10.5c-.5 31.33-.67 62.66-.5 94h-3V.5C18.19 23.7 36.35 47.36 54 71.5 72 47.34 90.17 23.34 108.5-.5z"/>
+    <path class="lb-mk-line" d="M190.5-.5h5c.13.74-.04 1.4-.5 2-16.71 16.21-32.88 32.88-48.5 50 17.08 17.74 34.41 35.08 52 52v1h-5c-17.16-17.99-34.83-35.49-53-52.5 16.87-17.37 33.54-34.87 50-52.5z"/>
+    <path class="lb-mk-wedge" d="M49.5 104.5h-15c-1.99-3.96-4.49-7.62-7.5-11-.5 3.65-.67 7.32-.5 11h-12c-.33-15.68 0-31.35 1-47 11.59 15.52 22.92 31.19 34 47z"/>
+    <path class="lb-mk-wedge" d="M93.5 104.5h-12c.17-3.68 0-7.35-.5-11-2.51 3.7-5.01 7.36-7.5 11h-15c10.95-15.62 22.29-30.95 34-46 1 15.32 1.33 30.65 1 46z"/>
+    <path class="lb-mk-wedge" d="M128.5-.5h11c-.17 5.01 0 10.01.5 15 5.04-4.87 9.87-9.87 14.5-15h17c-13.58 15.08-27.75 29.75-42.5 44-.5-14.66-.67-29.33-.5-44z"/>
+    <path class="lb-mk-wedge" d="M170.5 104.5h-16c-4.63-5.13-9.46-10.13-14.5-15-.5 4.99-.67 9.99-.5 15h-11c-.33-14.02 0-28.02 1-42 13.66 13.99 27.33 27.99 41 42z"/>
   </svg>
 </div>`,
-    title: { en: 'Signal', fr: 'Signal' },
-    note: { en: 'From my CodePen, where a logo lit up its arcs. Kept the idea, made it neutral: the dot, then each arc, lights up in turn.', fr: "Tiré de mon CodePen, où un logo allumait ses arcs. L'idée est gardée, rendue neutre : le point, puis chaque arc, s'allument tour à tour." },
+    title: { en: 'Logo loader', fr: 'Chargement au logo' },
+    note: { en: 'From my CodePen, where a client’s logo lit up its accents one by one while a page loaded. Same idea with my own monogram: the four solid wedges of MK light up in turn and fade in the same order, like a signal.', fr: "Tiré de mon CodePen, où le logo d'un client allumait ses accents un à un pendant un chargement. Même idée avec mon propre monogramme : les quatre coins pleins de MK s'allument tour à tour et s'éteignent dans le même ordre, comme un signal." },
   },
   {
     id: 'arch-mask',
     cat: 'archive',
-    tech: ['CSS', 'SVG'],
-    html: `<div class="lb-wipe" role="img" aria-label="A page transition: waves of colour sweep across and reveal the next page">
-  <div class="lb-wipe-page"><b>Home</b><span></span><span></span></div>
-  <div class="lb-wipe-page lb-wipe-next"><b>About</b><span></span><span></span></div>
-  <svg class="lb-wipe-wave" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M20 0h180v100H20C0 80 34 62 16 46S8 12 20 0z"/></svg>
-  <svg class="lb-wipe-wave" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M20 0h180v100H20C0 80 34 62 16 46S8 12 20 0z"/></svg>
-</div>`,
-    title: { en: 'Wave transition', fr: 'Transition en vagues' },
-    note: { en: 'From my CodePen "The Mask": two waves of colour sweep across a page and reveal the next one. Rebuilt as one short timeline, with a long rest between two passes.', fr: "Tirée de mon CodePen « The Mask » : deux vagues de couleur balaient une page et révèlent la suivante. Refaite en une seule timeline courte, avec une longue pause entre deux passages." },
+    tech: ['SVG', 'CSS'],
+    replay: true,
+    html: `<svg class="lb-mask" viewBox="0 0 300 200" role="img" aria-label="A poster builds itself: an orange page unrolls, green is brushed on, two bands are drawn, circles pop out, and a green mask arrives and blinks.">
+  <defs>
+    <clipPath id="lb-mask-page"><rect width="300" height="200" rx="16"/></clipPath>
+    <mask id="lb-mask-brush"><path class="lb-mask-brush" d="M-60 60C60 40 160 120 360 100" pathLength="1"/></mask>
+  </defs>
+  <g clip-path="url(#lb-mask-page)">
+    <rect class="lb-mask-paper" width="300" height="200"/>
+    <path class="lb-mask-green" mask="url(#lb-mask-brush)" d="M0 0h118c16 52 50 74 96 72 38-2 70 6 86 16v70c-30-12-60-18-86-8-28 12-54 20-94 8C80 146 40 124 0 104z"/>
+    <path class="lb-mask-band lb-mask-dark" d="M-30 100 0 115c40 20 80 42 120 54s66 4 94-8c26-10 56-4 86 8l30 12" pathLength="1"/>
+    <path class="lb-mask-band lb-mask-olive" d="M-30 120 0 135c40 20 80 42 120 54s66 4 94-8c26-10 56-4 86 8l30 12" pathLength="1"/>
+    <g class="lb-mask-dot" style="--d:1.6s"><circle cx="150" cy="2" r="26" fill="#008746"/><circle cx="150" cy="-2" r="11" fill="#007561"/></g>
+    <g class="lb-mask-dot" style="--d:1.75s"><circle cx="302" cy="70" r="32" fill="#bba800"/><circle cx="292" cy="72" r="10" fill="#008746"/></g>
+    <g class="lb-mask-dot" style="--d:1.9s"><circle cx="10" cy="196" r="34" fill="#bba800"/><circle cx="6" cy="200" r="13" fill="#008746"/></g>
+    <g class="lb-mask-dot" style="--d:2.05s"><circle cx="292" cy="200" r="20" fill="#008746"/><circle cx="294" cy="200" r="8" fill="#007561"/></g>
+    <g transform="translate(136 86) scale(1.15) translate(-120 -70)"><g class="lb-mask-face">
+      <path class="lb-mask-tie" d="M60 66c-14 2-22 12-34 10"/>
+      <path class="lb-mask-tie lb-mask-tie-2" d="M60 70c-12 8-18 20-30 22"/>
+      <path class="lb-mask-tie lb-mask-tie-r" d="M180 66c14 2 22 12 34 10"/>
+      <path class="lb-mask-tie lb-mask-tie-r lb-mask-tie-2" d="M180 70c12 8 18 20 30 22"/>
+      <path class="lb-mask-cloth" d="M120 60c-8-4-20-10-32-10-14 0-24 6-28 14l-8 6c6 10 18 20 36 20 16 0 24-6 32-10 8 4 16 10 32 10 18 0 30-10 36-20l-8-6c-4-8-14-14-28-14-12 0-24 6-32 10z"/>
+      <g class="lb-mask-eyes">
+        <ellipse cx="92" cy="72" rx="12" ry="8.5" fill="#fff"/>
+        <ellipse cx="148" cy="72" rx="12" ry="8.5" fill="#fff"/>
+        <circle cx="94" cy="73" r="4" fill="#14250d"/>
+        <circle cx="150" cy="73" r="4" fill="#14250d"/>
+      </g>
+      <path class="lb-mask-shine" d="M70 62c6-6 14-8 22-7"/>
+    </g></g>
+  </g>
+</svg>`,
+    title: { en: 'The Mask', fr: 'The Mask' },
+    note: { en: 'From my CodePen "The Mask", a poster that builds itself. Same colours and the same moves, in one timeline: the page unrolls, the green is brushed on through a mask, the bands draw themselves, the circles pop. It now ends on a mask of its own, which blinks.', fr: "Tirée de mon CodePen « The Mask », une affiche qui se construit toute seule. Mêmes couleurs, mêmes gestes, en une seule timeline : la page se déroule, le vert est passé au pinceau à travers un masque, les bandes se tracent, les cercles éclosent. Elle finit maintenant sur un masque bien à elle, qui cligne des yeux." },
   },
 ]
 

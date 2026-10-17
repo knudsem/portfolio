@@ -39,8 +39,8 @@
   --text-2: #a1a1b3;        /* 7:1 on every background */
   --text-3: #85859a;        /* 4.9:1 or more on every background */
 
-  --accent: #c5f04a;
-  --accent-rgb: 197, 240, 74;
+  --accent: #a970ff;
+  --accent-rgb: 169, 112, 255;
   --accent-ink: #0b0b10;    /* text on accent */
   --error: #ff7a7a;
 
