@@ -1,0 +1,48 @@
+# Every pull request and every push to main: the site is built, then tested
+# in a real browser. All suites run in Chromium; the cross-browser suite runs
+# in Chromium, WebKit (the engine of Safari) and Firefox.
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  suites:
+    name: All suites (Chromium)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm test
+
+  browsers:
+    name: Cross-browser (${{ matrix.engine }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit, firefox]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps ${{ matrix.engine }}
+      - run: npm run build
+      - run: npm run test:browsers -- ${{ matrix.engine }}

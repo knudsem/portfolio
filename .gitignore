@@ -5,3 +5,6 @@ dist
 
 # Local editor/assistant settings
 .claude/
+
+# Words the tests check the site never shows; kept out of the repo
+tests/.private-words

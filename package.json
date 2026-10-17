@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/prerender.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node tests/run.mjs",
+    "test:browsers": "node tests/run.mjs --engine"
   },
   "dependencies": {
     "axe-core": "^4.14.0",
@@ -15,6 +17,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
+    "playwright": "1.56.1",
     "vite": "^6.0.5"
   }
 }
