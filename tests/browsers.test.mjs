@@ -170,7 +170,39 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   await page.waitForTimeout(2400)
   check('lab: the test tube fills up to 65%', (await stage('arch-water').locator('.lb-tube-level').textContent()) === '65%')
 
-  await stage('arch-globe').scrollIntoViewIfNeeded()
+  // The page scrolls smoothly (and a filter scrolls back to the grid): the
+  // test jumps at once, waits for the page to stand still, and makes sure
+  // the card did land on screen before looking at it
+  const still = async () => {
+    let last = null
+    for (let i = 0; i < 40; i++) {
+      const y = await page.evaluate(() => scrollY)
+      if (y === last) return
+      last = y
+      await page.waitForTimeout(150)
+    }
+  }
+  const where = (locator) => locator.evaluate((el) => {
+    const card = el.closest('.lab-card')
+    const r = card.getBoundingClientRect()
+    return { top: Math.round(r.top), bottom: Math.round(r.bottom), screen: innerHeight, onScreen: r.top < innerHeight && r.bottom > 0, inview: card.hasAttribute('data-inview') }
+  })
+  const bring = async (locator) => {
+    await still()
+    for (let i = 0; i < 5; i++) {
+      await locator.evaluate((el) => {
+        document.documentElement.style.scrollBehavior = 'auto'
+        el.scrollIntoView({ block: 'center' })
+      })
+      await still()
+      if ((await where(locator)).onScreen) break
+    }
+    // the lab gets a moment to see the card and start it
+    for (let wait = 0; wait < 2000 && !(await where(locator)).inview; wait += 200) await page.waitForTimeout(200)
+    return where(locator)
+  }
+
+  const globe = await bring(stage('arch-globe'))
   await page.waitForTimeout(800)
   const look = () => stage('arch-globe').locator('canvas').evaluate((el) => {
     const d = el.getContext('2d').getImageData(0, 0, el.width, el.height).data
@@ -185,31 +217,35 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
     second = await look()
   }
   const clock = await stage('arch-globe').locator('canvas').evaluate((el) => {
-    const card = el.closest('.lab-card')
     const turn = el.getAnimations().find((a) => a.animationName === 'lb-turn')
-    return `--lb-turn ${getComputedStyle(el).getPropertyValue('--lb-turn')}, animation ${turn ? `${turn.playState} at ${Math.round(turn.currentTime)} ms` : 'none'}, card ${card.hasAttribute('data-inview') ? 'in view' : 'not in view'}, play state ${getComputedStyle(el).animationPlayState}`
+    return `animation ${turn ? `${turn.playState} at ${Math.round(turn.currentTime)} ms` : 'none'}, play state ${getComputedStyle(el).animationPlayState}`
   })
-  check('lab: the globe draws land and turns', first.land > 100 && first.sum !== second.sum, `${first.land} land samples; ${clock}`)
+  check('lab: the globe draws land and turns', first.land > 100 && first.sum !== second.sum, `${first.land} land samples; ${clock}; card ${JSON.stringify(globe)}`)
 
-  // A CSS animation must pick up again when its card comes back on screen
-  // (the lab skips the drawing of cards far away, and pauses them)
+  // A CSS animation rests while its card is far off screen, and picks up
+  // again when the card comes back
   await page.locator('.lab-filters .lab-chip').first().click()
   await page.waitForTimeout(600)
   const dots = page.locator('.lab-card[data-demo="loader-dots"] .lab-stage span').first()
-  await dots.scrollIntoViewIfNeeded()
-  await page.waitForTimeout(600)
+  const ran = async () => {
+    const time = () => dots.evaluate((el) => el.getAnimations()[0]?.currentTime ?? null)
+    const from = await time()
+    await page.waitForTimeout(700)
+    return Math.round((await time()) - from)
+  }
+  const shown = await bring(dots)
+  const shownRan = await ran()
+  check('lab: an animation runs while its card is on screen', shown.onScreen && shown.inview && shownRan > 300, `${JSON.stringify(shown)}, ran ${shownRan} ms in 700`)
+  await still()
   await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight))
-  await page.waitForTimeout(1500)
-  await dots.scrollIntoViewIfNeeded()
-  await page.waitForTimeout(800)
-  const time = () => dots.evaluate((el) => {
-    const a = el.getAnimations()[0]
-    return { t: a ? a.currentTime : null, state: a?.playState, inview: el.closest('.lab-card').hasAttribute('data-inview') }
-  })
-  const before = await time()
-  await page.waitForTimeout(700)
-  const after = await time()
-  check('lab: an animation picks up again after its card was far off screen', after.t > before.t + 300, `${JSON.stringify(before)} then ${JSON.stringify(after)}`)
+  await still()
+  await page.waitForTimeout(600)
+  const away = await where(dots)
+  const awayRan = await ran()
+  check('lab: it rests while its card is far off screen', !away.onScreen && !away.inview && awayRan === 0, `${JSON.stringify(away)}, ran ${awayRan} ms in 700`)
+  const back = await bring(dots)
+  const backRan = await ran()
+  check('lab: it picks up again when its card comes back', back.onScreen && back.inview && backRan > 300, `${JSON.stringify(back)}, ran ${backRan} ms in 700`)
   check('lab: no script error', errors.length === 0, errors.slice(0, 3).join(' | '))
   await context.close()
 }
