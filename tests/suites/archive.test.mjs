@@ -1,6 +1,7 @@
-// The seven demos from the CodePen archive (the cat and the globe rebuilt,
-// the others in their first version): what they do, from the mouse, the
-// keyboard and a finger, calm for reduced motion, at phone width
+// The demos from the CodePen archive (the cat, the water, the globe and the
+// logo loader reworked, the others in their first version): what they do,
+// from the mouse, the keyboard and a finger, calm for reduced motion, at
+// phone width
 import { chromium } from 'playwright';
 import { BASE } from '../lib.mjs';
 const b = await chromium.launch();
@@ -8,7 +9,7 @@ let fail = 0;
 const check = (label, ok, info = '') => { if (!ok) fail++; console.log(`${ok ? 'ok  ' : 'FAIL'} ${label}${info ? '  [' + info + ']' : ''}`); };
 const stage = (p, id) => p.locator(`.lab-card[data-demo="${id}"] .lab-stage`);
 const at = async (p, id) => { await stage(p, id).scrollIntoViewIfNeeded(); await p.waitForTimeout(300); return stage(p, id); };
-const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe', 'arch-rings', 'arch-signal', 'arch-mask'];
+const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe', 'arch-rings', 'arch-signal', 'arch-logo', 'arch-mask'];
 
 {
   const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
@@ -17,7 +18,7 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   const errors = []; p.on('pageerror', (e) => errors.push(e.message)); p.on('console', (m) => { if (['error', 'warning'].includes(m.type()) && !m.text().includes('willReadFrequently')) errors.push(m.text()); }); // that warning comes from this test reading the globe's pixels
   await p.goto(BASE + '/lab'); await p.waitForTimeout(800);
   await p.locator('.lab-filters .lab-chip', { hasText: 'From my archive' }).click(); await p.waitForTimeout(900);
-  check('the archive filter shows the eight archive demos', (await p.locator('.lab-card').evaluateAll((els) => els.map((e) => e.dataset.demo).join())) === IDS.join());
+  check('the archive filter shows the nine archive demos', (await p.locator('.lab-card').evaluateAll((els) => els.map((e) => e.dataset.demo).join())) === IDS.join());
 
   // Rings
   let s = await at(p, 'arch-rings');
@@ -56,10 +57,27 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   check('cat: it can be petted from the keyboard too', await cat.evaluate((el) => el.hasAttribute('data-lucky')));
 
   // Water
-  s = await at(p, 'arch-water'); await p.waitForTimeout(1500);
-  check('water: the tube is two thirds full', (await s.locator('.lb-tube-level').textContent()) === '65%');
-  const moving = await s.evaluate((el) => ({ waves: [...el.querySelectorAll('.lb-tube-wave')].map((w) => getComputedStyle(w).animationName).join(), bubbles: [...el.querySelectorAll('.lb-tube-glass i')].filter((i) => getComputedStyle(i).animationName === 'lb-tube-bubble').length }));
-  check('water: the waves turn and five bubbles rise', moving.waves === 'lb-tube-wave,lb-tube-wave' && moving.bubbles === 5, JSON.stringify(moving));
+  s = await at(p, 'arch-water'); await p.waitForTimeout(2300);
+  check('water: the tube has filled up to 65%', (await s.locator('.lb-tube-level').textContent()) === '65%');
+  const angle = (attr) => Number((attr || '').match(/rotate\((-?[\d.]+)/)?.[1] ?? 0);
+  const glassTilt = async () => angle(await s.locator('.lb-tube-glass').getAttribute('transform'));
+  const waterTilt = async () => angle('rotate' + ((await s.locator('.lb-tube-water').getAttribute('transform')).split('rotate')[1] || ''));
+  const tubeBox = await s.locator('.lb-tube svg').boundingBox(); const stageBox = await s.boundingBox();
+  const pivotX = tubeBox.x + tubeBox.width / 2, rowY = tubeBox.y + 40;
+  // just right of the glass, it leans right: towards the pointer (it once leaned away)
+  await p.mouse.move(pivotX - 30, rowY); await p.mouse.move(pivotX + 30, rowY, { steps: 3 }); await p.waitForTimeout(500);
+  const near = await glassTilt();
+  // out near the stage's edge, beyond the tube's own box, it still answers, and leans further
+  await p.mouse.move(stageBox.x + stageBox.width - 6, rowY, { steps: 3 }); await p.waitForTimeout(160);
+  const far = await glassTilt(); const slosh = await waterTilt();
+  check('water: the tube leans towards the pointer wherever it is on the stage, the water lags behind', near > 0.5 && far > near + 4 && slosh !== 0, `near ${near}, far ${far}, slosh ${slosh}`);
+  await p.mouse.move(stageBox.x + 6, rowY, { steps: 6 }); await p.waitForTimeout(500);
+  const left = await glassTilt();
+  check('water: on the left, it leans left', left < -5, String(left));
+  // from all the way over, the water takes a little under four seconds to be still
+  await p.mouse.move(0, 0); await p.waitForTimeout(4000);
+  const rest = [await glassTilt(), await waterTilt()];
+  check('water: let go, it stands up again and the water settles level', Math.abs(rest[0]) < 0.2 && Math.abs(rest[1]) < 0.2, rest.join(' | '));
 
   // Globe
   s = await at(p, 'arch-globe'); await p.waitForTimeout(1700);
@@ -86,6 +104,14 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   for (let i = 0; i < 6; i++) { arcs.push(await s.locator('path').evaluateAll((ps) => ps.map((a) => Number(getComputedStyle(a).opacity).toFixed(2)).join())); await p.waitForTimeout(350); }
   check('signal: the arcs light up in turn', new Set(arcs).size > 2, arcs.join(' / '));
 
+  // Logo loader
+  s = await at(p, 'arch-logo');
+  check('logo loader: a status called "Loading"', (await s.getByRole('status', { name: 'Loading' }).count()) === 1);
+  const lit = await s.locator('.lb-mk-wedge').evaluateAll((ws) => ws.map((w) => Number(getComputedStyle(w).opacity)));
+  await p.waitForTimeout(450);
+  const lit2 = await s.locator('.lb-mk-wedge').evaluateAll((ws) => ws.map((w) => Number(getComputedStyle(w).opacity)));
+  check('logo loader: four wedges of MK, lighting up in turn', lit.length === 4 && lit.join() !== lit2.join() && Math.max(...lit, ...lit2) > 0.9 && Math.min(...lit, ...lit2) < 0.4, `${lit.map((v) => v.toFixed(2))} / ${lit2.map((v) => v.toFixed(2))}`);
+
   // Wave transition
   s = await at(p, 'arch-mask');
   const waves = [];
@@ -104,13 +130,15 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   await p.goto(BASE + '/lab'); await p.waitForTimeout(800);
   await p.locator('.lab-filters .lab-chip', { hasText: 'From my archive' }).click(); await p.waitForTimeout(600);
   let s = await at(p, 'arch-water');
-  check('calm: the tube is two thirds full, no bubbles', (await s.locator('.lb-tube-level').textContent()) === '65%' && (await s.locator('.lb-tube-glass i').evaluateAll((is) => is.every((i) => getComputedStyle(i).opacity === '0'))));
+  check('calm: the tube is already full, no bubbles', (await s.locator('.lb-tube-level').textContent()) === '65%' && (await s.locator('.lb-tube-bubbles').evaluate((el) => getComputedStyle(el).display)) === 'none');
   s = await at(p, 'arch-globe');
   check('calm: the figures are there at once, the globe does not turn', (await s.locator('[data-to]').allTextContents()).join() === '160,35,12,98' && (await s.locator('canvas').evaluate((el) => getComputedStyle(el).animationName)) === 'none');
   s = await at(p, 'arch-mask');
   check('calm: the page stays put, the waves out of sight', (await s.locator('.lb-wipe-wave').evaluateAll((ws) => ws.every((w) => getComputedStyle(w).translate === '250px'))));
   s = await at(p, 'arch-signal');
   check('calm: the signal is shown lit', (await s.locator('path').evaluateAll((ps) => ps.every((a) => getComputedStyle(a).opacity === '1'))));
+  s = await at(p, 'arch-logo');
+  check('calm: the monogram is shown lit', (await s.locator('.lb-mk-wedge').evaluateAll((ws) => ws.every((w) => getComputedStyle(w).opacity === '1'))));
   const moving = await p.evaluate((ids) => ids.flatMap((id) => [...document.querySelectorAll(`.lab-card[data-demo="${id}"] .lab-stage *`)].filter((el) => getComputedStyle(el).animationName !== 'none').map((el) => id + ' ' + (el.getAttribute('class') || el.tagName))), IDS.slice(1));
   check('calm: no animation runs in the archive demos', moving.length === 0, moving.slice(0, 5).join(', '));
   await ctx.close();

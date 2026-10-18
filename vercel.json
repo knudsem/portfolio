@@ -25,5 +25,8 @@
     { "source": "/lab", "destination": "/lab/index.html" },
     { "source": "/blog", "destination": "/blog/index.html" },
     { "source": "/blog/:slug", "destination": "/blog/:slug/index.html" }
+  ],
+  "redirects": [
+    { "source": "/blog/91-live-animations-one-page", "destination": "/blog/live-animations-one-page", "permanent": true }
   ]
 }

@@ -3,6 +3,7 @@
 import { chromium } from 'playwright';
 import fs from 'node:fs';
 import { BASE, ROOT, AXE } from '../lib.mjs';
+import { DEMOS } from '../../src/lab/demos.js';
 const URL_ = BASE + '/lab';
 const b = await chromium.launch();
 let fail = 0;
@@ -18,7 +19,7 @@ const card = (p, id) => p.locator('.lab-card', { has: p.locator(`.lab-stage [cla
   const head = await p.evaluate(() => ({ title: document.title, h1: document.querySelector('h1')?.textContent, cards: document.querySelectorAll('.lab-card').length, current: document.querySelector('.header-link[aria-current="page"]')?.textContent, canonical: document.querySelector('link[rel=canonical]')?.href }));
   const LAB_COUNT = +fs.readFileSync(`${ROOT}/src/lab/count.js`, 'utf8').match(/LAB_COUNT = (\d+)/)[1];
   check('LAB_COUNT (shown on the home page) equals the number of demos', LAB_COUNT === head.cards, `${LAB_COUNT} vs ${head.cards}`);
-  check('page: title, heading, 91 live demos, Lab marked current in the header', head.title === 'Lab | Mathias Knudsen' && head.h1 === 'Le lab' && head.cards === 91 && head.current === 'Lab' && head.canonical === 'https://mathias-knudsen.vercel.app/lab', JSON.stringify(head));
+  check(`page: title, heading, ${DEMOS.length} live demos, Lab marked current in the header`, head.title === 'Lab | Mathias Knudsen' && head.h1 === 'Le lab' && head.cards === DEMOS.length && head.current === 'Lab' && head.canonical === 'https://mathias-knudsen.vercel.app/lab', JSON.stringify(head));
 
   // every stage holds its demo (an element with an lb- class that has a size)
   const empty = await p.evaluate(() => [...document.querySelectorAll('.lab-stage')].map((s, i) => { const el = s.querySelector('[class^="lb-"], [class*=" lb-"]'); const r = el?.getBoundingClientRect(); return !el || !r.width || !r.height ? i : null; }).filter((x) => x !== null));

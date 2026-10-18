@@ -5189,88 +5189,103 @@
 /* /demo */
 
 /* demo:arch-water */
+/* The whole box listens to the pointer, so it spans its space */
 .lb-tube {
   display: flex;
-  align-items: flex-end;
-  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  touch-action: pan-y;
 }
 
-.lb-tube-glass {
-  position: relative;
-  overflow: hidden;
-  width: 66px;
-  height: 170px;
-  border: 3px solid #c8d7e0;
-  border-top: 0;
-  border-radius: 0 0 33px 33px;
-  background: #65bec0;
-}
-
-/* The water fills the tube; the "empty" part above it is two big rounded
-   squares turning, the colour of the glass: their lower edge is the wave */
-.lb-tube-water {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(#88d3cd, #4ea7aa);
-}
-
-.lb-tube-wave {
-  position: absolute;
-  top: calc(35% - 210px);
-  left: 50%;
-  width: 220px;
-  height: 220px;
-  margin-left: -110px;
-  border-radius: 42%;
-  background: #1a2530;
-  animation: lb-tube-wave 6s linear infinite;
-}
-
-.lb-tube-wave + .lb-tube-wave {
-  top: calc(35% - 214px);
-  border-radius: 40%;
-  background: rgb(26 37 48 / 0.55);
-  animation-duration: 9s;
-}
-
-/* Bubbles from the bottom to the surface, each at its own pace */
-.lb-tube-glass i {
-  position: absolute;
-  bottom: 8px;
-  left: calc(14px + var(--i) * 8px);
-  width: 6px;
-  height: 6px;
-  border: 1.5px solid rgb(255 255 255 / 0.8);
-  border-radius: 50%;
-  opacity: 0;
-  animation: lb-tube-bubble calc(2.2s + var(--i) * 0.35s) ease-in calc(var(--i) * 0.6s) infinite;
+.lb-tube svg {
+  width: 92px;
+  height: 184px;
+  overflow: visible;
 }
 
 .lb-tube-level {
-  color: #88d3cd;
-  font-size: 22px;
-  font-weight: 800;
+  min-width: 3ch;
+  margin: 0;
+  color: #8fe0d6;
+  font-size: 30px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
-.lb-tube-glass i:nth-of-type(odd) {
-  width: 9px;
-  height: 9px;
+.lb-tube-shadow { fill: rgb(0 0 0 / 0.45); }
+.lb-tube-air { fill: rgb(255 255 255 / 0.03); }
+.lb-tube-back { fill: #a6e3dc; opacity: 0.9; }
+.lb-tube-front path:first-child { fill: url(#lb-tube-deep); }
+
+.lb-tube-line {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.55);
+  stroke-width: 0.8;
 }
 
-@keyframes lb-tube-wave {
-  to { rotate: 1turn; }
+.lb-tube-wall {
+  fill: none;
+  stroke: #d4e4ea;
+  stroke-width: 2.4;
+  stroke-linejoin: round;
 }
 
-@keyframes lb-tube-bubble {
-  0% { opacity: 0; translate: 0 0; }
-  15% { opacity: 1; }
-  80% { opacity: 1; translate: 4px -88px; }
-  100% { opacity: 0; translate: -2px -100px; }
+.lb-tube-lip { fill: #d4e4ea; }
+
+.lb-tube-marks {
+  stroke: rgb(255 255 255 / 0.45);
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+.lb-tube-shine { fill: rgb(255 255 255 / 0.28); }
+
+/* The waves: long strips that drift sideways, one each way */
+.lb-tube-back { animation: lb-tube-drift 3.6s linear infinite reverse; }
+.lb-tube-front { animation: lb-tube-drift 2.4s linear infinite; }
+
+@keyframes lb-tube-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-40px); }
+}
+
+/* The bubbles: each sways (its group) while it rises (the circle), then
+   bursts at the surface */
+.lb-tube-bubbles g {
+  animation: lb-tube-sway var(--s) ease-in-out infinite alternate;
+}
+
+.lb-tube-bubbles circle {
+  fill: rgb(255 255 255 / 0.18);
+  stroke: rgb(255 255 255 / 0.75);
+  stroke-width: 0.7;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lb-tube-rise var(--t) var(--w) cubic-bezier(0.45, 0, 0.8, 0.6) infinite;
+}
+
+@keyframes lb-tube-sway {
+  from { transform: translateX(calc(var(--x) * -1)); }
+  to { transform: translateX(var(--x)); }
+}
+
+@keyframes lb-tube-rise {
+  from { transform: translateY(116px); opacity: 1; }
+  90% { transform: translateY(3px) scale(1); opacity: 1; }
+  to { transform: translateY(1px) scale(1.7); opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .lb-tube-wave,
-  .lb-tube-glass i { animation: none; }
+  .lb-tube-back,
+  .lb-tube-front,
+  .lb-tube-bubbles g,
+  .lb-tube-bubbles circle {
+    animation: none;
+  }
+
+  .lb-tube-bubbles { display: none; }
 }
 /* /demo */
 
@@ -5529,6 +5544,47 @@
   /* every arc, including the two that name their own animation */
   .lb-signal path,
   .lb-signal path:nth-of-type(n) { animation: none; opacity: 1; }
+}
+/* /demo */
+
+/* demo:arch-logo */
+.lb-mk svg {
+  display: block;
+  width: 190px;
+  height: auto;
+}
+
+.lb-mk-line {
+  fill: #f2f2f5;
+}
+
+/* The wedges light up one after the other, with a small pop, then fade
+   in the same order: a wave that runs through the monogram */
+.lb-mk-wedge {
+  fill: #ffd84a;
+  opacity: 0.16;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lb-mk-light 2.4s ease-out infinite;
+}
+
+.lb-mk-wedge:nth-of-type(4) { animation-delay: 0.22s; }
+.lb-mk-wedge:nth-of-type(5) { animation-delay: 0.44s; }
+.lb-mk-wedge:nth-of-type(6) { animation-delay: 0.66s; }
+
+@keyframes lb-mk-light {
+  0% { opacity: 0.16; scale: 0.9; }
+  9% { opacity: 1; scale: 1.08; }
+  18% { scale: 1; }
+  58% { opacity: 1; scale: 1; }
+  78%, 100% { opacity: 0.16; scale: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-mk-wedge {
+    animation: none;
+    opacity: 1;
+  }
 }
 /* /demo */
 

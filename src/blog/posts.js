@@ -4,6 +4,7 @@
 // ['h2', text], ['ul', [items]], ['code', lang, source, caption?]. Text may
 // hold `code`, **bold** and [links](/path).
 import { POST_META } from './meta.js'
+import { LAB_COUNT } from '../lab/count.js'
 
 const BODIES = [
   {
@@ -91,10 +92,71 @@ const turn = (clock?.effect.getComputedTiming().progress ?? 0) * 360`, "Lue à c
     },
   },
   {
-    slug: '91-live-animations-one-page',
+    slug: 'two-springs-make-water-slosh',
     en: {
       body: [
-        ['p', "[The lab](/lab) is a single page with 91 animations, all live: buttons that ripple, loaders that turn, a globe, a test tube full of bubbles. Each one is real HTML and CSS, sometimes with a little JavaScript, not a video. A page like that can easily make a phone hot and slow. Lighthouse's mobile test usually gives it 97 for performance, with less than a tenth of a second of blocking time. Three things keep it there."],
+        ['p', "In [the lab](/lab), a test tube leans towards your pointer, and the water inside lags behind the glass, overshoots, and settles. It takes two springs and a dozen lines of JavaScript."],
+        ['h2', 'The water stays level'],
+        ['p', "Tilt a real glass and its water does not tilt with it. In SVG, that means the glass and the water live in different coordinates: the glass turns, the water does not, and the water is cut to the inside of the glass by a clip path that turns with the glass."],
+        ['code', 'html', `<clipPath id="inside"><path d="M33 16v157a17 17 0 0 0 34 0V16z"/></clipPath>
+<g clip-path="url(#inside)">
+  <g class="water"><!-- waves and bubbles --></g>
+</g>
+<g class="glass"><!-- outline, marks, shine --></g>`, "The script turns the glass and the clip path's shape together; the water only moves up and down."],
+        ['h2', 'Spring one: the glass'],
+        ['p', "The glass follows the pointer on a stiff, well damped spring: it leans quickly and stops without wobbling. A spring is two lines a frame: a pull towards the target, minus a brake that grows with the speed."],
+        ['code', 'js', `speed += ((aim - tilt) * 120 - speed * 18) * dt
+tilt += speed * dt`, 'A stiffness of 120 and a damping of 18: close to critical, so no bounce.'],
+        ['h2', 'Spring two: the water'],
+        ['p', "The water follows the glass on a softer spring, with very little damping. When the glass turns quickly, the water's idea of the angle falls behind, then overshoots. The gap between the two is the slosh, applied as a rotation of the water's surface."],
+        ['code', 'js', `lagSpeed += ((tilt - lag) * 60 - lagSpeed * 3.4) * dt
+lag += lagSpeed * dt
+const slosh = (lag - tilt) * 1.5`],
+        ['p', "The numbers matter. With a damping of 2.6, the water was still rocking two and a half seconds after the pointer left, and a test caught it before I did: it waits for the surface to settle, and it failed. At 3.4, the water sloshes two or three times and stops, which is what water does in a narrow tube."],
+        ['h2', 'Small things that make it hold up'],
+        ['ul', [
+          "**Time, not frames.** Each step uses the real time since the last frame, capped at a thirtieth of a second, so a slow phone or a tab coming back to the front cannot make the springs explode.",
+          "**No loop at rest.** When the glass and the water are both still, the script stops asking for frames; the next pointer move wakes it up.",
+          "**The waves are CSS.** Two long wave strips drift sideways at their own pace, and the bubbles rise and burst with CSS animations. They pause with the rest of the lab, and for people who ask for reduced motion they stop, along with the tilt.",
+        ]],
+        ['p', "The same two springs work for anything that should feel like it has weight: a hanging sign, a card on a string, the liquid in a progress bar."],
+      ],
+    },
+    fr: {
+      body: [
+        ['p', "Dans [le lab](/lab), un tube à essai penche vers le curseur, et l'eau à l'intérieur prend du retard sur le verre, dépasse, puis se pose. Il suffit de deux ressorts et d'une douzaine de lignes de JavaScript."],
+        ['h2', "L'eau reste à niveau"],
+        ['p', "Penchez un vrai verre : l'eau ne penche pas avec lui. En SVG, ça veut dire que le verre et l'eau vivent dans des repères différents : le verre tourne, l'eau non, et l'eau est découpée à l'intérieur du verre par un clip path qui tourne avec le verre."],
+        ['code', 'html', `<clipPath id="inside"><path d="M33 16v157a17 17 0 0 0 34 0V16z"/></clipPath>
+<g clip-path="url(#inside)">
+  <g class="water"><!-- vagues et bulles --></g>
+</g>
+<g class="glass"><!-- contour, graduations, reflet --></g>`, "Le script fait tourner ensemble le verre et la forme du clip path ; l'eau, elle, ne fait que monter et descendre."],
+        ['h2', 'Premier ressort : le verre'],
+        ['p', "Le verre suit le curseur sur un ressort raide et bien amorti : il penche vite et s'arrête sans osciller. Un ressort, c'est deux lignes par image : une traction vers la cible, moins un frein qui grandit avec la vitesse."],
+        ['code', 'js', `speed += ((aim - tilt) * 120 - speed * 18) * dt
+tilt += speed * dt`, "Une raideur de 120 et un amortissement de 18 : proche du critique, donc pas de rebond."],
+        ['h2', "Second ressort : l'eau"],
+        ['p', "L'eau suit le verre sur un ressort plus souple, très peu amorti. Quand le verre tourne vite, l'angle que « croit » l'eau prend du retard, puis dépasse. L'écart entre les deux, c'est le clapotis, appliqué comme une rotation de la surface de l'eau."],
+        ['code', 'js', `lagSpeed += ((tilt - lag) * 60 - lagSpeed * 3.4) * dt
+lag += lagSpeed * dt
+const slosh = (lag - tilt) * 1.5`],
+        ['p', "Les chiffres comptent. Avec un amortissement de 2,6, l'eau bougeait encore deux secondes et demie après le départ du curseur, et un test l'a vu avant moi : il attend que la surface se pose, et il a échoué. À 3,4, l'eau clapote deux ou trois fois puis s'arrête, comme de l'eau dans un tube étroit."],
+        ['h2', 'Les petits détails qui la rendent solide'],
+        ['ul', [
+          "**Le temps, pas les images.** Chaque pas utilise le temps réel écoulé depuis l'image précédente, plafonné à un trentième de seconde : un téléphone lent ou un onglet qui revient au premier plan ne peut pas faire exploser les ressorts.",
+          "**Pas de boucle au repos.** Quand le verre et l'eau sont immobiles, le script arrête de demander des images ; le prochain mouvement du curseur le réveille.",
+          "**Les vagues sont en CSS.** Deux longues bandes de vagues dérivent chacune à son rythme, et les bulles montent et éclatent avec des animations CSS. Elles se mettent en pause avec le reste du lab et, pour ceux qui demandent moins de mouvement, elles s'arrêtent, tout comme l'inclinaison.",
+        ]],
+        ['p', "Les deux mêmes ressorts marchent pour tout ce qui doit sembler avoir un poids : une enseigne suspendue, une carte au bout d'un fil, le liquide d'une barre de progression."],
+      ],
+    },
+  },
+  {
+    slug: 'live-animations-one-page',
+    en: {
+      body: [
+        ['p', "[The lab](/lab) is a single page with " + LAB_COUNT + " animations, all live: buttons that ripple, loaders that turn, a globe, a test tube full of bubbles. Each one is real HTML and CSS, sometimes with a little JavaScript, not a video. A page like that can easily make a phone hot and slow. Lighthouse's mobile test usually gives it 97 for performance, with less than a tenth of a second of blocking time. Three things keep it there."],
         ['h2', "1. Don't draw what nobody sees"],
         ['p', "With `content-visibility: auto`, the browser skips the layout and the painting of a card while it is far off screen. Before it, the page scored between 90 and 95; after, 97. The catch is the scroll bar: a skipped card has no size, so the page would jump as cards come into view. `contain-intrinsic-size` gives each card a size to keep in reserve, and the `auto` keyword remembers its real size once it has been seen."],
         ['code', 'css', `.lab-card {
@@ -107,7 +169,7 @@ const turn = (clock?.effect.getComputedTiming().progress ?? 0) * 360`, "Lue à c
 .lab-grid[data-paused] .lab-stage * {
   animation-play-state: paused !important;
 }`],
-        ['p', "JavaScript does the same where it animates on its own: the globe only asks for frames while it is on screen, and only draws again when something has changed."],
+        ['p', "JavaScript does the same where it animates on its own: the globe only asks for frames while it is on screen, and only draws again when something has changed; the test tube stops asking as soon as its water is still."],
         ['h2', '3. One clock for everyone'],
         ['p', "When a demo needs JavaScript to draw, its timing still comes from CSS. The globe's turn is a CSS animation of a typed property that the canvas reads, so the pause rule, the off screen rule and reduced motion all apply to it without a single extra line. I wrote more about it in [a real globe on a canvas](/blog/a-real-globe-on-a-canvas)."],
         ['h2', 'Three traps I fell into'],
@@ -121,7 +183,7 @@ const turn = (clock?.effect.getComputedTiming().progress ?? 0) * 360`, "Lue à c
     },
     fr: {
       body: [
-        ['p', "[Le lab](/lab) est une seule page avec 91 animations, toutes en direct : des boutons qui ondulent, des chargements qui tournent, un globe, un tube à essai plein de bulles. Chacune est du vrai HTML et du CSS, parfois avec un peu de JavaScript, pas une vidéo. Une page pareille peut vite faire chauffer et ralentir un téléphone. Le test mobile de Lighthouse lui donne en général 97 en performance, avec moins d'un dixième de seconde de blocage. Trois choses l'y maintiennent."],
+        ['p', "[Le lab](/lab) est une seule page avec " + LAB_COUNT + " animations, toutes en direct : des boutons qui ondulent, des chargements qui tournent, un globe, un tube à essai plein de bulles. Chacune est du vrai HTML et du CSS, parfois avec un peu de JavaScript, pas une vidéo. Une page pareille peut vite faire chauffer et ralentir un téléphone. Le test mobile de Lighthouse lui donne en général 97 en performance, avec moins d'un dixième de seconde de blocage. Trois choses l'y maintiennent."],
         ['h2', '1. Ne pas dessiner ce que personne ne voit'],
         ['p', "Avec `content-visibility: auto`, le navigateur saute la mise en page et le dessin d'une carte tant qu'elle est loin de l'écran. Avant, la page obtenait entre 90 et 95 ; après, 97. Le piège, c'est la barre de défilement : une carte sautée n'a pas de taille, et la page sauterait à mesure que les cartes apparaissent. `contain-intrinsic-size` donne à chaque carte une taille à garder en réserve, et le mot-clé `auto` retient sa vraie taille une fois qu'elle a été vue."],
         ['code', 'css', `.lab-card {
@@ -134,7 +196,7 @@ const turn = (clock?.effect.getComputedTiming().progress ?? 0) * 360`, "Lue à c
 .lab-grid[data-paused] .lab-stage * {
   animation-play-state: paused !important;
 }`],
-        ['p', "Le JavaScript fait de même là où il anime lui-même : le globe ne demande des images que lorsqu'il est à l'écran, et ne redessine que si quelque chose a changé."],
+        ['p', "Le JavaScript fait de même là où il anime lui-même : le globe ne demande des images que lorsqu'il est à l'écran, et ne redessine que si quelque chose a changé ; le tube à essai arrête d'en demander dès que son eau est immobile."],
         ['h2', '3. Une seule horloge pour tous'],
         ['p', "Quand une démo a besoin de JavaScript pour dessiner, son rythme vient quand même du CSS. La rotation du globe est une animation CSS d'une propriété typée que le canvas lit : la règle de pause, la règle hors écran et le mouvement réduit s'y appliquent sans une ligne de plus. J'en parle davantage dans [un vrai globe sur un canvas](/blog/a-real-globe-on-a-canvas)."],
         ['h2', 'Trois pièges dans lesquels je suis tombé'],

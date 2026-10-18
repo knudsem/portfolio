@@ -149,7 +149,7 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   await page.locator('.lab-filters .lab-chip').first().click()
   await page.fill('#lab-search-side', 'loader')
   await page.waitForTimeout(400)
-  check('lab: searching "loader" finds the 11 loaders', (await page.locator('.lab-card').count()) === 11)
+  check('lab: searching "loader" finds the 11 loaders and the logo loader', (await page.locator('.lab-card').count()) === 12)
   await page.fill('#lab-search-side', '')
   await page.locator('.lab-filters .lab-chip', { hasText: 'From my archive' }).click()
   await page.waitForTimeout(800)
