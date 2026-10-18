@@ -5085,7 +5085,7 @@
 
 /* demo:arch-cat */
 /* My own drawing, from my CodePen: the paw beckons, the eyes dart and
-   blink, the tail sways */
+   blink, the tail sways, and now and then the cat swallows */
 .lb-luck {
   display: grid;
   place-items: center;
@@ -5282,6 +5282,48 @@
   12%, 18% { opacity: 1; }
 }
 
+/* Now and then, rarely, it shuts its mouth and swallows: the inside of the
+   mouth closes up to the upper lip, a line for the shut mouth comes in under
+   the fangs, and the chin rises, gulps and comes back down as the mouth
+   opens again. Under a second, once every 13 seconds */
+.lb-luck .lb-lc-mouth {
+  transform-box: view-box;
+  transform-origin: 300px 503px;
+  animation: lb-luck-mouth 13s 3s infinite;
+}
+
+.lb-luck .lb-lc-lips {
+  opacity: 0;
+  fill: none;
+  stroke: #000;
+  stroke-width: 3px;
+  stroke-linecap: round;
+  animation: lb-luck-lips 13s 3s infinite;
+}
+
+.lb-luck .lb-lc-chin {
+  animation: lb-luck-chin 13s 3s infinite;
+}
+
+@keyframes lb-luck-mouth {
+  0%, 40% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
+  41%, 44.5% { transform: scaleY(0); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  46%, 100% { transform: none; }
+}
+
+@keyframes lb-luck-lips {
+  0%, 40.7%, 45.3%, 100% { opacity: 0; }
+  41%, 44.8% { opacity: 1; }
+}
+
+@keyframes lb-luck-chin {
+  0%, 40% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
+  41% { transform: translateY(-20px); animation-timing-function: ease-in-out; }
+  42.3% { transform: translateY(-16px); animation-timing-function: ease-in-out; }
+  43.4%, 44.5% { transform: translateY(-20px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  46%, 100% { transform: none; }
+}
+
 .lb-luck .lb-lc-tail {
   transform-box: fill-box;
   transform-origin: 12% 4%;
@@ -5293,9 +5335,12 @@
   to { rotate: 5deg; }
 }
 
-/* Calm: the cat sits still, paw up, eyes open */
+/* Calm: the cat sits still, paw up, eyes and mouth open */
 @media (prefers-reduced-motion: reduce) {
   .lb-luck .lb-lc-arm,
+  .lb-luck .lb-lc-mouth,
+  .lb-luck .lb-lc-lips,
+  .lb-luck .lb-lc-chin,
   .lb-luck .lb-lc-pupil,
   .lb-luck .lb-lc-eye,
   .lb-luck .lb-lc-lid,

@@ -46,8 +46,23 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   // Cat: the drawing from the pen, its paw built in 3D
   s = await at(p, 'arch-cat');
   const cat = s.getByRole('button', { name: 'Pet the lucky cat' });
-  const parts = await cat.evaluate((el) => ['arm', 'pupil', 'eye', 'lid', 'tail'].map((n) => el.querySelector('.lb-lc-' + n)?.getAnimations().length > 0));
-  check('cat: the swing of the paw, the eyes, the lids and the tail all move', parts.every(Boolean), parts.join());
+  const parts = await cat.evaluate((el) => ['arm', 'mouth', 'lips', 'chin', 'pupil', 'eye', 'lid', 'tail'].map((n) => el.querySelector('.lb-lc-' + n)?.getAnimations().length > 0));
+  check('cat: the swing of the paw, the mouth, the eyes, the lids and the tail all move', parts.every(Boolean), parts.join());
+  // the swallow held open, then shut
+  const gulp = await cat.evaluate((el) => {
+    const moves = ['.lb-lc-mouth', '.lb-lc-lips', '.lb-lc-chin'].flatMap((s) => el.querySelector(s).getAnimations());
+    const seek = (t) => moves.forEach((a) => { a.pause(); a.currentTime = t; });
+    const read = () => ({
+      mouth: +new DOMMatrix(getComputedStyle(el.querySelector('.lb-lc-mouth')).transform).d.toFixed(2),
+      lips: +getComputedStyle(el.querySelector('.lb-lc-lips')).opacity,
+      chin: +new DOMMatrix(getComputedStyle(el.querySelector('.lb-lc-chin')).transform).f.toFixed(1),
+    });
+    seek(0); const open = read();
+    seek(3000 + 0.43 * 13000); const shut = read();
+    seek(0); moves.forEach((a) => a.play());
+    return { open, shut, period: moves[0].effect.getComputedTiming().duration };
+  });
+  check('cat: now and then (once every 13 seconds) it shuts its mouth, a line under the fangs, and the chin rises to swallow', gulp.open.mouth === 1 && gulp.open.lips === 0 && gulp.open.chin === 0 && gulp.shut.mouth === 0 && gulp.shut.lips === 1 && gulp.shut.chin < -15 && gulp.period === 13000, JSON.stringify(gulp));
   // the swing held at its top, then at its bottom, as the script draws it
   const swing = await cat.evaluate(async (el) => {
     const clock = el.querySelector('.lb-lc-arm').getAnimations().find((a) => a.animationName === 'lb-luck-swing');

@@ -1190,14 +1190,21 @@ const LIST = [
   <path class="lb-lc-6" d="M239.8,331.3S225.64,303,209.6,311s-14.6,10.3-21.3.22c-4.9-7.3-7.3-17.1-8.2-21.9a4.41,4.4,0,0,0-5.7-3.4,20.7,20.7,0,0,0-4.8,2.5c-7.8,5.2-25.8,14-31.3,4.8" transform="translate(-63.9 148.7)"></path>
   <path class="lb-lc-6" d="M229.84,359s-29.9,3.5-48,11.3a34.27,34.3,0,0,1-7.7,2.4c-3,0.5-6.1.25-8.7-11.2a53.54,53.5,0,0,1-1.2-11.7c0-7.9-3.2-18.9-29.1-4.8-10.9,5.7-19.2,12.2-24.4,18.1a2.35,2.4,0,0,1-4-1c-0.5-2.3-0.9-4.4-1.3-6.1a7.85,7.8,0,0,0-8.2-6.5,12,12,0,0,0-5.8,1.9,58.3,58.3,0,0,1-7.6,4.3c-7.1,3.2-16.8,8-19.1,6.4" transform="translate(-63.9 148.7)"></path>
   <path class="lb-lc-6" d="M230.74,376s-26.5,25.8-39.7,24.9-22.2.92-32.2,16c-3.5,3.3-16.9,16.5-27,13.4" transform="translate(-63.9 148.7)"></path>
-  <path class="lb-lc-26" d="M274.83,344.5s-24,2.9-8,23.7a5.37,5.4,0,0,0,0.5.57c16,15.4,48.2,32,48.2,32S348.76,422.6,444.1,379c9.69-6.2,40.3-29.7-3.1-33-11.9-0.7-43.7,1.5-69.2,8.8a37.23,37.2,0,0,1-11.3,1.5,63.2,63.2,0,0,1-18.1-3.3C332.85,350.3,285.5,343,274.8,344.5Z" transform="translate(-63.9 148.7)"></path>
-  <path class="lb-lc-4" d="M315.07,415.1s15,18.1,79.8-1.5" transform="translate(-63.9 148.7)"></path>
-  <path class="lb-lc-27" d="M340.16,422.7s-1.9,20.7,2.6,26.6a2.56,2.6,0,0,0,4.1-0.1c1.17-1.6,2-4.5,2.6-10.9.08-1.3-0.1-2.6,1.2-0.2a26.67,26.7,0,0,1,2.2,5.3c.38,1.2.67,2.2.89,3a10.71,10.7,0,0,0,3.5,5.5c2.79,2.3,7,3.8,9.9-4.6.54-2.5,3-8.3,8.1-0.6,1.5,2.4,8.6,8.4,9.5-6A229.43,229.4,0,0,0,383.1,417S360.43,423.5,340.2,422.7Z" transform="translate(-63.9 148.7)"></path>
+  
+<g class="lb-lc-mouth">
+<path class="lb-lc-26" d="M274.83,344.5s-24,2.9-8,23.7a5.37,5.4,0,0,0,0.5.57c16,15.4,48.2,32,48.2,32S348.76,422.6,444.1,379c9.69-6.2,40.3-29.7-3.1-33-11.9-0.7-43.7,1.5-69.2,8.8a37.23,37.2,0,0,1-11.3,1.5,63.2,63.2,0,0,1-18.1-3.3C332.85,350.3,285.5,343,274.8,344.5Z" transform="translate(-63.9 148.7)"></path>
+<path class="lb-lc-29" d="M349.15,406.1s-0.6-17.2,23.5-20.9c7.43-0.3,23.1-2.3,32.1,9.5C401.35,395.8,371.2,405.2,349.1,406.1Z" transform="translate(-63.9 148.7)"></path></g>
+<path class="lb-lc-lips" d="M203,503 C228,499 262,503 299,505 C334,504 366,499 394,502"></path>
+  
+<g class="lb-lc-chin">
+<path class="lb-lc-4" d="M315.07,415.1s15,18.1,79.8-1.5" transform="translate(-63.9 148.7)"></path>
+<path class="lb-lc-27" d="M340.16,422.7s-1.9,20.7,2.6,26.6a2.56,2.6,0,0,0,4.1-0.1c1.17-1.6,2-4.5,2.6-10.9.08-1.3-0.1-2.6,1.2-0.2a26.67,26.7,0,0,1,2.2,5.3c.38,1.2.67,2.2.89,3a10.71,10.7,0,0,0,3.5,5.5c2.79,2.3,7,3.8,9.9-4.6.54-2.5,3-8.3,8.1-0.6,1.5,2.4,8.6,8.4,9.5-6A229.43,229.4,0,0,0,383.1,417S360.43,423.5,340.2,422.7Z" transform="translate(-63.9 148.7)"></path></g>
+  
   <path class="lb-lc-28" d="M327.5,350.8s-0.1,20,4.8,31.2a1.15,1.1,0,0,0,2.1,0l10.87-26.9Z" transform="translate(-63.9 148.7)"></path>
   <path class="lb-lc-28" d="M292.23,345.6s.78,12.7,3.5,17.2a2.54,2.5,0,0,0,3.6.74c3.2-2.2,7-6.4,9.7-15.8C307.34,347.5,292.2,345.6,292.2,345.6Z" transform="translate(-63.9 148.7)"></path>
   <path class="lb-lc-28" d="M390.19,351.6s4.8,17.8,18.1,27.3c.67-0.1,3.5-12.6-0.1-30.1C405.86,349.1,392.9,350.1,390.2,351.6Z" transform="translate(-63.9 148.7)"></path>
   <path class="lb-lc-28" d="M410.85,348.5s6,27.9,10.6,23.8,10.9-24,10.9-25.3C431.89,346.7,416.5,347.9,410.9,348.5Z" transform="translate(-63.9 148.7)"></path>
-  <path class="lb-lc-29" d="M349.15,406.1s-0.6-17.2,23.5-20.9c7.43-0.3,23.1-2.3,32.1,9.5C401.35,395.8,371.2,405.2,349.1,406.1Z" transform="translate(-63.9 148.7)"></path>
+  
   <circle class="lb-lc-30" cx="242.3" cy="469.3" r="2.8"></circle>
   <circle class="lb-lc-30" cx="235.3" cy="484" r="1.4"></circle>
   <circle class="lb-lc-30" cx="222.7" cy="473.3" r="2.8"></circle>
@@ -1233,7 +1240,7 @@ const LIST = [
   </svg>
 </button>`,
     title: { en: 'Lucky cat', fr: 'Chat porte-bonheur' },
-    note: { en: "From my CodePen: my own vector drawing, animated in CSS and JavaScript. The paw now beckons like a real lucky cat's: the raised forearm tips towards us about the elbow and back. The paw is built in 3D (a palm, three toes, a wrist) and drawn each frame in the drawing's own ink: as it tips, the toes come towards us, the palm turns into the shade, and the claws, now pointing at us, draw in. The eyes dart and blink, the tail sways. The eyes follow the pointer, and a pet (click, tap, Enter) makes it beckon faster.", fr: "Tiré de mon CodePen : mon propre dessin vectoriel, animé en CSS et en JavaScript. La patte fait maintenant signe comme celle d'un vrai chat porte-bonheur : l'avant-bras levé bascule vers nous autour du coude puis se relève. La patte est construite en 3D (une paume, trois doigts, un poignet) et redessinée à chaque image dans l'encre même du dessin : en basculant, les doigts viennent vers nous, la paume passe dans l'ombre et les griffes, pointées vers nous, rentrent. Les yeux bougent par saccades et clignent, la queue se balance. Les yeux suivent le curseur, et une caresse (clic, toucher, Entrée) le fait saluer plus vite." },
+    note: { en: "From my CodePen: my own vector drawing, animated in CSS and JavaScript. The paw now beckons like a real lucky cat's: the raised forearm tips towards us about the elbow and back. The paw is built in 3D (a palm, three toes, a wrist) and drawn each frame in the drawing's own ink: as it tips, the toes come towards us, the palm turns into the shade, and the claws, now pointing at us, draw in. The eyes dart and blink, the tail sways, and now and then, rarely, it shuts its mouth and swallows. The eyes follow the pointer, and a pet (click, tap, Enter) makes it beckon faster.", fr: "Tiré de mon CodePen : mon propre dessin vectoriel, animé en CSS et en JavaScript. La patte fait maintenant signe comme celle d'un vrai chat porte-bonheur : l'avant-bras levé bascule vers nous autour du coude puis se relève. La patte est construite en 3D (une paume, trois doigts, un poignet) et redessinée à chaque image dans l'encre même du dessin : en basculant, les doigts viennent vers nous, la paume passe dans l'ombre et les griffes, pointées vers nous, rentrent. Les yeux bougent par saccades et clignent, la queue se balance, et de temps en temps, rarement, il ferme la bouche pour avaler sa salive. Les yeux suivent le curseur, et une caresse (clic, toucher, Entrée) le fait saluer plus vite." },
   },
   {
     id: 'arch-water',
