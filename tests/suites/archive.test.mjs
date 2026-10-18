@@ -58,7 +58,7 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
         forearm: +new DOMMatrix(getComputedStyle(el.querySelector('.lb-lc-forearm')).transform).d.toFixed(3),
         top: +palm.y.toFixed(1),
         height: +palm.height.toFixed(1),
-        toes: +el.querySelector('.lb-lc-toe-front').getAttribute('opacity'),
+        claw: +(el.querySelector('.lb-lc-claw').getAttribute('transform').match(/scale\(([\d.]+)/)?.[1] ?? 0),
       };
     };
     clock.pause(); clock.currentTime = 0; await frames(); const up = read();
@@ -68,7 +68,7 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   });
   const { up, down } = swing;
   check('cat: like a lucky cat, the forearm tips towards us and back, the paw coming down and up again', up.forearm === 1 && down.forearm < 0.7 && down.top - up.top > 40, JSON.stringify(swing));
-  check('cat: the paw is drawn in 3D: tipped, it keeps its depth instead of going flat, and the fronts of its toes come into view', down.height > up.height * 0.75 && up.toes === 0 && down.toes === 1, JSON.stringify(swing));
+  check('cat: the paw is drawn in 3D: tipped, it keeps its depth instead of going flat, and its claws, pointing at us, draw in', down.height > up.height * 0.75 && up.claw === 1 && down.claw < 0.6, JSON.stringify(swing));
   const shadows = await cat.evaluate((el) => [...el.querySelectorAll('image')].map((i) => i.getAttribute('href')));
   const loaded = await Promise.all(shadows.map(async (h) => (await p.request.get(BASE + h)).status()));
   check('cat: its two shadows load', shadows.length === 2 && loaded.every((st) => st === 200), shadows.join() + ' ' + loaded.join());

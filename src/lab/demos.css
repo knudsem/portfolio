@@ -5239,14 +5239,6 @@
   fill: #d8c995;
 }
 
-/* the fronts of the toes, as they come towards us */
-.lb-luck .lb-lc-toe-front {
-  fill: none;
-  stroke: #000;
-  stroke-width: 2.6px;
-  stroke-linecap: round;
-}
-
 /* the eyes dart from one place to the next instead of sliding */
 .lb-luck .lb-lc-pupil {
   animation: lb-luck-look 14s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
