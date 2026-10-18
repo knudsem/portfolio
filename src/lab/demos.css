@@ -5285,9 +5285,10 @@
 /* Now and then, rarely, it shuts its mouth and swallows, with some trouble,
    like a cat who has had a drink. The upper lip and the fangs on it stay
    put: the jaw rises behind the lip, cut along it, and a line along the lip
-   draws the shut mouth, so the fangs always hang from it. The shut mouth
-   opens a crack and snaps shut again; then the chin gulps, the little beard
-   bunching up under it, and all comes back down as the mouth opens. About a
+   draws the shut mouth, so the fangs always hang from it. The chin rises,
+   the bottom of the face with it, the little beard bunching up and the
+   whiskers turning up. The shut mouth opens a crack and snaps shut again;
+   then the chin gulps, and all comes back down as the mouth opens. About a
    second, once every 13 seconds */
 .lb-luck .lb-lc-mouth {
   animation: lb-luck-mouth 13s 3s infinite backwards;
@@ -5314,6 +5315,20 @@
   transform-box: fill-box;
   transform-origin: 50% 0;
   animation: lb-luck-tuft 13s 3s infinite;
+}
+
+/* the whiskers, one group each side, turn up a little about their roots as
+   the mouth shuts (the bottom of the face rises with the chin by script) */
+.lb-luck .lb-lc-whiskers {
+  --lb-whisker: 1;
+  transform-box: view-box;
+  transform-origin: 172px 505px;
+  animation: lb-luck-whiskers 13s 3s infinite;
+}
+
+.lb-luck .lb-lc-whiskers.lb-lc-right {
+  --lb-whisker: -1;
+  transform-origin: 427px 515px;
 }
 
 /* the cut along the lip, only while the jaw moves: at rest, the drawing as it
@@ -5347,6 +5362,17 @@
   47%, 100% { transform: none; }
 }
 
+@keyframes lb-luck-whiskers {
+  0%, 40% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
+  41%, 42% { transform: rotate(calc(var(--lb-whisker) * 5deg)); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  42.6%, 43% { transform: rotate(calc(var(--lb-whisker) * 3.5deg)); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
+  43.15% { transform: rotate(calc(var(--lb-whisker) * 5deg)); animation-timing-function: ease-in-out; }
+  44% { transform: rotate(calc(var(--lb-whisker) * 4deg)); animation-timing-function: ease-in-out; }
+  44.8%, 45.5% { transform: rotate(calc(var(--lb-whisker) * 5deg)); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  47% { transform: rotate(calc(var(--lb-whisker) * -1deg)); animation-timing-function: ease-in-out; }
+  48%, 100% { transform: none; }
+}
+
 @keyframes lb-luck-tuft {
   0%, 40% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
   41.3%, 42% { transform: scaleY(0.8); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
@@ -5375,6 +5401,7 @@
   .lb-luck .lb-lc-lips,
   .lb-luck .lb-lc-chin,
   .lb-luck .lb-lc-tuft,
+  .lb-luck .lb-lc-whiskers,
   .lb-luck .lb-lc-pupil,
   .lb-luck .lb-lc-eye,
   .lb-luck .lb-lc-lid,

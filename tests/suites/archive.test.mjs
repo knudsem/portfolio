@@ -73,6 +73,26 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   const cracked = (m) => m.jaw > -48 && m.jaw < -36 && m.lips === 1 && m.cut.includes('lb-lc-lip');
   check('cat: now and then (once every 13 seconds) it shuts its mouth: the jaw rises behind the upper lip, a line along the lip, the chin up and the little beard bunched up', mouthOpen.jaw === 0 && mouthOpen.lips === 0 && mouthOpen.cut === 'none' && mouthOpen.chin === 0 && mouthOpen.beard === 1 && hidden(mouthShut) && mouthShut.chin < -15 && mouthShut.beard < 0.85 && gulp.along && gulp.period === 13000, JSON.stringify(gulp));
   check('cat: swallowing is hard: the shut mouth opens a crack, once, and snaps shut again till it opens', cracked(mouthCrack) && shutAfter.every(hidden), JSON.stringify({ mouthCrack, shutAfter: shutAfter.filter((m) => !hidden(m)) }));
+  // the jaw: shut, the bottom of the face rises with the chin (the script
+  // moves it), its sides and top stay, and the whiskers turn up a little
+  const face = await cat.evaluate(async (el) => {
+    const moves = ['.lb-lc-mouth', '.lb-lc-jaw', '.lb-lc-lips', '.lb-lc-chin', '.lb-lc-tuft', '.lb-lc-whiskers'].flatMap((s) => [...el.querySelectorAll(s)].flatMap((e) => e.getAnimations()));
+    const frames = () => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+    const shape = el.querySelector('.lb-lc-23'), drawn = shape.getAttribute('d');
+    const turn = (s) => { const m = new DOMMatrix(getComputedStyle(el.querySelector(s)).transform); return +((Math.atan2(m.b, m.a) * 180) / Math.PI).toFixed(1); };
+    const at = async (t) => {
+      moves.forEach((a) => { a.pause(); a.currentTime = 3000 + t * 130; });
+      await frames();
+      const b = shape.getBBox();
+      return { left: +b.x.toFixed(1), right: +(b.x + b.width).toFixed(1), top: +b.y.toFixed(1), bottom: +(b.y + b.height).toFixed(1), whiskers: [turn('.lb-lc-left'), turn('.lb-lc-right')], drawn: shape.getAttribute('d') === drawn };
+    };
+    const open = await at(0), shut = await at(41.5), back = await at(48.5);
+    moves.forEach((a) => { a.currentTime = 0; a.play(); });
+    return { open, shut, back };
+  });
+  const still = (a, b) => ['left', 'right', 'top'].every((k) => Math.abs(a[k] - b[k]) < 0.5);
+  check('cat: as it shuts its mouth, the bottom of its face rises with the chin, its sides and top stay, and its whiskers turn up a little', face.open.drawn && face.open.whiskers.join() === '0,0' && face.shut.bottom < face.open.bottom - 18 && still(face.shut, face.open) && face.shut.whiskers[0] > 3 && face.shut.whiskers[1] < -3, JSON.stringify(face));
+  check('cat: its mouth open again, the face is the drawing as it was', face.back.drawn && face.back.bottom === face.open.bottom && face.back.whiskers.join() === '0,0', JSON.stringify(face.back));
   // the swing held at its top, then at its bottom, as the script draws it
   const swing = await cat.evaluate(async (el) => {
     const clock = el.querySelector('.lb-lc-arm').getAnimations().find((a) => a.animationName === 'lb-luck-swing');

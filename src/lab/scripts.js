@@ -1268,6 +1268,21 @@ export function pawPose(angle) {
   }
 }
 
+// The jaw: as the mouth shuts, the bottom of the face rises with the chin,
+// all the way under the mouth, less and less towards the cheeks, and not at
+// all above the upper lip. The face is drawn in its own units, shifted from
+// the frame's by DRAWN; it moves as cubic curves, each point an x,y pair
+const JAW = { lip: 505, chin: 560, middle: 305, whole: 45, edge: 100 }
+const DRAWN = [-63.9, 148.7]
+const ease = (t) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t))
+export function jawShape(d, lift) {
+  return d.replace(/(-?[\d.]+),(-?[\d.]+)/g, (_, x, y) => {
+    const across = ease((Math.abs(+x + DRAWN[0] - JAW.middle) - JAW.whole) / (JAW.edge - JAW.whole))
+    const down = ease((+y + DRAWN[1] - JAW.lip) / (JAW.chin - JAW.lip))
+    return `${x},${n2(+y + lift * down * (1 - across))}`
+  })
+}
+
 // The eyes follow the pointer over the stage. A pet (a click, a tap, Enter
 // or Space) makes the paw beckon faster for a moment: only the playback
 // rate of its swing changes, so it carries on from where it was, without a
@@ -1293,12 +1308,18 @@ export function luckyCat(root) {
   }
   // the clock: how far the swing has run in its turn (still without it)
   const swing = () => arm.getAnimations().find((animation) => animation.animationName === 'lb-luck-swing')
-  let frame = 0, last
+  // the bottom of the face goes with the chin, which rises as it swallows;
+  // at rest, the face is the drawing's own path again
+  const face = cat.querySelector('.lb-lc-23'), chin = cat.querySelector('.lb-lc-chin')
+  const drawn = face.getAttribute('d'), cubic = face.dataset.cubic
+  let frame = 0, last, lifted = 0
   const tick = () => {
     const turn = swing()?.effect.getComputedTiming().progress ?? 0
     // to the half degree: finer than a frame's move, and few poses to keep
     const angle = Math.round(SWING * (1 - Math.cos(2 * Math.PI * turn))) / 2
     if (angle !== last) draw((last = angle))
+    const lift = n2(new DOMMatrix(getComputedStyle(chin).transform).f)
+    if (lift !== lifted) face.setAttribute('d', (lifted = lift) ? jawShape(cubic, lift) : drawn)
     frame = requestAnimationFrame(tick)
   }
   const observer = new IntersectionObserver(([entry]) => {

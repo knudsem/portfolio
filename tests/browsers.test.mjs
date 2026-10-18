@@ -167,18 +167,23 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   await stage('arch-cat').getByRole('button', { name: 'Pet the lucky cat' }).click()
   check('lab: the cat can be petted', await stage('arch-cat').locator('.lb-luck').evaluate((el) => el.hasAttribute('data-lucky')))
   // when it swallows, its jaw goes up behind the lip, cut along it, and only
-  // then: at rest, nothing is cut
-  const jaw = await stage('arch-cat').locator('.lb-luck').evaluate((el) => {
-    const moves = ['.lb-lc-mouth', '.lb-lc-jaw'].flatMap((s) => el.querySelector(s).getAnimations())
-    const at = (pc) => {
+  // then: at rest, nothing is cut. The bottom of the face rises with the
+  // chin (by script) and the whiskers turn up
+  const jaw = await stage('arch-cat').locator('.lb-luck').evaluate(async (el) => {
+    const moves = ['.lb-lc-mouth', '.lb-lc-jaw', '.lb-lc-chin', '.lb-lc-whiskers'].flatMap((s) => [...el.querySelectorAll(s)].flatMap((e) => e.getAnimations()))
+    const matrix = (s) => new DOMMatrix(getComputedStyle(el.querySelector(s)).transform)
+    const at = async (pc) => {
       moves.forEach((a) => { a.pause(); a.currentTime = 3000 + pc * 130 })
-      return { cut: getComputedStyle(el.querySelector('.lb-lc-mouth')).clipPath, up: new DOMMatrix(getComputedStyle(el.querySelector('.lb-lc-jaw')).transform).f }
+      await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)))
+      const face = el.querySelector('.lb-lc-23').getBBox()
+      return { cut: getComputedStyle(el.querySelector('.lb-lc-mouth')).clipPath, up: matrix('.lb-lc-jaw').f, chin: Math.round(face.y + face.height), whisker: Math.round((Math.atan2(matrix('.lb-lc-left').b, matrix('.lb-lc-left').a) * 180) / Math.PI) }
     }
-    const seen = { rest: at(0), shut: at(41.5) }
+    const seen = { rest: await at(0), shut: await at(41.5) }
     moves.forEach((a) => { a.currentTime = 0; a.play() })
     return seen
   })
   check('lab: the cat swallows, its jaw cut along the lip only while it moves', jaw.rest.cut === 'none' && jaw.rest.up === 0 && jaw.shut.cut.includes('lb-lc-lip') && jaw.shut.up <= -56, JSON.stringify(jaw))
+  check('lab: as the cat shuts its mouth, its face gets shorter and its whiskers turn up', jaw.shut.chin < jaw.rest.chin - 18 && jaw.rest.whisker === 0 && jaw.shut.whisker >= 4, JSON.stringify(jaw))
 
   await stage('arch-water').scrollIntoViewIfNeeded()
   await page.waitForTimeout(2400)
