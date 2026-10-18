@@ -5196,146 +5196,55 @@
 .lb-luck .lb-lc-77 { stroke-width:3px; stroke:#000; stroke-miterlimit:10; fill:#d9a12a; }
 
 /* The paw beckons the way a lucky cat's does: the raised forearm tips
-   towards us about the elbow and back, the paw open all the way. The arm is
-   cut in three from the drawing itself: the elbow stays put, the forearm
-   shortens as it tips (seen from the front, by the cosine of its angle) and
-   the paw rides on its end. The paw has a thickness, as in the pen, where a
-   second drawing gave it depth: behind the palm, a copy of its outline
-   stands for the whole paw. Tipped, the flat palm shortens by the cosine,
-   the paw itself much less (its depth shows, by the sine), so the top of the
-   paw appears above the fingertips, claws in front of it. The palm, turned
-   away from the light, darkens; the top of the paw, turned to it, is light */
+   towards us about the elbow and back. The paw is built in 3D and drawn by
+   the script, each frame, in the drawing's own ink; its swing is this
+   animation of a typed property, which the script reads: it pauses, and
+   calms down, like the rest */
+@property --lb-swing {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+.lb-luck .lb-lc-arm {
+  animation: lb-luck-swing 2s linear infinite;
+}
+
+@keyframes lb-luck-swing {
+  to { --lb-swing: 1; }
+}
+
+/* the forearm shortens as it tips, seen from the front */
 .lb-luck .lb-lc-forearm {
   transform-box: view-box;
   transform-origin: 600px 642px;
-  animation: lb-luck-forearm 2s linear infinite;
 }
 
-.lb-luck .lb-lc-hand,
-.lb-luck .lb-lc-paw-back {
-  transform-box: view-box;
-  transform-origin: 602px 563px;
-  animation: lb-luck-paw 2s linear infinite;
-}
-
-.lb-luck .lb-lc-paw-back {
-  animation-name: lb-luck-paw-back;
-}
-
-/* above the wrist, the orange under the paw's fur is never seen, and left
-   in, it would tint the cut at the wrist */
-.lb-luck .lb-lc-hand .lb-lc-5 {
-  fill: none;
-}
-
-.lb-luck .lb-lc-paw-top {
-  fill: #ede3bf;
+/* each part's outline is drawn twice as thick under all the fur, so only
+   the outline of the whole paw shows */
+.lb-luck .lb-lc-paw-ink {
+  fill: #000;
   stroke: #000;
-  stroke-width: 3px;
-  stroke-miterlimit: 10;
+  stroke-width: 6px;
+  stroke-linejoin: round;
 }
 
-.lb-luck .lb-lc-forearm .lb-lc-8,
-.lb-luck .lb-lc-hand .lb-lc-8 {
-  animation: lb-luck-palm 2s linear infinite;
+.lb-luck .lb-lc-paw-skin,
+.lb-luck .lb-lc-paw-lit {
+  fill: #e7daad;
 }
 
-/* The angle swings like a pendulum, up to 65 degrees, and the paw is about
-   40 units thick; sampled every 5% */
-@keyframes lb-luck-forearm {
-  0% { transform: scaleY(1); }
-  5% { transform: scaleY(1); }
-  10% { transform: scaleY(0.994); }
-  15% { transform: scaleY(0.973); }
-  20% { transform: scaleY(0.924); }
-  25% { transform: scaleY(0.843); }
-  30% { transform: scaleY(0.737); }
-  35% { transform: scaleY(0.621); }
-  40% { transform: scaleY(0.518); }
-  45% { transform: scaleY(0.448); }
-  50% { transform: scaleY(0.423); }
-  55% { transform: scaleY(0.448); }
-  60% { transform: scaleY(0.518); }
-  65% { transform: scaleY(0.621); }
-  70% { transform: scaleY(0.737); }
-  75% { transform: scaleY(0.843); }
-  80% { transform: scaleY(0.924); }
-  85% { transform: scaleY(0.973); }
-  90% { transform: scaleY(0.994); }
-  95% { transform: scaleY(1); }
-  100% { transform: scaleY(1); }
+/* the palm's side away from the light */
+.lb-luck .lb-lc-paw-shade {
+  fill: #d8c995;
 }
 
-@keyframes lb-luck-paw {
-  0% { transform: translateY(0px) scaleY(1); }
-  5% { transform: translateY(0.03px) scaleY(1); }
-  10% { transform: translateY(0.463px) scaleY(0.994); }
-  15% { transform: translateY(2.15px) scaleY(0.973); }
-  20% { transform: translateY(5.991px) scaleY(0.924); }
-  25% { transform: translateY(12.372px) scaleY(0.843); }
-  30% { transform: translateY(20.795px) scaleY(0.737); }
-  35% { transform: translateY(29.933px) scaleY(0.621); }
-  40% { transform: translateY(38.068px) scaleY(0.518); }
-  45% { transform: translateY(43.639px) scaleY(0.448); }
-  50% { transform: translateY(45.613px) scaleY(0.423); }
-  55% { transform: translateY(43.639px) scaleY(0.448); }
-  60% { transform: translateY(38.068px) scaleY(0.518); }
-  65% { transform: translateY(29.933px) scaleY(0.621); }
-  70% { transform: translateY(20.795px) scaleY(0.737); }
-  75% { transform: translateY(12.372px) scaleY(0.843); }
-  80% { transform: translateY(5.991px) scaleY(0.924); }
-  85% { transform: translateY(2.15px) scaleY(0.973); }
-  90% { transform: translateY(0.463px) scaleY(0.994); }
-  95% { transform: translateY(0.03px) scaleY(1); }
-  100% { transform: translateY(0px) scaleY(1); }
-}
-
-@keyframes lb-luck-paw-back {
-  0% { transform: translateY(0px) scaleY(1); }
-  5% { transform: translateY(0.03px) scaleY(1); }
-  10% { transform: translateY(0.463px) scaleY(1); }
-  15% { transform: translateY(2.15px) scaleY(1); }
-  20% { transform: translateY(5.991px) scaleY(1); }
-  25% { transform: translateY(12.372px) scaleY(1); }
-  30% { transform: translateY(20.795px) scaleY(1); }
-  35% { transform: translateY(29.933px) scaleY(0.955); }
-  40% { transform: translateY(38.068px) scaleY(0.882); }
-  45% { transform: translateY(43.639px) scaleY(0.828); }
-  50% { transform: translateY(45.613px) scaleY(0.808); }
-  55% { transform: translateY(43.639px) scaleY(0.828); }
-  60% { transform: translateY(38.068px) scaleY(0.882); }
-  65% { transform: translateY(29.933px) scaleY(0.955); }
-  70% { transform: translateY(20.795px) scaleY(1); }
-  75% { transform: translateY(12.372px) scaleY(1); }
-  80% { transform: translateY(5.991px) scaleY(1); }
-  85% { transform: translateY(2.15px) scaleY(1); }
-  90% { transform: translateY(0.463px) scaleY(1); }
-  95% { transform: translateY(0.03px) scaleY(1); }
-  100% { transform: translateY(0px) scaleY(1); }
-}
-
-@keyframes lb-luck-palm {
-  0% { fill: #e7daad; }
-  5% { fill: #e7daad; }
-  10% { fill: #e7daad; }
-  15% { fill: #e6d9ab; }
-  20% { fill: #e4d7a9; }
-  25% { fill: #e2d3a4; }
-  30% { fill: #decf9e; }
-  35% { fill: #daca98; }
-  40% { fill: #d6c592; }
-  45% { fill: #d4c28e; }
-  50% { fill: #d3c18d; }
-  55% { fill: #d4c28e; }
-  60% { fill: #d6c592; }
-  65% { fill: #daca98; }
-  70% { fill: #decf9e; }
-  75% { fill: #e2d3a4; }
-  80% { fill: #e4d7a9; }
-  85% { fill: #e6d9ab; }
-  90% { fill: #e7daad; }
-  95% { fill: #e7daad; }
-  100% { fill: #e7daad; }
+/* the fronts of the toes, as they come towards us */
+.lb-luck .lb-lc-toe-front {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2.6px;
+  stroke-linecap: round;
 }
 
 /* the eyes dart from one place to the next instead of sliding */
@@ -5394,11 +5303,7 @@
 
 /* Calm: the cat sits still, paw up, eyes open */
 @media (prefers-reduced-motion: reduce) {
-  .lb-luck .lb-lc-forearm,
-  .lb-luck .lb-lc-hand,
-  .lb-luck .lb-lc-paw-back,
-  .lb-luck .lb-lc-forearm .lb-lc-8,
-  .lb-luck .lb-lc-hand .lb-lc-8,
+  .lb-luck .lb-lc-arm,
   .lb-luck .lb-lc-pupil,
   .lb-luck .lb-lc-eye,
   .lb-luck .lb-lc-lid,

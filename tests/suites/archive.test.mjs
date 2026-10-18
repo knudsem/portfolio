@@ -43,42 +43,42 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   await p.mouse.move(0, 0); await p.waitForTimeout(200);
   check('magnifier: let go, it goes back to its path', await loupe.evaluate((el) => !el.hasAttribute('data-follow') && getComputedStyle(el).animationName === 'lb-loupe'));
 
-  // Cat: the drawing from the pen, its moves eased
+  // Cat: the drawing from the pen, its paw built in 3D
   s = await at(p, 'arch-cat');
   const cat = s.getByRole('button', { name: 'Pet the lucky cat' });
-  const parts = await cat.evaluate((el) => ['forearm', 'hand', 'paw-back', 'pupil', 'eye', 'lid', 'tail'].map((n) => el.querySelector('.lb-lc-' + n)?.getAnimations().length > 0));
-  check('cat: the forearm, the paw and its thickness, the eyes, the lids and the tail all move', parts.every(Boolean), parts.join());
-  // the whole paw is held at the same moment, as all its parts share one clock
-  const swing = await cat.evaluate((el) => {
-    const parts = '.lb-lc-forearm, .lb-lc-hand, .lb-lc-paw-back, .lb-lc-forearm .lb-lc-8, .lb-lc-hand .lb-lc-8';
-    const paw = [...el.querySelectorAll(parts)].flatMap((x) => x.getAnimations());
-    const seek = (t) => paw.forEach((a) => { a.pause(); a.currentTime = t; });
-    const matrix = (s) => new DOMMatrix(getComputedStyle(el.querySelector(s)).transform);
-    const read = () => ({
-      forearm: +matrix('.lb-lc-forearm').d.toFixed(3),
-      drop: +matrix('.lb-lc-hand').f.toFixed(1),
-      palm: +matrix('.lb-lc-hand').d.toFixed(3),
-      paw: +matrix('.lb-lc-paw-back').d.toFixed(3),
-      fur: getComputedStyle(el.querySelector('.lb-lc-hand .lb-lc-8')).fill,
-    });
-    seek(0); const up = read();
-    seek(1000); const down = read();
-    seek(0); paw.forEach((a) => a.play());
+  const parts = await cat.evaluate((el) => ['arm', 'pupil', 'eye', 'lid', 'tail'].map((n) => el.querySelector('.lb-lc-' + n)?.getAnimations().length > 0));
+  check('cat: the swing of the paw, the eyes, the lids and the tail all move', parts.every(Boolean), parts.join());
+  // the swing held at its top, then at its bottom, as the script draws it
+  const swing = await cat.evaluate(async (el) => {
+    const clock = el.querySelector('.lb-lc-arm').getAnimations().find((a) => a.animationName === 'lb-luck-swing');
+    const frames = () => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+    const read = () => {
+      const palm = el.querySelectorAll('.lb-lc-paw-ink')[1].getBBox();
+      return {
+        forearm: +new DOMMatrix(getComputedStyle(el.querySelector('.lb-lc-forearm')).transform).d.toFixed(3),
+        top: +palm.y.toFixed(1),
+        height: +palm.height.toFixed(1),
+        toes: +el.querySelector('.lb-lc-toe-front').getAttribute('opacity'),
+      };
+    };
+    clock.pause(); clock.currentTime = 0; await frames(); const up = read();
+    clock.currentTime = 1000; await frames(); const down = read();
+    clock.currentTime = 0; clock.play();
     return { up, down };
   });
   const { up, down } = swing;
-  check('cat: like a lucky cat, the forearm tips towards us and back, the open paw coming down and up again', up.forearm === 1 && up.drop === 0 && down.forearm < 0.5 && down.drop > 40, JSON.stringify(swing));
-  check('cat: tipped, the palm shortens but the paw keeps its depth, its top showing above the fingertips, the palm a shade darker', up.palm === 1 && up.paw === 1 && down.palm < 0.5 && down.paw > 0.75 && up.fur === 'rgb(231, 218, 173)' && down.fur === 'rgb(211, 193, 141)', JSON.stringify(swing));
+  check('cat: like a lucky cat, the forearm tips towards us and back, the paw coming down and up again', up.forearm === 1 && down.forearm < 0.7 && down.top - up.top > 40, JSON.stringify(swing));
+  check('cat: the paw is drawn in 3D: tipped, it keeps its depth instead of going flat, and the fronts of its toes come into view', down.height > up.height * 0.75 && up.toes === 0 && down.toes === 1, JSON.stringify(swing));
   const shadows = await cat.evaluate((el) => [...el.querySelectorAll('image')].map((i) => i.getAttribute('href')));
   const loaded = await Promise.all(shadows.map(async (h) => (await p.request.get(BASE + h)).status()));
   check('cat: its two shadows load', shadows.length === 2 && loaded.every((st) => st === 200), shadows.join() + ' ' + loaded.join());
   const cbox = await cat.boundingBox();
   await p.mouse.move(cbox.x - 10, cbox.y + 20); await p.waitForTimeout(50);
   check('cat: its eyes turn to the pointer', Number(await cat.evaluate((el) => el.style.getPropertyValue('--lb-look-x'))) < -0.5 && await cat.evaluate((el) => el.hasAttribute('data-look')));
-  const rate = () => cat.evaluate((el) => ({ on: el.hasAttribute('data-lucky'), rates: [...el.querySelectorAll('.lb-lc-forearm, .lb-lc-hand, .lb-lc-paw-back, .lb-lc-forearm .lb-lc-8, .lb-lc-hand .lb-lc-8')].flatMap((x) => x.getAnimations().map((a) => a.playbackRate)) }));
+  const rate = () => cat.evaluate((el) => ({ on: el.hasAttribute('data-lucky'), rates: el.querySelector('.lb-lc-arm').getAnimations().map((a) => a.playbackRate) }));
   await cat.click(); await p.waitForTimeout(100);
   const lucky = await rate();
-  check('cat: a pet makes the whole paw beckon faster, from where it was', lucky.on && lucky.rates.length === 5 && lucky.rates.every((r) => r > 2), JSON.stringify(lucky));
+  check('cat: a pet makes the whole paw beckon faster, from where it was', lucky.on && lucky.rates.length === 1 && lucky.rates.every((r) => r > 2), JSON.stringify(lucky));
   await p.waitForTimeout(1700);
   const calmAgain = await rate();
   check('cat: then it goes back to its own pace', !calmAgain.on && calmAgain.rates.every((r) => r === 1), JSON.stringify(calmAgain));

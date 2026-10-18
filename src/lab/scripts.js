@@ -1142,12 +1142,179 @@ export function cornerRings(root) {
 
 
 /* demo:arch-cat */
+// The paw is built in 3D, then drawn each frame in the drawing's own ink.
+// It tips towards us about the elbow, the way a lucky cat's paw does, by an
+// angle that swings like a pendulum. Heights are measured up from the
+// elbow's axis, depths towards us. The paw's parts are rounded solids: each
+// one's outline is the hull of its projected surface, its lit side the hull
+// of the points the light reaches. As the paw tips, the fronts of its toes
+// come into view, and the claws, now pointing at us, shorten and draw in.
+const ELBOW = 642 // the height of the elbow's axis in the drawing
+const SWING = 50 // degrees, at the bottom of the swing
+const PAW = {
+  light: [-0.35, 0.8, 0.5], // from the top left, in front
+  wrist: { c: [602.6, 556, 0], r: [13.9, 16, 14] },
+  palm: { c: [600, 516, 0], r: [35, 33, 19], e: [0.85, 1], taper: 0.12 },
+  // the toes make the top of the paw; each claw sits on the front of a tip
+  toes: [
+    { c: [576, 486, 3], r: [13.5, 16, 13], claw: [577, 582, 469.8] },
+    { c: [600.5, 483, 4], r: [13.5, 16, 13], claw: [601.5, 606.8, 469.8] },
+    { c: [624.5, 486, 3], r: [13, 16, 13], claw: [625.5, 630, 474.8] },
+  ],
+  dewclaw: { up: 9, out: [-1, 0.15, 0.05], root: [560.4, 498.8] },
+}
+
+const unit = (v) => { const l = Math.hypot(...v); return v.map((x) => x / l) }
+const cosE = (w, e) => Math.sign(Math.cos(w)) * Math.abs(Math.cos(w)) ** e
+const sinE = (w, e) => Math.sign(Math.sin(w)) * Math.abs(Math.sin(w)) ** e
+const turn = (v, c, s) => [v[0], v[1] * c - v[2] * s, v[1] * s + v[2] * c]
+const onScreen = (v) => [v[0], ELBOW - v[1]]
+const n2 = (v) => +v.toFixed(2)
+const n4 = (v) => +v.toFixed(4)
+
+// a superquadric (squarer as e falls below 1), wider at the top by taper
+const surfaceAt = (q, eta, w) => {
+  const [a, b, c] = q.r, [e1, e2] = q.e || [1, 1], t = 1 + (q.taper || 0) * sinE(eta, e1)
+  return [q.c[0] + t * a * cosE(eta, e1) * cosE(w, e2), ELBOW - q.c[1] + b * sinE(eta, e1), q.c[2] + t * c * cosE(eta, e1) * sinE(w, e2)]
+}
+// its surface as points with their outward normals (rows by columns)
+const surface = (q, rows = 12, columns = 20) => {
+  const points = [], normals = [], d = 1e-3
+  for (let i = 1; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+      const eta = -Math.PI / 2 + (Math.PI * i) / rows, w = -Math.PI + (2 * Math.PI * j) / columns
+      const p = surfaceAt(q, eta, w), u = surfaceAt(q, eta + d, w).map((x, k) => x - p[k]), v = surfaceAt(q, eta, w + d).map((x, k) => x - p[k])
+      let n = unit([u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]])
+      if (n[0] * (p[0] - q.c[0]) + n[1] * (p[1] - ELBOW + q.c[1]) + n[2] * (p[2] - q.c[2]) < 0) n = n.map((x) => -x)
+      points.push(p)
+      normals.push(n)
+    }
+  }
+  points.push(surfaceAt(q, Math.PI / 2, 0), surfaceAt(q, -Math.PI / 2, 0))
+  normals.push([0, 1, 0], [0, -1, 0])
+  return { points, normals }
+}
+// below 1 inside the solid, 1 on its surface
+const level = (q, p) => {
+  const [a, b, c] = q.r, [e1, e2] = q.e || [1, 1], h = (p[1] - ELBOW + q.c[1]) / b, t = 1 + (q.taper || 0) * h
+  return (Math.abs((p[0] - q.c[0]) / (a * t)) ** (2 / e2) + Math.abs((p[2] - q.c[2]) / (c * t)) ** (2 / e2)) ** (e2 / e1) + Math.abs(h) ** (2 / e1)
+}
+// the point of the surface straight out from a point inside
+const reach = (q, from, towards) => {
+  const d = unit(towards), at = (k) => from.map((x, i) => x + d[i] * k)
+  let lo = 0, hi = 200
+  for (let i = 0; i < 40; i++) { const m = (lo + hi) / 2; level(q, at(m)) < 1 ? (lo = m) : (hi = m) }
+  return at(lo)
+}
+const hull = (points) => {
+  const s = points.slice().sort((a, b) => a[0] - b[0] || a[1] - b[1])
+  const cross = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
+  const half = (list) => {
+    const out = []
+    for (const p of list) {
+      while (out.length > 1 && cross(out[out.length - 2], out[out.length - 1], p) <= 0) out.pop()
+      out.push(p)
+    }
+    return out.slice(0, -1)
+  }
+  return s.length < 3 ? s : half(s).concat(half(s.reverse()))
+}
+// a closed curve through the middles of a polygon's sides
+const round = (pg) => {
+  if (pg.length < 3) return ''
+  const mid = (a, b) => `${n2((a[0] + b[0]) / 2)},${n2((a[1] + b[1]) / 2)}`
+  return `M${mid(pg[pg.length - 1], pg[0])}` + pg.map((p, i) => `Q${n2(p[0])},${n2(p[1])} ${mid(p, pg[(i + 1) % pg.length])}`).join('') + 'Z'
+}
+
+let model
+const build = () => {
+  const toes = PAW.toes.map((t) => ({ ...t, ...surface(t) }))
+  const palm = { ...PAW.palm, ...surface(PAW.palm, 24, 36) }
+  const deg = Math.PI / 180
+  return {
+    wrist: { ...PAW.wrist, ...surface(PAW.wrist) },
+    palm,
+    toes,
+    // each claw on the front of the top of its toe
+    claws: toes.map((t) => reach(t, [t.claw[0], ELBOW - t.c[1], t.c[2]], [0, Math.sin(78 * deg), Math.cos(78 * deg)])),
+    dewclaw: reach(PAW.palm, [PAW.palm.c[0], ELBOW - PAW.palm.c[1] + PAW.dewclaw.up, PAW.palm.c[2]], PAW.dewclaw.out),
+  }
+}
+
+// The paw tipped by an angle (in degrees): what to draw. Also used to draw
+// it at rest in the demo's markup.
+export function pawPose(angle) {
+  model ||= build()
+  const c = Math.cos((angle * Math.PI) / 180), s = Math.sin((angle * Math.PI) / 180)
+  const light = unit(PAW.light)
+  const outline = (part) => round(hull(part.points.map((p) => onScreen(turn(p, c, s)))))
+  const lit = round(hull(model.palm.points.filter((p, i) => {
+    const n = turn(model.palm.normals[i], c, s)
+    return n[2] > -0.02 && n[0] * light[0] + n[1] * light[1] + n[2] * light[2] > -0.08
+  }).map((p) => onScreen(turn(p, c, s)))))
+  // the toes' fronts come into view between 8 and 30 degrees
+  const shown = Math.min(1, Math.max(0, (angle - 8) / 22))
+  const front = (t) => {
+    const o = onScreen(turn([t.c[0], ELBOW - t.c[1], t.c[2]], c, s)), rx = t.r[0], ry = Math.hypot(t.r[1] * c, t.r[2] * s)
+    return `M${n2(o[0] - rx)},${n2(o[1])}A${n2(rx)},${n2(ry)} 0 0 0 ${n2(o[0] + rx)},${n2(o[1])}`
+  }
+  // a claw points up the paw: tipped towards us, it shortens and draws in
+  const k = 1 - 0.7 * s
+  const place = (at, root) => {
+    const p = onScreen(turn(at, c, s))
+    return `translate(${n2(p[0])} ${n2(p[1])}) scale(${n4(k)} ${n4(c * k)}) translate(${-root[0]} ${-root[1]})`
+  }
+  return {
+    forearm: n4(c),
+    inks: [model.wrist, model.palm, ...model.toes].map(outline),
+    lit,
+    fronts: model.toes.map(front),
+    shown: n2(shown),
+    claws: model.toes.map((t, i) => place(model.claws[i], t.claw.slice(1))),
+    dewclaw: place(model.dewclaw, PAW.dewclaw.root),
+  }
+}
+
 // The eyes follow the pointer over the stage. A pet (a click, a tap, Enter
 // or Space) makes the paw beckon faster for a moment: only the playback
-// rate changes, so the paw carries on from where it was, without a jump.
+// rate of its swing changes, so it carries on from where it was, without a
+// jump. The swing is a CSS animation the script reads at each frame: it
+// pauses, and calms down, like the rest.
 export function luckyCat(root) {
   const cat = root.querySelector('.lb-luck')
-  const paw = '.lb-lc-forearm, .lb-lc-hand, .lb-lc-paw-back, .lb-lc-forearm .lb-lc-8, .lb-lc-hand .lb-lc-8'
+  const arm = cat.querySelector('.lb-lc-arm')
+  const forearm = arm.querySelector('.lb-lc-forearm')
+  const all = (selector) => [...arm.querySelectorAll(selector)]
+  const inks = all('.lb-lc-paw-ink'), skins = all('.lb-lc-paw-skin'), lit = arm.querySelector('.lb-lc-paw-lit')
+  const fronts = all('.lb-lc-toe-front'), claws = all('.lb-lc-claw'), dewclaw = arm.querySelector('.lb-lc-dewclaw')
+  const poses = new Map()
+  const draw = (angle) => {
+    if (!poses.has(angle)) poses.set(angle, pawPose(angle))
+    const pose = poses.get(angle)
+    forearm.style.transform = `scaleY(${pose.forearm})`
+    inks.forEach((el, i) => el.setAttribute('d', pose.inks[i]))
+    skins.forEach((el, i) => el.setAttribute('d', pose.inks[i]))
+    lit.setAttribute('d', pose.lit)
+    fronts.forEach((el, i) => { el.setAttribute('d', pose.fronts[i]); el.setAttribute('opacity', pose.shown) })
+    claws.forEach((el, i) => el.setAttribute('transform', pose.claws[i]))
+    dewclaw.setAttribute('transform', pose.dewclaw)
+  }
+  // the clock: how far the swing has run in its turn (still without it)
+  const swing = () => arm.getAnimations().find((animation) => animation.animationName === 'lb-luck-swing')
+  let frame = 0, last
+  const tick = () => {
+    const turn = swing()?.effect.getComputedTiming().progress ?? 0
+    // to the half degree: finer than a frame's move, and few poses to keep
+    const angle = Math.round(SWING * (1 - Math.cos(2 * Math.PI * turn))) / 2
+    if (angle !== last) draw((last = angle))
+    frame = requestAnimationFrame(tick)
+  }
+  const observer = new IntersectionObserver(([entry]) => {
+    cancelAnimationFrame(frame)
+    if (entry.isIntersecting) frame = requestAnimationFrame(tick)
+  })
+  observer.observe(cat)
+
   let timer = 0
   const look = (e) => {
     const box = cat.getBoundingClientRect()
@@ -1162,11 +1329,7 @@ export function luckyCat(root) {
     cat.style.removeProperty('--lb-look-x')
     cat.style.removeProperty('--lb-look-y')
   }
-  const beckon = (rate) => {
-    for (const part of cat.querySelectorAll(paw)) {
-      for (const animation of part.getAnimations()) animation.updatePlaybackRate(rate)
-    }
-  }
+  const beckon = (rate) => swing()?.updatePlaybackRate(rate)
   const pet = () => {
     cat.setAttribute('data-lucky', '')
     beckon(2.2)
@@ -1180,6 +1343,8 @@ export function luckyCat(root) {
   root.addEventListener('pointerleave', rest)
   cat.addEventListener('click', pet)
   return () => {
+    observer.disconnect()
+    cancelAnimationFrame(frame)
     clearTimeout(timer)
     root.removeEventListener('pointermove', look)
     root.removeEventListener('pointerleave', rest)
