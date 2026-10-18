@@ -165,7 +165,7 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
 
   await stage('arch-cat').scrollIntoViewIfNeeded()
   await stage('arch-cat').getByRole('button', { name: 'Pet the lucky cat' }).click()
-  check('lab: the cat can be petted', await stage('arch-cat').locator('.lb-cat').evaluate((el) => el.hasAttribute('data-lucky')))
+  check('lab: the cat can be petted', await stage('arch-cat').locator('.lb-luck').evaluate((el) => el.hasAttribute('data-lucky')))
 
   await stage('arch-water').scrollIntoViewIfNeeded()
   await page.waitForTimeout(2400)

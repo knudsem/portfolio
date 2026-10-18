@@ -5084,107 +5084,235 @@
 /* /demo */
 
 /* demo:arch-cat */
-.lb-cat {
-  display: block;
+/* My own drawing, from my CodePen. The moves are the pen's, eased: the paw
+   beckons (down, a short hold, back up a touch past its rest), the claws
+   follow a beat behind, the eyes dart and blink, the tail sways */
+.lb-luck {
+  display: grid;
+  place-items: center;
+  width: 150px;
+  height: 184px;
   padding: 0;
   border: 0;
-  border-radius: 16px;
-  background: none;
+  border-radius: 20px;
+  background: #f3ead9;
+  font: inherit;
   cursor: pointer;
 }
 
-.lb-cat:focus-visible {
-  outline: 2px solid #f2c14e;
-  outline-offset: 4px;
-  border-radius: 50%;
-}
-
-.lb-cat svg {
+.lb-luck svg {
   display: block;
-  width: 176px;
-  height: 184px;
-  overflow: visible;
+  width: auto;
+  height: 172px;
 }
 
-/* Ink and paint */
-.lb-cat-disc { fill: #f3ead9; }
-.lb-cat-ginger, .lb-cat-cream, .lb-cat-gold, .lb-cat-white, .lb-cat-muzzle, .lb-cat-nose, .lb-cat-pink {
-  stroke: #24170f;
-  stroke-width: 3;
-  stroke-linejoin: round;
-}
-.lb-cat-ginger { fill: #ea9f35; }
-.lb-cat-cream, .lb-cat-muzzle { fill: #f7e5bd; }
-.lb-cat-muzzle { stroke: none; }
-.lb-cat-gold { fill: #f4c54c; }
-.lb-cat-white { fill: #f7ec7a; }
-.lb-cat-nose { fill: #3aa6a4; stroke-width: 2; }
-.lb-cat-pink { fill: #f2a5a0; stroke-width: 2; }
-.lb-cat-look { fill: #1c120c; }
-.lb-cat-glint { fill: #fff; }
-.lb-cat-thin, .lb-cat-mark, .lb-cat-line, .lb-cat-fur, .lb-cat-collar, .lb-cat-stripe, .lb-cat-dots {
-  fill: none;
-  stroke-linecap: round;
-}
-.lb-cat-thin { stroke: #24170f; stroke-width: 2; }
-.lb-cat-mark { stroke: #c18a22; stroke-width: 2.5; }
-.lb-cat-line { stroke: #24170f; stroke-width: 19; }
-.lb-cat-fur { stroke: #ea9f35; stroke-width: 13; }
-.lb-cat-collar { stroke: #d6453b; stroke-width: 8; }
-.lb-cat-stripe { stroke: #c9771d; stroke-width: 4; }
-.lb-cat-dots { stroke: #b06a1c; stroke-width: 2.5; }
-.lb-cat-luck { fill: #f4c54c; }
-
-/* Every moving part turns around its own joint */
-.lb-cat svg * { transform-box: view-box; }
-.lb-cat-arm { transform-origin: 76px 130px; }
-.lb-cat-paw { transform-origin: 48px 84px; }
-.lb-cat-bell { transform-origin: 100px 108px; }
-.lb-cat-tail { transform-origin: 138px 188px; }
-.lb-cat-ear { transform-origin: 70px 40px; }
-.lb-cat-body { transform-origin: 100px 196px; }
-.lb-cat-eye:first-of-type { transform-origin: 80px 58px; }
-.lb-cat-eye:last-of-type { transform-origin: 120px 58px; }
-.lb-cat-look { transform: translate(calc(var(--lb-look-x, 0) * 4px), calc(var(--lb-look-y, 0) * 3px)); transition: transform 0.2s ease-out; }
-.lb-cat-luck path { transform-box: fill-box; transform-origin: center; opacity: 0; }
-
-/* The beckoning paw: the arm swings, the paw lags behind it a little, the
-   bell answers the same beat a little later */
-.lb-cat-arm { animation: lb-cat-beckon var(--lb-beat, 1.2s) ease-in-out infinite; }
-.lb-cat-paw { animation: lb-cat-flap var(--lb-beat, 1.2s) ease-in-out -0.15s infinite; }
-.lb-cat-bell { animation: lb-cat-bell var(--lb-beat, 1.2s) ease-in-out -0.3s infinite; }
-.lb-cat-tail { animation: lb-cat-tail 3.4s ease-in-out infinite alternate; }
-.lb-cat-body { animation: lb-cat-breathe 3s ease-in-out infinite alternate; }
-.lb-cat-eye { animation: lb-cat-blink 4.6s infinite; }
-.lb-cat-ear:first-of-type { animation: lb-cat-twitch 5.5s 1.2s infinite; }
-.lb-cat-whiskers { animation: lb-cat-whisk 2.2s ease-in-out infinite alternate; }
-
-@keyframes lb-cat-beckon { 50% { rotate: -16deg; } }
-@keyframes lb-cat-flap { 50% { rotate: 34deg; } }
-@keyframes lb-cat-bell { 25% { rotate: 14deg; } 75% { rotate: -14deg; } }
-@keyframes lb-cat-tail { from { rotate: -6deg; } to { rotate: 9deg; } }
-@keyframes lb-cat-breathe { to { scale: 1.015 1.03; } }
-@keyframes lb-cat-blink { 0%, 93%, 100% { scale: 1 1; } 95.5% { scale: 1 0.1; } }
-@keyframes lb-cat-twitch { 0%, 6%, 100% { rotate: 0deg; } 2% { rotate: -12deg; } 4% { rotate: 5deg; } }
-@keyframes lb-cat-whisk { to { translate: 0 1px; } }
-
-/* A pet: a faster paw, and a burst of luck */
-.lb-cat[data-lucky] { --lb-beat: 0.42s; }
-.lb-cat[data-lucky] .lb-cat-luck path { animation: lb-cat-luck 1s ease-out both; }
-.lb-cat-luck path:nth-child(2) { animation-delay: 0.12s !important; }
-.lb-cat-luck path:nth-child(3) { animation-delay: 0.24s !important; }
-.lb-cat-luck path:nth-child(4) { animation-delay: 0.08s !important; }
-.lb-cat-luck path:nth-child(5) { animation-delay: 0.2s !important; }
-
-@keyframes lb-cat-luck {
-  0% { opacity: 0; scale: 0; rotate: 0deg; }
-  40% { opacity: 1; scale: 1.25; }
-  100% { opacity: 0; scale: 0.6; rotate: 90deg; }
+.lb-luck:focus-visible {
+  outline: 2px solid #ffd84a;
+  outline-offset: 4px;
 }
 
+/* The drawing's own ink and paint, from the pen */
+.lb-luck .lb-lc-1 { opacity:0.52; }
+.lb-luck .lb-lc-2 { fill:#b54e21; }
+.lb-luck .lb-lc-10,
+.lb-luck .lb-lc-12,
+.lb-luck .lb-lc-13,
+.lb-luck .lb-lc-2,
+.lb-luck .lb-lc-21,
+.lb-luck .lb-lc-23,
+.lb-luck .lb-lc-25,
+.lb-luck .lb-lc-26,
+.lb-luck .lb-lc-27,
+.lb-luck .lb-lc-28,
+.lb-luck .lb-lc-29,
+.lb-luck .lb-lc-3,
+.lb-luck .lb-lc-30,
+.lb-luck .lb-lc-31,
+.lb-luck .lb-lc-32,
+.lb-luck .lb-lc-4,
+.lb-luck .lb-lc-5,
+.lb-luck .lb-lc-6,
+.lb-luck .lb-lc-7,
+.lb-luck .lb-lc-34 { stroke:#000; }
+.lb-luck .lb-lc-10,
+.lb-luck .lb-lc-12,
+.lb-luck .lb-lc-13,
+.lb-luck .lb-lc-17,
+.lb-luck .lb-lc-2,
+.lb-luck .lb-lc-21,
+.lb-luck .lb-lc-23,
+.lb-luck .lb-lc-25,
+.lb-luck .lb-lc-26,
+.lb-luck .lb-lc-27,
+.lb-luck .lb-lc-28,
+.lb-luck .lb-lc-29,
+.lb-luck .lb-lc-3,
+.lb-luck .lb-lc-30,
+.lb-luck .lb-lc-31,
+.lb-luck .lb-lc-32,
+.lb-luck .lb-lc-4,
+.lb-luck .lb-lc-5,
+.lb-luck .lb-lc-6,
+.lb-luck .lb-lc-7,
+.lb-luck .lb-lc-34 { stroke-miterlimit:10; }
+.lb-luck .lb-lc-3 { fill:#d3beb0; }
+.lb-luck .lb-lc-10,
+.lb-luck .lb-lc-12,
+.lb-luck .lb-lc-13,
+.lb-luck .lb-lc-21,
+.lb-luck .lb-lc-23,
+.lb-luck .lb-lc-3,
+.lb-luck .lb-lc-5,
+.lb-luck .lb-lc-6,
+.lb-luck .lb-lc-7 { stroke-width:3px; }
+.lb-luck .lb-lc-31,
+.lb-luck .lb-lc-4,
+.lb-luck .lb-lc-6 { fill:none; }
+.lb-luck .lb-lc-5,
+.lb-luck .lb-lc-9 { fill:#d9a12a; }
+.lb-luck .lb-lc-10,
+.lb-luck .lb-lc-8 { fill:#e7daad; }
+.lb-luck .lb-lc-11 { fill:#ebdaaf; }
+.lb-luck .lb-lc-12 { fill:#c08567; }
+.lb-luck .lb-lc-13 { fill:#0ea055; }
+.lb-luck .lb-lc-14 { fill:#9b6445; }
+.lb-luck .lb-lc-15 { fill:#ad1f02; }
+.lb-luck .lb-lc-16 { fill:#d6b467; }
+.lb-luck .lb-lc-17 { fill:#edd777; stroke:#a59550; }
+.lb-luck .lb-lc-18 { fill:#ee3301; }
+.lb-luck .lb-lc-19 { fill:#f03201; }
+.lb-luck .lb-lc-20 { opacity:0.34; }
+.lb-luck .lb-lc-21 { fill:#d9a128; }
+.lb-luck .lb-lc-22,
+.lb-luck .lb-lc-23 { fill:#eeddaf; }
+.lb-luck .lb-lc-24 { fill:#e9dda9; }
+.lb-luck .lb-lc-25 { fill:#247a8b; }
+.lb-luck .lb-lc-26 { fill:#793d47; }
+.lb-luck .lb-lc-27 { fill:#b54e23; }
+.lb-luck .lb-lc-28,
+.lb-luck .lb-lc-32 { fill:#fff79a; }
+.lb-luck .lb-lc-29 { fill:#eb908f; }
+.lb-luck .lb-lc-34 { fill:#D9A12A; }
+.lb-luck .lb-lc-35 { stroke-width:3px; stroke:#000; stroke-miterlimit:10; fill:#ebdaaf; }
+.lb-luck .lb-lc-77 { stroke-width:3px; stroke:#000; stroke-miterlimit:10; fill:#d9a12a; }
+
+.lb-luck .lb-lc-forearm {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: lb-luck-beckon 2.5s infinite;
+}
+
+.lb-luck .lb-lc-claws {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: lb-luck-claws 2.5s 0.1s infinite;
+}
+
+.lb-luck .lb-lc-thumb {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: lb-luck-thumb 2.5s 0.1s infinite;
+}
+
+/* the inside of the paw, seen as it folds towards us */
+.lb-luck .lb-lc-palm {
+  transform-box: fill-box;
+  transform-origin: 50% 10%;
+  animation: lb-luck-palm 2.5s linear infinite;
+}
+
+@keyframes lb-luck-beckon {
+  0%, 10% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0); }
+  36%, 46% { transform: scaleY(0.3) skewX(10deg) rotateY(5deg); animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1); }
+  74% { transform: scaleY(1.04); animation-timing-function: ease-in-out; }
+  86%, 100% { transform: none; }
+}
+
+@keyframes lb-luck-claws {
+  0%, 10% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0); }
+  36%, 46% { transform: translateY(45%); animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1); }
+  80%, 100% { transform: none; }
+}
+
+@keyframes lb-luck-thumb {
+  0%, 10% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0); }
+  36%, 46% { transform: translateX(55%); animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1); }
+  80%, 100% { transform: none; }
+}
+
+@keyframes lb-luck-palm {
+  0%, 10% { transform: scale(0); }
+  18% { transform: scale(0.78); }
+  30% { transform: scale(0.95); }
+  36% { transform: scale(0.98); }
+  46% { transform: scale(1); }
+  72%, 100% { transform: scale(0); }
+}
+
+/* the eyes dart from one place to the next instead of sliding */
+.lb-luck .lb-lc-pupil {
+  animation: lb-luck-look 14s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  transition: transform 0.15s ease-out;
+}
+
+/* while the pointer is over the stage, they follow it */
+.lb-luck[data-look] .lb-lc-pupil {
+  animation: none;
+  transform: translate(calc(var(--lb-look-x, 0) * 3.5%), calc(var(--lb-look-y, 0) * 2%));
+}
+
+@keyframes lb-luck-look {
+  0%, 10%, 50%, 60%, 100% { transform: translate(0, 0); }
+  2%, 4% { transform: translate(3%, 1.2%); }
+  6%, 8% { transform: translate(-4.1%, -1.1%); }
+  52%, 54% { transform: translate(3%, -2.5%); }
+  56%, 58% { transform: translate(-2.8%, 1.2%); }
+}
+
+/* a double blink: the lid shuts fast and opens a little slower */
+.lb-luck .lb-lc-eye {
+  transform-origin: center 38%;
+  animation: lb-luck-blink 7s 2s infinite;
+}
+
+.lb-luck .lb-lc-lid {
+  opacity: 0;
+  transform-origin: center 38%;
+  animation: lb-luck-blink 7s 2s infinite, lb-luck-lid 7s 2s infinite;
+}
+
+@keyframes lb-luck-blink {
+  0%, 11%, 15.5%, 17% { transform: scaleY(1); animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
+  12%, 18% { transform: scaleY(0.2); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  13.8%, 19.8%, 100% { transform: scaleY(1); }
+}
+
+@keyframes lb-luck-lid {
+  0%, 11%, 13.8%, 17%, 19.8%, 100% { opacity: 0; }
+  12%, 18% { opacity: 1; }
+}
+
+.lb-luck .lb-lc-tail {
+  transform-box: fill-box;
+  transform-origin: 12% 4%;
+  animation: lb-luck-tail 3.4s ease-in-out infinite alternate;
+}
+
+@keyframes lb-luck-tail {
+  from { rotate: -4deg; }
+  to { rotate: 5deg; }
+}
+
+/* Calm: the cat sits still, paw up, eyes open */
 @media (prefers-reduced-motion: reduce) {
-  .lb-cat svg * { animation: none !important; }
-  .lb-cat-look { transition: none; }
+  .lb-luck .lb-lc-forearm,
+  .lb-luck .lb-lc-claws,
+  .lb-luck .lb-lc-thumb,
+  .lb-luck .lb-lc-pupil,
+  .lb-luck .lb-lc-eye,
+  .lb-luck .lb-lc-lid,
+  .lb-luck .lb-lc-tail { animation: none; transition: none; }
+  .lb-luck .lb-lc-palm { animation: none; transform: scale(0); }
 }
 /* /demo */
 
