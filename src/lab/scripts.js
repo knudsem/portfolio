@@ -1147,7 +1147,7 @@ export function cornerRings(root) {
 // rate changes, so the paw carries on from where it was, without a jump.
 export function luckyCat(root) {
   const cat = root.querySelector('.lb-luck')
-  const paw = '.lb-lc-forearm, .lb-lc-claws, .lb-lc-thumb, .lb-lc-palm'
+  const paw = '.lb-lc-forearm, .lb-lc-hand, .lb-lc-paw-back, .lb-lc-forearm .lb-lc-8, .lb-lc-hand .lb-lc-8'
   let timer = 0
   const look = (e) => {
     const box = cat.getBoundingClientRect()
