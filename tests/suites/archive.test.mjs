@@ -43,16 +43,24 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   await p.mouse.move(0, 0); await p.waitForTimeout(200);
   check('magnifier: let go, it goes back to its path', await loupe.evaluate((el) => !el.hasAttribute('data-follow') && getComputedStyle(el).animationName === 'lb-loupe'));
 
-  // Cat
+  // Cat: the drawing from the pen, its moves eased
   s = await at(p, 'arch-cat');
   const cat = s.getByRole('button', { name: 'Pet the lucky cat' });
+  const parts = await cat.evaluate((el) => ['forearm', 'claws', 'thumb', 'palm', 'pupil', 'eye', 'lid', 'tail'].map((n) => el.querySelector('.lb-lc-' + n)?.getAnimations().length > 0));
+  check('cat: the paw, the claws, the inside of the paw, the eyes, the lids and the tail all move', parts.every(Boolean), parts.join());
+  const shadows = await cat.evaluate((el) => [...el.querySelectorAll('image')].map((i) => i.getAttribute('href')));
+  const loaded = await Promise.all(shadows.map(async (h) => (await p.request.get(BASE + h)).status()));
+  check('cat: its two shadows load', shadows.length === 2 && loaded.every((st) => st === 200), shadows.join() + ' ' + loaded.join());
   const cbox = await cat.boundingBox();
   await p.mouse.move(cbox.x - 10, cbox.y + 20); await p.waitForTimeout(50);
-  check('cat: its eyes turn to the pointer', Number(await cat.evaluate((el) => el.style.getPropertyValue('--lb-look-x'))) < -0.5);
+  check('cat: its eyes turn to the pointer', Number(await cat.evaluate((el) => el.style.getPropertyValue('--lb-look-x'))) < -0.5 && await cat.evaluate((el) => el.hasAttribute('data-look')));
+  const rate = () => cat.evaluate((el) => ({ on: el.hasAttribute('data-lucky'), rates: [...el.querySelectorAll('.lb-lc-forearm, .lb-lc-claws, .lb-lc-thumb, .lb-lc-palm')].flatMap((x) => x.getAnimations().map((a) => a.playbackRate)) }));
   await cat.click(); await p.waitForTimeout(100);
-  const lucky = await cat.evaluate((el) => ({ on: el.hasAttribute('data-lucky'), beat: getComputedStyle(el.querySelector('.lb-cat-arm')).animationDuration }));
-  check('cat: a pet makes the paw beckon faster and lets out the luck', lucky.on && lucky.beat === '0.42s', JSON.stringify(lucky));
+  const lucky = await rate();
+  check('cat: a pet makes the whole paw beckon faster, from where it was', lucky.on && lucky.rates.length === 4 && lucky.rates.every((r) => r > 2), JSON.stringify(lucky));
   await p.waitForTimeout(1700);
+  const calmAgain = await rate();
+  check('cat: then it goes back to its own pace', !calmAgain.on && calmAgain.rates.every((r) => r === 1), JSON.stringify(calmAgain));
   await cat.focus(); await p.keyboard.press('Enter'); await p.waitForTimeout(80);
   check('cat: it can be petted from the keyboard too', await cat.evaluate((el) => el.hasAttribute('data-lucky')));
 
@@ -107,10 +115,11 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   // Logo loader
   s = await at(p, 'arch-logo');
   check('logo loader: a status called "Loading"', (await s.getByRole('status', { name: 'Loading' }).count()) === 1);
-  const lit = await s.locator('.lb-mk-wedge').evaluateAll((ws) => ws.map((w) => Number(getComputedStyle(w).opacity)));
-  await p.waitForTimeout(450);
-  const lit2 = await s.locator('.lb-mk-wedge').evaluateAll((ws) => ws.map((w) => Number(getComputedStyle(w).opacity)));
-  check('logo loader: four wedges of MK, lighting up in turn', lit.length === 4 && lit.join() !== lit2.join() && Math.max(...lit, ...lit2) > 0.9 && Math.min(...lit, ...lit2) < 0.4, `${lit.map((v) => v.toFixed(2))} / ${lit2.map((v) => v.toFixed(2))}`);
+  // over one turn (2.4 s), each wedge lights up and fades, not all at once
+  const turns = [];
+  for (let i = 0; i < 13; i++) { turns.push(await s.locator('.lb-mk-wedge').evaluateAll((ws) => ws.map((w) => Number(getComputedStyle(w).opacity)))); await p.waitForTimeout(200); }
+  const each = [0, 1, 2, 3].map((k) => [Math.min(...turns.map((t) => t[k])), Math.max(...turns.map((t) => t[k]))]);
+  check('logo loader: four wedges of MK, lighting up in turn', turns[0].length === 4 && each.every(([lo, hi]) => lo < 0.3 && hi > 0.9) && turns.some((t) => Math.max(...t) - Math.min(...t) > 0.5), each.map(([lo, hi]) => `${lo.toFixed(2)} to ${hi.toFixed(2)}`).join(', '));
 
   // Wave transition
   s = await at(p, 'arch-mask');

@@ -1143,27 +1143,38 @@ export function cornerRings(root) {
 
 /* demo:arch-cat */
 // The eyes follow the pointer over the stage. A pet (a click, a tap, Enter
-// or Space) makes the paw beckon faster and lets out a burst of luck.
+// or Space) makes the paw beckon faster for a moment: only the playback
+// rate changes, so the paw carries on from where it was, without a jump.
 export function luckyCat(root) {
-  const cat = root.querySelector('.lb-cat')
+  const cat = root.querySelector('.lb-luck')
+  const paw = '.lb-lc-forearm, .lb-lc-claws, .lb-lc-thumb, .lb-lc-palm'
   let timer = 0
   const look = (e) => {
     const box = cat.getBoundingClientRect()
     const x = (e.clientX - (box.left + box.width / 2)) / (box.width / 2)
     const y = (e.clientY - (box.top + box.height * 0.3)) / (box.height / 2)
+    cat.setAttribute('data-look', '')
     cat.style.setProperty('--lb-look-x', Math.max(-1, Math.min(1, x)).toFixed(2))
     cat.style.setProperty('--lb-look-y', Math.max(-1, Math.min(1, y)).toFixed(2))
   }
   const rest = () => {
+    cat.removeAttribute('data-look')
     cat.style.removeProperty('--lb-look-x')
     cat.style.removeProperty('--lb-look-y')
   }
+  const beckon = (rate) => {
+    for (const part of cat.querySelectorAll(paw)) {
+      for (const animation of part.getAnimations()) animation.updatePlaybackRate(rate)
+    }
+  }
   const pet = () => {
-    cat.removeAttribute('data-lucky')
-    void cat.offsetWidth // start the burst again
     cat.setAttribute('data-lucky', '')
+    beckon(2.2)
     clearTimeout(timer)
-    timer = setTimeout(() => cat.removeAttribute('data-lucky'), 1600)
+    timer = setTimeout(() => {
+      cat.removeAttribute('data-lucky')
+      beckon(1)
+    }, 1600)
   }
   root.addEventListener('pointermove', look)
   root.addEventListener('pointerleave', rest)
