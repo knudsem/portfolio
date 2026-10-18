@@ -1252,8 +1252,9 @@ export function pawPose(angle) {
     const n = turn(model.palm.normals[i], c, s)
     return n[2] > -0.02 && n[0] * light[0] + n[1] * light[1] + n[2] * light[2] > -0.08
   }).map((p) => onScreen(turn(p, c, s)))))
-  // a claw points up the paw: tipped towards us, it shortens and draws in
-  const k = 1 - 0.7 * s
+  // a claw points up the paw: tipped towards us, it shortens and draws in a
+  // little (to about three quarters at the bottom of the swing)
+  const k = 1 - 0.35 * s
   const place = (at, root) => {
     const p = onScreen(turn(at, c, s))
     return `translate(${n2(p[0])} ${n2(p[1])}) scale(${n4(k)} ${n4(c * k)}) translate(${-root[0]} ${-root[1]})`
