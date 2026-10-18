@@ -166,6 +166,19 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   await stage('arch-cat').scrollIntoViewIfNeeded()
   await stage('arch-cat').getByRole('button', { name: 'Pet the lucky cat' }).click()
   check('lab: the cat can be petted', await stage('arch-cat').locator('.lb-luck').evaluate((el) => el.hasAttribute('data-lucky')))
+  // when it swallows, its jaw goes up behind the lip, cut along it, and only
+  // then: at rest, nothing is cut
+  const jaw = await stage('arch-cat').locator('.lb-luck').evaluate((el) => {
+    const moves = ['.lb-lc-mouth', '.lb-lc-jaw'].flatMap((s) => el.querySelector(s).getAnimations())
+    const at = (pc) => {
+      moves.forEach((a) => { a.pause(); a.currentTime = 3000 + pc * 130 })
+      return { cut: getComputedStyle(el.querySelector('.lb-lc-mouth')).clipPath, up: new DOMMatrix(getComputedStyle(el.querySelector('.lb-lc-jaw')).transform).f }
+    }
+    const seen = { rest: at(0), shut: at(41.5) }
+    moves.forEach((a) => { a.currentTime = 0; a.play() })
+    return seen
+  })
+  check('lab: the cat swallows, its jaw cut along the lip only while it moves', jaw.rest.cut === 'none' && jaw.rest.up === 0 && jaw.shut.cut.includes('lb-lc-lip') && jaw.shut.up <= -56, JSON.stringify(jaw))
 
   await stage('arch-water').scrollIntoViewIfNeeded()
   await page.waitForTimeout(2400)
