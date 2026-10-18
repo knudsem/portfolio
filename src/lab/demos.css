@@ -5282,14 +5282,19 @@
   12%, 18% { opacity: 1; }
 }
 
-/* Now and then, rarely, it shuts its mouth and swallows: the inside of the
-   mouth closes up to the upper lip, a line for the shut mouth comes in under
-   the fangs, and the chin rises, gulps and comes back down as the mouth
-   opens again. Under a second, once every 13 seconds */
+/* Now and then, rarely, it shuts its mouth and swallows, with some trouble,
+   like a cat who has had a drink. The upper lip and the fangs on it stay
+   put: the jaw rises behind the lip, cut along it, and a line along the lip
+   draws the shut mouth, so the fangs always hang from it. Twice the mouth
+   opens a crack and snaps shut again; then the chin gulps, the little beard
+   bunching up under it, and all comes back down as the mouth opens. About a
+   second, once every 13 seconds */
 .lb-luck .lb-lc-mouth {
-  transform-box: view-box;
-  transform-origin: 300px 503px;
-  animation: lb-luck-mouth 13s 3s infinite;
+  animation: lb-luck-mouth 13s 3s infinite backwards;
+}
+
+.lb-luck .lb-lc-jaw {
+  animation: lb-luck-jaw 13s 3s infinite;
 }
 
 .lb-luck .lb-lc-lips {
@@ -5305,23 +5310,57 @@
   animation: lb-luck-chin 13s 3s infinite;
 }
 
+.lb-luck .lb-lc-tuft {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: lb-luck-tuft 13s 3s infinite;
+}
+
+/* the cut along the lip, only while the jaw moves: at rest, the drawing as it
+   is, to the pixel */
 @keyframes lb-luck-mouth {
+  0%, 39.9%, 47.1%, 100% { clip-path: none; }
+  40%, 47% { clip-path: url(#lb-lc-lip); }
+}
+
+@keyframes lb-luck-jaw {
   0%, 40% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
-  41%, 44.5% { transform: scaleY(0); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
-  46%, 100% { transform: none; }
+  41%, 41.8% { transform: translateY(-60px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  42.3% { transform: translateY(-41px); animation-timing-function: ease-in-out; }
+  42.65% { transform: translateY(-42px); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
+  42.8%, 43.15% { transform: translateY(-60px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  43.65% { transform: translateY(-44px); animation-timing-function: ease-in-out; }
+  44% { transform: translateY(-45px); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
+  44.15%, 45.5% { transform: translateY(-60px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  47%, 100% { transform: none; }
 }
 
 @keyframes lb-luck-lips {
-  0%, 40.7%, 45.3%, 100% { opacity: 0; }
-  41%, 44.8% { opacity: 1; }
+  0%, 39.8%, 47.2%, 100% { opacity: 0; }
+  40%, 47% { opacity: 1; }
 }
 
 @keyframes lb-luck-chin {
   0%, 40% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
-  41% { transform: translateY(-20px); animation-timing-function: ease-in-out; }
-  42.3% { transform: translateY(-16px); animation-timing-function: ease-in-out; }
-  43.4%, 44.5% { transform: translateY(-20px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
-  46%, 100% { transform: none; }
+  41%, 41.8% { transform: translateY(-20px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  42.3%, 42.65% { transform: translateY(-15px); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
+  42.8%, 43.15% { transform: translateY(-20px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  43.65%, 44% { transform: translateY(-16px); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
+  44.15% { transform: translateY(-20px); animation-timing-function: ease-in-out; }
+  44.7% { transform: translateY(-17px); animation-timing-function: ease-in-out; }
+  45.3%, 45.5% { transform: translateY(-20px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  47%, 100% { transform: none; }
+}
+
+@keyframes lb-luck-tuft {
+  0%, 40% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
+  41.3%, 41.8% { transform: scaleY(0.8); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  42.3%, 42.65% { transform: scaleY(0.86); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
+  42.8%, 43.15% { transform: scaleY(0.8); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  43.65%, 44% { transform: scaleY(0.85); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
+  44.15%, 45.5% { transform: scaleY(0.8); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  47% { transform: scaleY(1.06); animation-timing-function: ease-in-out; }
+  48%, 100% { transform: none; }
 }
 
 .lb-luck .lb-lc-tail {
@@ -5339,12 +5378,15 @@
 @media (prefers-reduced-motion: reduce) {
   .lb-luck .lb-lc-arm,
   .lb-luck .lb-lc-mouth,
+  .lb-luck .lb-lc-jaw,
   .lb-luck .lb-lc-lips,
   .lb-luck .lb-lc-chin,
+  .lb-luck .lb-lc-tuft,
   .lb-luck .lb-lc-pupil,
   .lb-luck .lb-lc-eye,
   .lb-luck .lb-lc-lid,
   .lb-luck .lb-lc-tail { animation: none; transition: none; }
+  .lb-luck .lb-lc-mouth { clip-path: none; }
 }
 /* /demo */
 
