@@ -1147,8 +1147,8 @@ export function cornerRings(root) {
 // angle that swings like a pendulum. Heights are measured up from the
 // elbow's axis, depths towards us. The paw's parts are rounded solids: each
 // one's outline is the hull of its projected surface, its lit side the hull
-// of the points the light reaches. As the paw tips, the fronts of its toes
-// come into view, and the claws, now pointing at us, shorten and draw in.
+// of the points the light reaches. As the paw tips, its toes come towards us
+// and stay its top, and the claws, now pointing at us, shorten and draw in.
 const ELBOW = 642 // the height of the elbow's axis in the drawing
 const SWING = 50 // degrees, at the bottom of the swing
 const PAW = {
@@ -1252,12 +1252,6 @@ export function pawPose(angle) {
     const n = turn(model.palm.normals[i], c, s)
     return n[2] > -0.02 && n[0] * light[0] + n[1] * light[1] + n[2] * light[2] > -0.08
   }).map((p) => onScreen(turn(p, c, s)))))
-  // the toes' fronts come into view between 8 and 30 degrees
-  const shown = Math.min(1, Math.max(0, (angle - 8) / 22))
-  const front = (t) => {
-    const o = onScreen(turn([t.c[0], ELBOW - t.c[1], t.c[2]], c, s)), rx = t.r[0], ry = Math.hypot(t.r[1] * c, t.r[2] * s)
-    return `M${n2(o[0] - rx)},${n2(o[1])}A${n2(rx)},${n2(ry)} 0 0 0 ${n2(o[0] + rx)},${n2(o[1])}`
-  }
   // a claw points up the paw: tipped towards us, it shortens and draws in
   const k = 1 - 0.7 * s
   const place = (at, root) => {
@@ -1268,8 +1262,6 @@ export function pawPose(angle) {
     forearm: n4(c),
     inks: [model.wrist, model.palm, ...model.toes].map(outline),
     lit,
-    fronts: model.toes.map(front),
-    shown: n2(shown),
     claws: model.toes.map((t, i) => place(model.claws[i], t.claw.slice(1))),
     dewclaw: place(model.dewclaw, PAW.dewclaw.root),
   }
@@ -1286,7 +1278,7 @@ export function luckyCat(root) {
   const forearm = arm.querySelector('.lb-lc-forearm')
   const all = (selector) => [...arm.querySelectorAll(selector)]
   const inks = all('.lb-lc-paw-ink'), skins = all('.lb-lc-paw-skin'), lit = arm.querySelector('.lb-lc-paw-lit')
-  const fronts = all('.lb-lc-toe-front'), claws = all('.lb-lc-claw'), dewclaw = arm.querySelector('.lb-lc-dewclaw')
+  const claws = all('.lb-lc-claw'), dewclaw = arm.querySelector('.lb-lc-dewclaw')
   const poses = new Map()
   const draw = (angle) => {
     if (!poses.has(angle)) poses.set(angle, pawPose(angle))
@@ -1295,7 +1287,6 @@ export function luckyCat(root) {
     inks.forEach((el, i) => el.setAttribute('d', pose.inks[i]))
     skins.forEach((el, i) => el.setAttribute('d', pose.inks[i]))
     lit.setAttribute('d', pose.lit)
-    fronts.forEach((el, i) => { el.setAttribute('d', pose.fronts[i]); el.setAttribute('opacity', pose.shown) })
     claws.forEach((el, i) => el.setAttribute('transform', pose.claws[i]))
     dewclaw.setAttribute('transform', pose.dewclaw)
   }
