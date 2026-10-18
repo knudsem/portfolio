@@ -48,7 +48,7 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   const cat = s.getByRole('button', { name: 'Pet the lucky cat' });
   const parts = await cat.evaluate((el) => ['arm', 'mouth', 'jaw', 'lips', 'chin', 'tuft', 'pupil', 'eye', 'lid', 'tail'].map((n) => el.querySelector('.lb-lc-' + n)?.getAnimations().length > 0));
   check('cat: the swing of the paw, the mouth, the eyes, the lids and the tail all move', parts.every(Boolean), parts.join());
-  // the swallow held open, shut, cracked open, shut, cracked open again, shut
+  // the swallow held open, shut, cracked open, then shut till it opens again
   const gulp = await cat.evaluate((el) => {
     const moves = ['.lb-lc-mouth', '.lb-lc-jaw', '.lb-lc-lips', '.lb-lc-chin', '.lb-lc-tuft'].flatMap((s) => el.querySelector(s).getAnimations());
     const seek = (t) => moves.forEach((a) => { a.pause(); a.currentTime = 3000 + t * 130; });
@@ -60,18 +60,19 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
       chin: +matrix('.lb-lc-chin').f.toFixed(1),
       beard: +matrix('.lb-lc-tuft').d.toFixed(2),
     });
-    const [open, shut, crack, between, again, gulped] = [0, 41.5, 42.5, 43, 43.8, 44.5].map((t) => (seek(t), read()));
+    const [open, shut, crack] = [0, 41.5, 42.8].map((t) => (seek(t), read()));
+    const after = Array.from({ length: 24 }, (_, i) => 43.2 + i * 0.1).map((t) => (seek(t), read()));
     seek(-23); moves.forEach((a) => a.play());
     // the jaw is cut along the line of the shut mouth, where the fangs hang
     const along = el.querySelector('#lb-lc-lip path').getAttribute('d').startsWith(el.querySelector('.lb-lc-lips').getAttribute('d'));
-    return { open, shut, crack, between, again, gulped, along, period: moves[0].effect.getComputedTiming().duration };
+    return { open, shut, crack, after, along, period: moves[0].effect.getComputedTiming().duration };
   });
-  const { open: mouthOpen, shut: mouthShut, crack: firstCrack, between, again: secondCrack, gulped } = gulp;
+  const { open: mouthOpen, shut: mouthShut, crack: mouthCrack, after: shutAfter } = gulp;
   // the inside of the mouth is at most 55 units deep: up by more, it is gone
   const hidden = (m) => m.jaw <= -56 && m.lips === 1 && m.cut.includes('lb-lc-lip');
   const cracked = (m) => m.jaw > -48 && m.jaw < -36 && m.lips === 1 && m.cut.includes('lb-lc-lip');
   check('cat: now and then (once every 13 seconds) it shuts its mouth: the jaw rises behind the upper lip, a line along the lip, the chin up and the little beard bunched up', mouthOpen.jaw === 0 && mouthOpen.lips === 0 && mouthOpen.cut === 'none' && mouthOpen.chin === 0 && mouthOpen.beard === 1 && hidden(mouthShut) && mouthShut.chin < -15 && mouthShut.beard < 0.85 && gulp.along && gulp.period === 13000, JSON.stringify(gulp));
-  check('cat: swallowing is hard: twice the shut mouth opens a crack and snaps shut again', cracked(firstCrack) && hidden(between) && cracked(secondCrack) && hidden(gulped), JSON.stringify({ firstCrack, between, secondCrack, gulped }));
+  check('cat: swallowing is hard: the shut mouth opens a crack, once, and snaps shut again till it opens', cracked(mouthCrack) && shutAfter.every(hidden), JSON.stringify({ mouthCrack, shutAfter: shutAfter.filter((m) => !hidden(m)) }));
   // the swing held at its top, then at its bottom, as the script draws it
   const swing = await cat.evaluate(async (el) => {
     const clock = el.querySelector('.lb-lc-arm').getAnimations().find((a) => a.animationName === 'lb-luck-swing');

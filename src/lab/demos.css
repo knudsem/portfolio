@@ -5285,7 +5285,7 @@
 /* Now and then, rarely, it shuts its mouth and swallows, with some trouble,
    like a cat who has had a drink. The upper lip and the fangs on it stay
    put: the jaw rises behind the lip, cut along it, and a line along the lip
-   draws the shut mouth, so the fangs always hang from it. Twice the mouth
+   draws the shut mouth, so the fangs always hang from it. The shut mouth
    opens a crack and snaps shut again; then the chin gulps, the little beard
    bunching up under it, and all comes back down as the mouth opens. About a
    second, once every 13 seconds */
@@ -5325,13 +5325,10 @@
 
 @keyframes lb-luck-jaw {
   0%, 40% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
-  41%, 41.8% { transform: translateY(-60px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
-  42.3% { transform: translateY(-41px); animation-timing-function: ease-in-out; }
-  42.65% { transform: translateY(-42px); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
-  42.8%, 43.15% { transform: translateY(-60px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
-  43.65% { transform: translateY(-44px); animation-timing-function: ease-in-out; }
-  44% { transform: translateY(-45px); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
-  44.15%, 45.5% { transform: translateY(-60px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  41%, 42% { transform: translateY(-60px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  42.6% { transform: translateY(-41px); animation-timing-function: ease-in-out; }
+  43% { transform: translateY(-42px); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
+  43.15%, 45.5% { transform: translateY(-60px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
   47%, 100% { transform: none; }
 }
 
@@ -5342,23 +5339,19 @@
 
 @keyframes lb-luck-chin {
   0%, 40% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
-  41%, 41.8% { transform: translateY(-20px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
-  42.3%, 42.65% { transform: translateY(-15px); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
-  42.8%, 43.15% { transform: translateY(-20px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
-  43.65%, 44% { transform: translateY(-16px); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
-  44.15% { transform: translateY(-20px); animation-timing-function: ease-in-out; }
-  44.7% { transform: translateY(-17px); animation-timing-function: ease-in-out; }
-  45.3%, 45.5% { transform: translateY(-20px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  41%, 42% { transform: translateY(-20px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  42.6%, 43% { transform: translateY(-15px); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
+  43.15% { transform: translateY(-20px); animation-timing-function: ease-in-out; }
+  44% { transform: translateY(-16px); animation-timing-function: ease-in-out; }
+  44.8%, 45.5% { transform: translateY(-20px); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
   47%, 100% { transform: none; }
 }
 
 @keyframes lb-luck-tuft {
   0%, 40% { transform: none; animation-timing-function: cubic-bezier(0.5, 0, 1, 1); }
-  41.3%, 41.8% { transform: scaleY(0.8); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
-  42.3%, 42.65% { transform: scaleY(0.86); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
-  42.8%, 43.15% { transform: scaleY(0.8); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
-  43.65%, 44% { transform: scaleY(0.85); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
-  44.15%, 45.5% { transform: scaleY(0.8); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  41.3%, 42% { transform: scaleY(0.8); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
+  42.6%, 43% { transform: scaleY(0.86); animation-timing-function: cubic-bezier(0.6, 0, 1, 1); }
+  43.15%, 45.5% { transform: scaleY(0.8); animation-timing-function: cubic-bezier(0, 0, 0.4, 1); }
   47% { transform: scaleY(1.06); animation-timing-function: ease-in-out; }
   48%, 100% { transform: none; }
 }
