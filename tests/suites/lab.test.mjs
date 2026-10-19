@@ -25,6 +25,13 @@ const card = (p, id) => p.locator('.lab-card', { has: p.locator(`.lab-stage [cla
   const empty = await p.evaluate(() => [...document.querySelectorAll('.lab-stage')].map((s, i) => { const el = s.querySelector('[class^="lb-"], [class*=" lb-"]'); const r = el?.getBoundingClientRect(); return !el || !r.width || !r.height ? i : null; }).filter((x) => x !== null));
   check('every demo is drawn on its stage', empty.length === 0, empty.join(','));
 
+  // no card towers over the rest: a row is as tall as its tallest card, so
+  // a long text would make the whole row giant
+  const heights = await p.evaluate(() => [...document.querySelectorAll('.lab-card')].map((c) => [c.dataset.demo, Math.round(c.getBoundingClientRect().height)]));
+  const median = heights.map(([, h]) => h).sort((x, y) => x - y)[heights.length >> 1];
+  const towering = heights.filter(([, h]) => h > median * 1.25);
+  check('no card is much taller than the others (each at most a quarter above the usual height)', towering.length === 0, `usual ${median}px; ${towering.map(([id, h]) => `${id} ${h}px`).join(', ')}`);
+
   // interactions
   const stage = (title) => p.locator('.lab-card').filter({ has: p.locator('.lab-card-title', { hasText: new RegExp(`^${title}$`) }) }).locator('.lab-stage');
   await p.locator('.lb-like').click(); await p.waitForTimeout(100);
@@ -49,7 +56,7 @@ const card = (p, id) => p.locator('.lab-card', { has: p.locator(`.lab-stage [cla
   const done = await p.evaluate(() => ({ state: document.querySelector('.lb-dl').dataset.state, text: document.querySelector('.lb-dl-text').textContent }));
   check('download: loading, then done with its tick', loading.state === 'loading' && loading.text === 'Downloading' && done.state === 'done' && done.text === 'Done', JSON.stringify({ loading, done }));
 
-  await p.locator('.lb-float input').scrollIntoViewIfNeeded(); await p.locator('.lb-float input').fill('hello@example.com'); await p.locator('body').click({ position: { x: 5, y: 5 } }); await p.waitForTimeout(400);
+  await p.locator('.lb-float input').scrollIntoViewIfNeeded(); await p.locator('.lb-float input').fill('hello@example.com'); await p.locator('.lb-float input').blur(); await p.waitForTimeout(400);
   const floated = await p.evaluate(() => getComputedStyle(document.querySelector('.lb-float span')).translate);
   check('floating label stays up once the field is filled', floated !== 'none' && floated.includes('-18px'), floated);
 
@@ -111,7 +118,7 @@ const card = (p, id) => p.locator('.lab-card', { has: p.locator(`.lab-stage [cla
   check('page has no errors or warnings', errors.length === 0, errors.join(' | '));
 
   // pause all, and rest off screen
-  await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(300);
+  await p.locator('.lb-shine').scrollIntoViewIfNeeded(); await p.waitForTimeout(300);
   await p.getByRole('button', { name: 'Tout mettre en pause' }).click(); await p.waitForTimeout(200);
   const paused = await p.evaluate(() => ({ pressed: document.querySelector('.lab-pause').getAttribute('aria-pressed'), shine: getComputedStyle(document.querySelector('.lb-shine'), '::after').animationPlayState }));
   await p.getByRole('button', { name: 'Tout mettre en pause' }).click(); await p.waitForTimeout(200);

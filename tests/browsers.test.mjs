@@ -151,7 +151,7 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   await page.waitForTimeout(400)
   check('lab: searching "loader" finds the 11 loaders and the logo loader', (await page.locator('.lab-card').count()) === 12)
   await page.fill('#lab-search-side', '')
-  await page.locator('.lab-filters .lab-chip', { hasText: 'From my archive' }).click()
+  await page.locator('.lab-filters .lab-chip', { hasText: /^Archive/ }).click()
   await page.waitForTimeout(800)
   const stage = (id) => page.locator(`.lab-card[data-demo="${id}"] .lab-stage`)
 
@@ -284,7 +284,7 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   const { context, page, errors } = await open({ ...desktop, reducedMotion: 'reduce' })
   await page.goto(BASE + '/lab')
   await page.waitForTimeout(800)
-  await page.locator('.lab-filters .lab-chip', { hasText: 'From my archive' }).click()
+  await page.locator('.lab-filters .lab-chip', { hasText: /^Archive/ }).click()
   await page.waitForTimeout(600)
   const signal = page.locator('.lab-card[data-demo="arch-signal"] .lb-signal')
   await signal.scrollIntoViewIfNeeded()

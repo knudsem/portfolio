@@ -17,7 +17,7 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   const p = await ctx.newPage();
   const errors = []; p.on('pageerror', (e) => errors.push(e.message)); p.on('console', (m) => { if (['error', 'warning'].includes(m.type()) && !m.text().includes('willReadFrequently')) errors.push(m.text()); }); // that warning comes from this test reading the globe's pixels
   await p.goto(BASE + '/lab'); await p.waitForTimeout(800);
-  await p.locator('.lab-filters .lab-chip', { hasText: 'From my archive' }).click(); await p.waitForTimeout(900);
+  await p.locator('.lab-filters .lab-chip', { hasText: /^Archive/ }).click(); await p.waitForTimeout(900);
   check('the archive filter shows the nine archive demos', (await p.locator('.lab-card').evaluateAll((els) => els.map((e) => e.dataset.demo).join())) === IDS.join());
 
   // Rings
@@ -203,7 +203,7 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   await ctx.addInitScript(() => { try { localStorage.setItem('lang', 'en'); } catch {} });
   const p = await ctx.newPage();
   await p.goto(BASE + '/lab'); await p.waitForTimeout(800);
-  await p.locator('.lab-filters .lab-chip', { hasText: 'From my archive' }).click(); await p.waitForTimeout(600);
+  await p.locator('.lab-filters .lab-chip', { hasText: /^Archive/ }).click(); await p.waitForTimeout(600);
   let s = await at(p, 'arch-water');
   check('calm: the tube is already full, no bubbles', (await s.locator('.lb-tube-level').textContent()) === '65%' && (await s.locator('.lb-tube-bubbles').evaluate((el) => getComputedStyle(el).display)) === 'none');
   s = await at(p, 'arch-globe');
