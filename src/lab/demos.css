@@ -4950,7 +4950,7 @@
 }
 /* /demo */
 
-/* From my archive (CodePen), rebuilt */
+/* Archive: my older animations, rebuilt */
 
 /* demo:arch-magnifier */
 /* The lens centre is two typed lengths, so it can travel a smooth path */
@@ -5088,8 +5088,8 @@
 /* /demo */
 
 /* demo:arch-cat */
-/* My own drawing, from my CodePen: the paw beckons, the eyes dart and
-   blink, the tail sways, and now and then the cat swallows */
+/* My own drawing: the paw beckons, the eyes dart and blink, the tail
+   sways, and now and then the cat swallows */
 .lb-luck {
   display: grid;
   place-items: center;
@@ -5114,7 +5114,7 @@
   outline-offset: 4px;
 }
 
-/* The drawing's own ink and paint, from the pen */
+/* The drawing's own ink and paint */
 .lb-luck .lb-lc-1 { opacity:0.52; }
 .lb-luck .lb-lc-2 { fill:#b54e21; }
 .lb-luck .lb-lc-10,

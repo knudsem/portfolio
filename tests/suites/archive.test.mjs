@@ -1,4 +1,4 @@
-// The demos from the CodePen archive (the cat, the water, the globe and the
+// The archive demos (the cat, the water, the globe and the
 // logo loader reworked, the others in their first version): what they do,
 // from the mouse, the keyboard and a finger, calm for reduced motion, at
 // phone width
@@ -43,7 +43,7 @@ const IDS = ['envelope', 'arch-magnifier', 'arch-cat', 'arch-water', 'arch-globe
   await p.mouse.move(0, 0); await p.waitForTimeout(200);
   check('magnifier: let go, it goes back to its path', await loupe.evaluate((el) => !el.hasAttribute('data-follow') && getComputedStyle(el).animationName === 'lb-loupe'));
 
-  // Cat: the drawing from the pen, its paw built in 3D
+  // Cat: my own drawing, its paw built in 3D
   s = await at(p, 'arch-cat');
   const cat = s.getByRole('button', { name: 'Pet the lucky cat' });
   const parts = await cat.evaluate((el) => ['arm', 'mouth', 'jaw', 'lips', 'chin', 'tuft', 'pupil', 'eye', 'lid', 'tail'].map((n) => el.querySelector('.lb-lc-' + n)?.getAnimations().length > 0));

@@ -11,7 +11,7 @@ const BODIES = [
     slug: 'a-real-globe-on-a-canvas',
     en: {
       body: [
-        ['p', "An old CodePen of mine faked a globe: a photo of a world map sliding behind a round mask, with an inner shadow to make it look curved. It passes for a second, then you notice the continents slide flat across the middle and vanish at the edges without ever bending. For [the lab](/lab) I wanted the real thing, drawn on a 2D canvas, small enough to read in its code panel."],
+        ['p', "An old animation of mine faked a globe: a photo of a world map sliding behind a round mask, with an inner shadow to make it look curved. It passes for a second, then you notice the continents slide flat across the middle and vanish at the edges without ever bending. For [the lab](/lab) I wanted the real thing, drawn on a 2D canvas, small enough to read in its code panel."],
         ['h2', 'The data: 986 points of coastline'],
         ['p', "The coastlines come from Natural Earth, which is in the public domain. Even its simplest version has more than 5,000 points, and a globe 130 pixels wide does not need that many. Simplified with the Douglas-Peucker algorithm, without the smallest islands, and rounded to half a degree, the land fits in 986 points: about 4 KB of text, written like an SVG path, one shape per `M` followed by relative steps."],
         ['h2', 'Projecting: a sphere seen from far away'],
@@ -51,7 +51,7 @@ const turn = (clock?.effect.getComputedTiming().progress ?? 0) * 360`, 'Read at 
     },
     fr: {
       body: [
-        ['p', "Un de mes anciens CodePen simulait un globe : la photo d'une carte du monde qui glissait derrière un masque rond, avec une ombre intérieure pour donner l'illusion du volume. Ça fait illusion une seconde, puis on remarque que les continents traversent le milieu à plat et disparaissent sur les bords sans jamais se courber. Pour [le lab](/lab), je voulais un vrai globe, dessiné sur un canvas 2D, assez court pour se lire dans son panneau de code."],
+        ['p', "Une de mes anciennes animations simulait un globe : la photo d'une carte du monde qui glissait derrière un masque rond, avec une ombre intérieure pour donner l'illusion du volume. Ça fait illusion une seconde, puis on remarque que les continents traversent le milieu à plat et disparaissent sur les bords sans jamais se courber. Pour [le lab](/lab), je voulais un vrai globe, dessiné sur un canvas 2D, assez court pour se lire dans son panneau de code."],
         ['h2', 'Les données : 986 points de côtes'],
         ['p', "Les côtes viennent de Natural Earth, qui est dans le domaine public. Même sa version la plus simple compte plus de 5 000 points, et un globe de 130 pixels de large n'en a pas besoin d'autant. Simplifiées avec l'algorithme de Douglas-Peucker, sans les plus petites îles, et arrondies au demi-degré, les terres tiennent en 986 points : environ 4 Ko de texte, écrits comme un tracé SVG, une forme par `M` suivie de pas relatifs."],
         ['h2', 'Projeter : une sphère vue de très loin'],
