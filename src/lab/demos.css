@@ -1617,8 +1617,10 @@
 /* /demo */
 
 /* demo:envelope */
-/* From the archive: the flap opens, the letter rises out of the envelope.
-   Layers: back, letter (1), pocket (2), flap (3, then 0 once open) */
+/* From the archive: the envelope sits shut a moment, then the flap opens
+   and the letter rises out of it. Layers: back, letter (1), pocket (2), flap
+   (3, then 0 once open). The pocket's side folds meet in the middle, and
+   the flap, a little deeper, covers its opening: shut, no letter shows */
 .lb-envelope {
   position: relative;
   width: 200px;
@@ -1651,16 +1653,18 @@
   color: #0b0b10;
   font-size: 14px;
   font-weight: 700;
-  animation: lb-envelope-letter 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.7s both;
+  animation: lb-envelope-letter 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 1.2s both;
 }
 
-/* The pocket in front of the letter: two side folds and the bottom */
+/* The pocket in front of the letter: the side folds, cut down to the middle,
+   and the bottom fold over them, in two halves */
 .lb-envelope-front {
   z-index: 2;
   background:
-    linear-gradient(to top right, #f0c43a 50%, transparent 50.5%) left bottom / 51% 100% no-repeat,
-    linear-gradient(to top left, #f0c43a 50%, transparent 50.5%) right bottom / 51% 100% no-repeat,
-    linear-gradient(to top, #e0b030 45%, transparent 45.5%);
+    linear-gradient(to top left, #e0b030 50%, transparent 50.5%) left bottom / 50% 52% no-repeat,
+    linear-gradient(to top right, #e0b030 50%, transparent 50.5%) right bottom / 50% 52% no-repeat,
+    #f0c43a;
+  clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
 }
 
 .lb-envelope-flap {
@@ -1668,11 +1672,11 @@
   left: 0;
   right: 0;
   top: 0;
-  height: 70px;
+  height: 80px;
   background: #ffe680;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform-origin: top;
-  animation: lb-envelope-flap 0.7s cubic-bezier(0.6, 0, 0.3, 1) both;
+  animation: lb-envelope-flap 0.7s cubic-bezier(0.6, 0, 0.3, 1) 0.5s both;
 }
 
 @keyframes lb-envelope-flap {

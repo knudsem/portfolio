@@ -9,7 +9,7 @@ export const POST_META = [
     slug: "a-real-globe-on-a-canvas",
     date: "2026-10-17",
     tags: ["Canvas", "JavaScript", "Animation"],
-    related: { href: "/lab", en: "Spin the globe in the lab, under From my archive", fr: "Faire tourner le globe dans le lab, rubrique Mes archives" },
+    related: { href: "/lab", en: "Spin the globe in the lab, under Archive", fr: "Faire tourner le globe dans le lab, rubrique Archives" },
     en: {
       title: "A real globe on a canvas: cutting the coastlines at the edge",
       description: "How the globe in the lab draws real coastlines on a turning sphere: an orthographic projection, coastlines cut where they pass behind, and the two bugs that once filled the whole globe with land.",
@@ -23,7 +23,7 @@ export const POST_META = [
     slug: "two-springs-make-water-slosh",
     date: "2026-10-17",
     tags: ["Animation", "JavaScript", "SVG"],
-    related: { href: "/lab", en: "Tilt the test tube in the lab, under From my archive", fr: "Pencher le tube à essai dans le lab, rubrique Mes archives" },
+    related: { href: "/lab", en: "Tilt the test tube in the lab, under Archive", fr: "Pencher le tube à essai dans le lab, rubrique Archives" },
     en: {
       title: "Two springs make water slosh",
       description: "The test tube in the lab leans towards the pointer and its water sloshes before it settles. Two springs, a dozen lines of JavaScript, and why the water must not turn with the glass.",

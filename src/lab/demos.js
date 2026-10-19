@@ -3,7 +3,7 @@
 // both languages. Styles are in demos.css, behaviours in scripts.js, both
 // marked per demo.
 
-export const CATEGORIES = ['buttons', 'icons', 'text', 'loaders', 'cards', 'navigation', 'inputs', 'feedback', 'scroll', 'backgrounds', 'archive']
+export const CATEGORIES = ['archive', 'buttons', 'icons', 'text', 'loaders', 'cards', 'navigation', 'inputs', 'feedback', 'scroll', 'backgrounds']
 
 const letters = (text) => [...text].map((ch, i) => `<span style="--i:${i}">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('')
 // n empty elements numbered by --i, one per line, inside a parent indented by `indent`
@@ -1044,7 +1044,7 @@ const LIST = [
   </div>
 </div>`,
     title: { en: 'Magnifying glass', fr: 'Loupe' },
-    note: { en: 'From my CodePen: the glass used to slide by changing margins. Now it truly magnifies (a scaled copy seen through the lens), moves on a smooth path, and follows the pointer.', fr: "Tirée de mon CodePen : la loupe glissait en changeant des marges. Elle grossit maintenant pour de vrai (une copie agrandie vue à travers la lentille), suit un trajet fluide, et suit le curseur." },
+    note: { en: 'From my CodePen, where the glass slid by changing margins. Now it truly magnifies (a scaled copy seen through the lens) and follows the pointer.', fr: 'Tirée de mon CodePen, où la loupe glissait en changeant des marges. Elle grossit maintenant pour de vrai (une copie agrandie) et suit le curseur.' },
   },
   {
     id: 'arch-cat',
@@ -1248,7 +1248,7 @@ const LIST = [
   </svg>
 </button>`,
     title: { en: 'Lucky cat', fr: 'Chat porte-bonheur' },
-    note: { en: "From my CodePen: my own vector drawing, animated in CSS and JavaScript. The paw now beckons like a real lucky cat's: the raised forearm tips towards us about the elbow and back. The paw is built in 3D (a palm, three toes, a wrist) and drawn each frame in the drawing's own ink: as it tips, the toes come towards us, the palm turns into the shade, and the claws, now pointing at us, draw in. The eyes dart and blink, the tail sways, and now and then, rarely, it swallows, with some trouble, as if it had had a drink. The eyes follow the pointer, and a pet (click, tap, Enter) makes it beckon faster.", fr: "Tiré de mon CodePen : mon propre dessin vectoriel, animé en CSS et en JavaScript. La patte fait maintenant signe comme celle d'un vrai chat porte-bonheur : l'avant-bras levé bascule vers nous autour du coude puis se relève. La patte est construite en 3D (une paume, trois doigts, un poignet) et redessinée à chaque image dans l'encre même du dessin : en basculant, les doigts viennent vers nous, la paume passe dans l'ombre et les griffes, pointées vers nous, rentrent. Les yeux bougent par saccades et clignent, la queue se balance, et de temps en temps, rarement, il avale sa salive, avec un peu de mal, comme s'il avait bu. Les yeux suivent le curseur, et une caresse (clic, toucher, Entrée) le fait saluer plus vite." },
+    note: { en: "My own vector drawing, from my CodePen. Its paw, built in 3D, beckons like a real lucky cat's, and now and then it swallows. A pet makes it beckon faster.", fr: 'Mon propre dessin, tiré de mon CodePen. Sa patte en 3D fait signe comme un vrai chat porte-bonheur, et parfois il avale sa salive. Une caresse le fait saluer plus vite.' },
   },
   {
     id: 'arch-water',
@@ -1295,7 +1295,7 @@ const LIST = [
   <p class="lb-tube-level" aria-hidden="true">65%</p>
 </div>`,
     title: { en: 'Sparkling water', fr: 'Eau pétillante' },
-    note: { en: 'From my CodePen, where the surface was a morphing SVG path. Now two waves drift at their own pace, the bubbles sway and burst at the surface, and the tube tilts towards the pointer: the water stays level, lags behind the glass, and sloshes before it settles (two springs).', fr: "Tirée de mon CodePen, où la surface était un tracé SVG qui se déformait. Deux vagues dérivent maintenant chacune à son rythme, les bulles ondulent et éclatent à la surface, et le tube penche vers le curseur : l'eau reste à niveau, prend du retard sur le verre et clapote avant de se poser (deux ressorts)." },
+    note: { en: 'From my CodePen. Two waves drift at their own pace, bubbles burst at the surface, and the tube tilts towards the pointer: the water stays level and sloshes.', fr: "Tirée de mon CodePen. Deux vagues dérivent, les bulles éclatent à la surface, et le tube penche vers le curseur : l'eau reste à niveau et clapote." },
   },
   {
     id: 'arch-globe',
@@ -1309,7 +1309,7 @@ const LIST = [
   <p class="lb-globe-stat"><strong><span data-to="98">98</span><small>TB</small></strong> shared</p>
 </div>`,
     title: { en: 'Globe and figures', fr: 'Globe et chiffres' },
-    note: { en: 'From my CodePen, which slid a photo of a map behind a round mask. Now a real globe: the coastlines (Natural Earth) are projected onto a sphere and cut at its edge. Drag it to spin it; the figures count up as they come into view.', fr: "Tiré de mon CodePen, qui faisait glisser la photo d'une carte derrière un masque rond. C'est maintenant un vrai globe : les côtes (Natural Earth) sont projetées sur une sphère et coupées à son bord. On peut le faire tourner à la main ; les chiffres comptent quand ils apparaissent." },
+    note: { en: 'From my CodePen, which slid a map behind a round mask. Now a real globe, its coastlines projected on a sphere: drag to spin it. The figures count up.', fr: 'Tiré de mon CodePen, qui faisait glisser une carte derrière un masque rond. Maintenant un vrai globe, à faire tourner à la main. Les chiffres comptent.' },
   },
   {
     id: 'arch-rings',
@@ -1324,7 +1324,7 @@ const LIST = [
   </ul>
 </nav>`,
     title: { en: 'Corner rings', fr: 'Anneaux en coin' },
-    note: { en: 'From my CodePen (a games menu for a studio): rings swing out of the corner with a little overshoot. Now a real disclosure: closed rings are out of the tab order, Escape closes.', fr: "Tiré de mon CodePen (un menu de jeux pour un studio) : les anneaux sortent du coin en pivotant, avec un léger rebond. Maintenant un vrai bouton d'ouverture : fermés, les anneaux sortent de la tabulation, Échap referme." },
+    note: { en: 'From my CodePen (a games menu for a studio): rings swing out of the corner with a little bounce. Now a real disclosure button; Escape closes it.', fr: "Tiré de mon CodePen (un menu de jeux pour un studio) : les anneaux sortent du coin en pivotant. Maintenant un vrai bouton d'ouverture ; Échap referme." },
   },
   {
     id: 'arch-signal',
@@ -1355,7 +1355,7 @@ const LIST = [
   </svg>
 </div>`,
     title: { en: 'Logo loader', fr: 'Chargement au logo' },
-    note: { en: 'From my CodePen, where a client’s logo lit up its accents one by one while a page loaded. Same idea with my own monogram: the four solid wedges of MK light up in turn and fade in the same order, like a signal.', fr: "Tiré de mon CodePen, où le logo d'un client allumait ses accents un à un pendant un chargement. Même idée avec mon propre monogramme : les quatre coins pleins de MK s'allument tour à tour et s'éteignent dans le même ordre, comme un signal." },
+    note: { en: "From my CodePen, where a client's logo lit up while a page loaded. Same idea with my monogram: the four wedges of MK light up and fade in turn.", fr: "Tiré de mon CodePen, où le logo d'un client s'allumait pendant un chargement. Même idée avec mon monogramme : les quatre coins de MK s'allument tour à tour." },
   },
   {
     id: 'arch-mask',
@@ -1368,7 +1368,7 @@ const LIST = [
   <svg class="lb-wipe-wave" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M20 0h180v100H20C0 80 34 62 16 46S8 12 20 0z"/></svg>
 </div>`,
     title: { en: 'Wave transition', fr: 'Transition en vagues' },
-    note: { en: 'From my CodePen "The Mask": two waves of colour sweep across a page and reveal the next one. Rebuilt as one short timeline, with a long rest between two passes.', fr: "Tirée de mon CodePen « The Mask » : deux vagues de couleur balaient une page et révèlent la suivante. Refaite en une seule timeline courte, avec une longue pause entre deux passages." },
+    note: { en: 'From my CodePen: two waves of colour sweep across a page and reveal the next one, in one short timeline with a long rest between passes.', fr: 'Tirée de mon CodePen : deux vagues de couleur balaient une page et révèlent la suivante, en une timeline courte avec une longue pause entre deux passages.' },
   },
 ]
 
