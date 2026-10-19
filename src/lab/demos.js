@@ -49,12 +49,13 @@ const LIST = [
     tech: ['CSS', 'JS', 'SVG'],
     html: `<button class="lb-send" type="button">
   <svg class="lb-send-plane" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.6 21 3l-6.4 18-3.1-7.4z"/></svg>
+  <svg class="lb-send-tick" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M5 12.5l4.5 4.5L19 7.5"/></svg>
   <span class="lb-send-label">Send</span>
   <span class="lb-send-done" aria-hidden="true">Sent</span>
 </button>
 <p class="lb-send-status" role="status"></p>`,
     title: { en: 'Send', fr: 'Envoyer' },
-    note: { en: 'Click: the plane takes off, the label gives way to the confirmation, and screen readers hear it.', fr: "Au clic, l'avion décolle, le texte laisse place à la confirmation, annoncée aux lecteurs d'écran." },
+    note: { en: 'Click: the plane takes off, the label gives way to the confirmation and a tick draws itself, and screen readers hear it.', fr: "Au clic, l'avion décolle, le texte laisse place à la confirmation, une coche se dessine, et les lecteurs d'écran l'annoncent." },
   },
   {
     id: 'btn-like',
@@ -183,7 +184,7 @@ const LIST = [
     id: 'loader-draw',
     cat: 'loaders',
     tech: ['CSS', 'SVG'],
-    html: `<svg class="lb-draw" viewBox="0 0 150 60" role="img" aria-label="Loading">
+    html: `<svg class="lb-draw" viewBox="0 10 150 60" role="img" aria-label="Loading">
   <path pathLength="1" d="M6 40c14-30 26-30 34 0s20 30 34 0 26-30 34 0 18 18 36-6"/>
 </svg>`,
     title: { en: 'Line drawing', fr: 'Trait qui se dessine' },
@@ -628,7 +629,7 @@ const LIST = [
   {
     id: 'loader-infinity',
     cat: 'loaders',
-    tech: ['CSS', 'SVG'],
+    tech: ['CSS', 'SVG', 'linear()'],
     html: `<div class="lb-inf" role="status" aria-label="Loading">
   <svg viewBox="0 0 120 60" aria-hidden="true">
     <path class="lb-inf-track" d="M60 30C70 15 95 12 95 30S70 45 60 30 25 12 25 30s25 15 35 0"/>
@@ -636,7 +637,7 @@ const LIST = [
   </svg>
 </div>`,
     title: { en: 'Infinity', fr: 'Infini' },
-    note: { en: 'A stroke runs around an infinity sign, forever: a dash moved along the path by its offset.', fr: "Un trait parcourt un signe infini, sans fin : un tiret déplacé le long du tracé par son décalage." },
+    note: { en: 'A stroke rides an infinity sign like a roller coaster: slow over the tops, fast through the dips, thanks to a linear() easing.', fr: "Un trait parcourt un signe infini comme des montagnes russes : lent dans les montées, rapide dans les descentes, grâce à un easing linear()." },
   },
   // Cards, more
   {
@@ -966,16 +967,24 @@ const LIST = [
     id: 'scroll-parallax',
     cat: 'scroll',
     tech: ['CSS', 'scroll-driven'],
-    html: `<div class="lb-plx" role="region" tabindex="0" aria-label="A landscape, scroll it">
+    html: `<div class="lb-plx" role="region" tabindex="0" aria-label="A valley at dusk, scroll it">
   <div class="lb-plx-scene" aria-hidden="true">
+    <span class="lb-plx-night"></span>
+    <span class="lb-plx-stars"><i></i></span>
+    <span class="lb-plx-moon"></span>
     <span class="lb-plx-sun"></span>
+    <span class="lb-plx-clouds"></span>
     <span class="lb-plx-far"></span>
+    <span class="lb-plx-mid"></span>
+    <span class="lb-plx-fog"></span>
     <span class="lb-plx-near"></span>
+    <span class="lb-plx-trees"></span>
+    <span class="lb-plx-hint"></span>
   </div>
   <div class="lb-plx-length"></div>
 </div>`,
     title: { en: 'Parallax', fr: 'Parallaxe' },
-    note: { en: 'Scroll the box: the far hills move slowly, the near ones fast, the sun sets. All driven by the box\'s own scroll.', fr: "Faites défiler la boîte : les collines lointaines bougent lentement, les proches vite, le soleil se couche. Tout est piloté par le défilement de la boîte." },
+    note: { en: 'Scroll the box to rise out of a valley at dusk: six layers move at their depth, the sun sets, then the moon and the stars come out.', fr: "Faites défiler la boîte pour sortir d'une vallée au crépuscule : six plans bougent selon leur profondeur, le soleil se couche, la lune et les étoiles se lèvent." },
   },
   {
     id: 'scroll-carousel',

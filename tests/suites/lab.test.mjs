@@ -49,6 +49,38 @@ const card = (p, id) => p.locator('.lab-card', { has: p.locator(`.lab-stage [cla
   await p.waitForTimeout(900);
   const sent = await p.evaluate(() => ({ state: document.querySelector('.lb-send').dataset.state, status: document.querySelector('.lb-send-status').textContent }));
   check('send: sending, then sent, and screen readers are told', sending === 'sending' && sent.state === 'sent' && sent.status === 'Message sent', JSON.stringify({ sending, ...sent }));
+  await p.waitForTimeout(600);
+  const tick = await p.evaluate(() => { const t = getComputedStyle(document.querySelector('.lb-send-tick')); return { opacity: +t.opacity, offset: parseFloat(t.strokeDashoffset) }; });
+  check('send: once sent, a tick is drawn where the plane was', tick.opacity === 1 && tick.offset === 0, JSON.stringify(tick));
+
+  // the line drawing: its wave, stroke included, stays inside its frame
+  const wave = await p.evaluate(() => {
+    const svg = document.querySelector('.lb-draw'), path = svg.querySelector('path'), b = path.getBBox(), v = svg.viewBox.baseVal, w = parseFloat(getComputedStyle(path).strokeWidth) / 2;
+    return { top: b.y - w - v.y, bottom: v.y + v.height - (b.y + b.height + w), left: b.x - w - v.x, right: v.x + v.width - (b.x + b.width + w) };
+  });
+  check('line drawing: the whole wave fits in its frame, nothing cut off', Object.values(wave).every((m) => m >= 0), JSON.stringify(wave));
+
+  // the infinity sign: the dash rides it like a roller coaster, slow over the
+  // tops and fast through the dips
+  const ride = await p.evaluate(() => {
+    const run = document.querySelector('.lb-inf-run'), a = run.getAnimations()[0], L = run.getTotalLength(), steps = [];
+    const at = (t) => { a.pause(); a.currentTime = t; const off = -parseFloat(getComputedStyle(run).strokeDashoffset); return { off, y: run.getPointAtLength((((off + 11) % 100) / 100) * L).y }; };
+    for (let t = 0; t < 2400; t += 50) { const p0 = at(t), p1 = at(t + 50); steps.push({ speed: (((p1.off - p0.off) % 100) + 100) % 100, y: p0.y }); }
+    a.play();
+    const high = steps.filter((s) => s.y < 22), low = steps.filter((s) => s.y > 38), mean = (l) => l.reduce((n, s) => n + s.speed, 0) / l.length;
+    return { tops: +mean(high).toFixed(2), dips: +mean(low).toFixed(2) };
+  });
+  check('infinity: like a roller coaster, the dash is at least twice as fast through the dips as over the tops', ride.dips > ride.tops * 2, JSON.stringify(ride));
+
+  // the parallax: scrolled to its end, dusk has turned to night, the pines
+  // have dropped out of view, the moon is up and the cue to scroll is gone
+  const plx = p.locator('.lb-plx'); await plx.scrollIntoViewIfNeeded();
+  const scene = async (f) => {
+    await plx.evaluate((el, f) => { el.scrollTop = f * (el.scrollHeight - el.clientHeight); }, f); await p.waitForTimeout(250);
+    return plx.evaluate((el) => { const cs = (c) => getComputedStyle(el.querySelector(c)); return { night: +(+cs('.lb-plx-night').opacity).toFixed(2), hint: +(+cs('.lb-plx-hint').opacity).toFixed(2), trees: Math.round(parseFloat(cs('.lb-plx-trees').translate.split(' ')[1] || 0)), moon: Math.round(parseFloat(cs('.lb-plx-moon').translate.split(' ')[1] || 0)) }; });
+  };
+  const dusk = await scene(0), night = await scene(1); await scene(0);
+  check('parallax: scrolled through, dusk turns to night, the pines drop away, the moon rises and the cue goes', dusk.night === 0 && dusk.hint > 0.5 && dusk.trees === 0 && dusk.moon > 100 && night.night === 1 && night.hint === 0 && night.trees > 100 && night.moon < 10, JSON.stringify({ dusk, night }));
 
   await p.locator('.lb-dl').scrollIntoViewIfNeeded(); await p.locator('.lb-dl').click(); await p.waitForTimeout(150);
   const loading = await p.evaluate(() => ({ state: document.querySelector('.lb-dl').dataset.state, text: document.querySelector('.lb-dl-text').textContent }));
