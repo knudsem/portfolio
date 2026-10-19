@@ -354,7 +354,7 @@ const LIST = [
   <div class="lb-envelope-flap"></div>
 </div>`,
     title: { en: 'Envelope', fr: 'Enveloppe' },
-    note: { en: 'From my archive (2021, then in anime.js), rebuilt in plain CSS: the flap opens, the letter rises.', fr: "Tirée de mes archives (2021, alors en anime.js), refaite en CSS pur : le rabat s'ouvre, la lettre sort." },
+    note: { en: 'The envelope waits shut, then the flap opens and the letter comes out. Plain CSS.', fr: "L'enveloppe attend fermée, puis le rabat s'ouvre et la lettre sort. En CSS pur." },
   },
   // Buttons, more
   {
@@ -1028,7 +1028,7 @@ const LIST = [
     title: { en: 'Waves', fr: 'Vagues' },
     note: { en: 'Three rows of waves, each a repeating radial gradient, rolling at three speeds for depth.', fr: "Trois rangées de vagues, chacune un dégradé radial répété, qui roulent à trois vitesses pour la profondeur." },
   },
-  // From my archive (CodePen), rebuilt
+  // Archive: my older animations, rebuilt
   {
     id: 'arch-magnifier',
     cat: 'archive',
@@ -1044,7 +1044,7 @@ const LIST = [
   </div>
 </div>`,
     title: { en: 'Magnifying glass', fr: 'Loupe' },
-    note: { en: 'From my CodePen, where the glass slid by changing margins. Now it truly magnifies (a scaled copy seen through the lens) and follows the pointer.', fr: 'Tirée de mon CodePen, où la loupe glissait en changeant des marges. Elle grossit maintenant pour de vrai (une copie agrandie) et suit le curseur.' },
+    note: { en: 'The glass truly magnifies: a scaled copy is seen through the lens. It glides on a smooth path, then follows the pointer.', fr: 'La loupe grossit pour de vrai : une copie agrandie se voit à travers la lentille. Elle suit un trajet fluide, puis le curseur.' },
   },
   {
     id: 'arch-cat',
@@ -1248,7 +1248,7 @@ const LIST = [
   </svg>
 </button>`,
     title: { en: 'Lucky cat', fr: 'Chat porte-bonheur' },
-    note: { en: "My own vector drawing, from my CodePen. Its paw, built in 3D, beckons like a real lucky cat's, and now and then it swallows. A pet makes it beckon faster.", fr: 'Mon propre dessin, tiré de mon CodePen. Sa patte en 3D fait signe comme un vrai chat porte-bonheur, et parfois il avale sa salive. Une caresse le fait saluer plus vite.' },
+    note: { en: "My own vector drawing. Its paw, built in 3D, beckons like a real lucky cat's, and now and then it swallows. A pet makes it beckon faster.", fr: 'Mon propre dessin. Sa patte en 3D fait signe comme un vrai chat porte-bonheur, et parfois il avale sa salive. Une caresse le fait saluer plus vite.' },
   },
   {
     id: 'arch-water',
@@ -1295,7 +1295,7 @@ const LIST = [
   <p class="lb-tube-level" aria-hidden="true">65%</p>
 </div>`,
     title: { en: 'Sparkling water', fr: 'Eau pétillante' },
-    note: { en: 'From my CodePen. Two waves drift at their own pace, bubbles burst at the surface, and the tube tilts towards the pointer: the water stays level and sloshes.', fr: "Tirée de mon CodePen. Deux vagues dérivent, les bulles éclatent à la surface, et le tube penche vers le curseur : l'eau reste à niveau et clapote." },
+    note: { en: 'Two waves drift at their own pace, bubbles burst at the surface, and the tube tilts towards the pointer: the water stays level and sloshes.', fr: "Deux vagues dérivent, les bulles éclatent à la surface, et le tube penche vers le curseur : l'eau reste à niveau et clapote." },
   },
   {
     id: 'arch-globe',
@@ -1309,7 +1309,7 @@ const LIST = [
   <p class="lb-globe-stat"><strong><span data-to="98">98</span><small>TB</small></strong> shared</p>
 </div>`,
     title: { en: 'Globe and figures', fr: 'Globe et chiffres' },
-    note: { en: 'From my CodePen, which slid a map behind a round mask. Now a real globe, its coastlines projected on a sphere: drag to spin it. The figures count up.', fr: 'Tiré de mon CodePen, qui faisait glisser une carte derrière un masque rond. Maintenant un vrai globe, à faire tourner à la main. Les chiffres comptent.' },
+    note: { en: 'A real globe: the coastlines are projected on a sphere. Drag it to spin it; the figures count up as they come into view.', fr: 'Un vrai globe : les côtes sont projetées sur une sphère. On le fait tourner à la main, et les chiffres comptent en apparaissant.' },
   },
   {
     id: 'arch-rings',
@@ -1324,7 +1324,7 @@ const LIST = [
   </ul>
 </nav>`,
     title: { en: 'Corner rings', fr: 'Anneaux en coin' },
-    note: { en: 'From my CodePen (a games menu for a studio): rings swing out of the corner with a little bounce. Now a real disclosure button; Escape closes it.', fr: "Tiré de mon CodePen (un menu de jeux pour un studio) : les anneaux sortent du coin en pivotant. Maintenant un vrai bouton d'ouverture ; Échap referme." },
+    note: { en: 'A games menu: rings swing out of the corner with a little bounce. A real disclosure button; Escape closes it.', fr: "Un menu de jeux : les anneaux sortent du coin en pivotant, avec un léger rebond. Un vrai bouton d'ouverture ; Échap referme." },
   },
   {
     id: 'arch-signal',
@@ -1338,7 +1338,7 @@ const LIST = [
   </svg>
 </div>`,
     title: { en: 'Signal', fr: 'Signal' },
-    note: { en: 'From my CodePen, where a logo lit up its arcs. Kept the idea, made it neutral: the dot, then each arc, lights up in turn.', fr: "Tiré de mon CodePen, où un logo allumait ses arcs. L'idée est gardée, rendue neutre : le point, puis chaque arc, s'allument tour à tour." },
+    note: { en: 'The dot, then each arc, lights up in turn, like a signal coming in.', fr: "Le point, puis chaque arc, s'allument tour à tour, comme un signal qui arrive." },
   },
   {
     id: 'arch-logo',
@@ -1355,7 +1355,7 @@ const LIST = [
   </svg>
 </div>`,
     title: { en: 'Logo loader', fr: 'Chargement au logo' },
-    note: { en: "From my CodePen, where a client's logo lit up while a page loaded. Same idea with my monogram: the four wedges of MK light up and fade in turn.", fr: "Tiré de mon CodePen, où le logo d'un client s'allumait pendant un chargement. Même idée avec mon monogramme : les quatre coins de MK s'allument tour à tour." },
+    note: { en: 'A loader with my monogram: the four solid wedges of MK light up in turn and fade in the same order.', fr: "Un chargement à mon monogramme : les quatre coins pleins de MK s'allument tour à tour et s'éteignent dans le même ordre." },
   },
   {
     id: 'arch-mask',
@@ -1368,7 +1368,7 @@ const LIST = [
   <svg class="lb-wipe-wave" viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path d="M20 0h180v100H20C0 80 34 62 16 46S8 12 20 0z"/></svg>
 </div>`,
     title: { en: 'Wave transition', fr: 'Transition en vagues' },
-    note: { en: 'From my CodePen: two waves of colour sweep across a page and reveal the next one, in one short timeline with a long rest between passes.', fr: 'Tirée de mon CodePen : deux vagues de couleur balaient une page et révèlent la suivante, en une timeline courte avec une longue pause entre deux passages.' },
+    note: { en: 'Two waves of colour sweep across a page and reveal the next one, in one short timeline with a long rest between passes.', fr: 'Deux vagues de couleur balaient une page et révèlent la suivante, en une timeline courte avec une longue pause entre deux passages.' },
   },
 ]
 
