@@ -26,7 +26,7 @@ for (const [lang, locale] of [['fr', 'fr-FR'], ['en', 'en-GB']]) {
     const post = await p.evaluate(() => ({
       title: document.title, h1: document.querySelector('h1')?.textContent,
       codes: document.querySelectorAll('.post-body .case-code').length,
-      spans: document.querySelectorAll('.post-body pre span').length,
+      words: document.querySelector('.post-body').innerText.split(/\s+/).filter(Boolean).length,
       related: document.querySelector('.post-related')?.getAttribute('href'),
       others: document.querySelectorAll('.post-more .blog-card').length,
       current: document.querySelector('.header-link[aria-current="page"]')?.textContent,
@@ -34,9 +34,9 @@ for (const [lang, locale] of [['fr', 'fr-FR'], ['en', 'en-GB']]) {
       text: document.body.innerText,
       // plain spaces before French signs, outside code (code is never touched)
       nbsp: [...document.querySelectorAll('.post-body > p, .post-body > h2, .post-body li, .post-body figcaption')].map((e) => e.textContent).join(' ').match(/ [:;?!%»]/g)?.length ?? 0,
-      textOnly: [...document.querySelectorAll('.post-body .case-code-lang')].every((e) => e.textContent === 'Text'),
     }));
-    check(`${lang} ${slug}: title, code coloured, related link, ${SLUGS.length - 1} other posts, Blog current`, post.title.replace(/\u00a0/g, ' ') === `${post.h1.replace(/\u00a0/g, ' ')} | Mathias Knudsen` && post.codes >= 1 && (post.textOnly || post.spans > 5) && !!post.related && post.others === SLUGS.length - 1 && post.current === 'Blog' && post.time === POST_META.find((meta) => meta.slug === slug).date, JSON.stringify({ ...post, text: undefined }));
+    check(`${lang} ${slug}: title, related link, ${SLUGS.length - 1} other posts, Blog current`, post.title.replace(/\u00a0/g, ' ') === `${post.h1.replace(/\u00a0/g, ' ')} | Mathias Knudsen` && !!post.related && post.others === SLUGS.length - 1 && post.current === 'Blog' && post.time === POST_META.find((meta) => meta.slug === slug).date, JSON.stringify({ ...post, text: undefined }));
+    check(`${lang} ${slug}: short and plain, a few lines without code (${post.words} words)`, post.words <= 80 && post.codes === 0, String(post.words));
     if (lang === 'fr') check(`fr ${slug}: no line can start with : ; ? ! % or »`, post.nbsp === 0, `${post.nbsp} plain spaces before signs`);
     check(`${lang} ${slug}: no long dashes`, !/[\u2013\u2014]/.test(post.text));
     if (PRIVATE) check(`${lang} ${slug}: nothing about the location or the team`, !PRIVATE.test(post.text));
@@ -74,6 +74,8 @@ for (const [w, h] of [[320, 640], [390, 844], [768, 1024], [1440, 900]]) {
     const ok = html.includes(`<link rel="canonical" href="https://mathias-knudsen.vercel.app/blog/${slug}" />`) && /<title>[^<]+ \| Mathias Knudsen<\/title>/.test(html) && html.includes('<meta property="og:type" content="article" />');
     check(`prerendered ${slug}: own title, address, article type`, ok);
   }
+  const days = POST_META.map((post) => Date.parse(post.date) / 864e5).sort((x, y) => y - x);
+  check('every post has its own date, at least a week from the next', days.every((d, i) => i === 0 || days[i - 1] - d >= 7), POST_META.map((post) => post.date).join(', '));
   const sitemap = await (await fetch(`${BASE}/sitemap.xml`)).text();
   check(`sitemap lists the blog and its ${SLUGS.length} posts`, ['/blog', ...SLUGS.map((s) => `/blog/${s}`)].every((path) => sitemap.includes(`<loc>https://mathias-knudsen.vercel.app${path}</loc>`)));
   await p.close();
