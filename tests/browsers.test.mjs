@@ -97,7 +97,7 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   }
 }
 
-// Home: language, command menu, contact form
+// Home: language, no command menu, contact form
 {
   const { context, page, errors } = await open(desktop, 'fr')
   await page.goto(BASE + '/')
@@ -107,10 +107,8 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   check('home: the language switch turns the page to English', (await page.evaluate(() => document.documentElement.lang)) === 'en')
   await page.keyboard.press('Control+k')
   await page.waitForTimeout(300)
-  const menu = await page.evaluate(() => ({ open: document.querySelector('dialog.cmdk')?.open, options: document.querySelectorAll('dialog.cmdk [role=option]').length }))
-  await page.keyboard.press('Escape')
-  await page.waitForTimeout(300)
-  check('home: Ctrl K opens the command menu, Escape closes it', menu.open === true && menu.options > 10 && !(await page.evaluate(() => document.querySelector('dialog.cmdk')?.open)), JSON.stringify(menu))
+  const menu = await page.evaluate(() => ({ dialogs: document.querySelectorAll('dialog[open]').length, keys: document.querySelectorAll('.site-header kbd').length }))
+  check('home: no command menu, neither a shortcut button in the header nor a menu on Ctrl K', menu.dialogs === 0 && menu.keys === 0, JSON.stringify(menu))
   await page.click('.form-submit')
   await page.waitForTimeout(300)
   const form = await page.evaluate(() => [...document.querySelectorAll('#contact [aria-invalid="true"]')].map((el) => el.id).join())

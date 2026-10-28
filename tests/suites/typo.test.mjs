@@ -35,16 +35,9 @@ for (const lang of ['fr', 'en']) {
   const p = await ctx.newPage();
   for (const path of PAGES) {
     await p.goto(BASE + path); await p.waitForTimeout(500);
-    // the palette and the phone menu hold text too
     const r = await scan(p);
     if (lang === 'fr') { total += r.nbsp; check(`fr ${path}: French punctuation held by no-break spaces (${r.nbsp})`, r.bad.length === 0, r.bad.join(' | ')); }
     else check(`en ${path}: English left alone`, r.nbsp === 0, String(r.nbsp));
-  }
-  if (lang === 'fr') {
-    await p.goto(BASE + '/'); await p.waitForTimeout(500);
-    await p.keyboard.press('Control+k'); await p.waitForTimeout(300);
-    const r = await scan(p);
-    check('fr command palette', r.bad.length === 0, r.bad.join(' | '));
   }
   await ctx.close();
 }

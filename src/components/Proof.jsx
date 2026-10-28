@@ -59,7 +59,7 @@ function CountUp({ value, format }) {
   )
 }
 
-export default function Proof({ t, lang, langChosen, auditRequest }) {
+export default function Proof({ t, lang, langChosen }) {
   const p = t.proof
   const [audit, setAudit] = useState({ status: 'idle' })
   const [perf, setPerf] = useState(null)
@@ -93,13 +93,6 @@ export default function Proof({ t, lang, langChosen, auditRequest }) {
       setAudit({ status: 'error' })
     }
   }
-
-  // The command menu can ask for an audit (App counts the requests).
-  const runAuditRef = useRef(runAudit)
-  runAuditRef.current = runAudit
-  useEffect(() => {
-    if (auditRequest) runAuditRef.current()
-  }, [auditRequest])
 
   const number = (value, digits = 0) =>
     new Intl.NumberFormat(lang, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value)
