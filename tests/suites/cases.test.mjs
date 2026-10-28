@@ -49,13 +49,6 @@ for (const [lang, locale, tz] of [['fr', 'fr-FR', 'Europe/Paris'], ['en', 'en-GB
   const hdr = await p.evaluate(() => ({ brand: document.querySelector('.brand').getAttribute('href'), nav: [...document.querySelectorAll('.header-link')].map((a) => a.getAttribute('href')), cta: document.querySelector('.header-cta').getAttribute('href'), back: document.querySelector('.case-back').getAttribute('href') }));
   check(`${lang}: header and back links point to the home page (and the lab and blog)`, hdr.brand === '/' && hdr.nav.join() === '/#about,/#work,/#services,/#proof,/lab,/blog' && hdr.cta === '/#contact' && hdr.back === '/#work', JSON.stringify(hdr));
 
-  // Command menu on a project page
-  await p.keyboard.press('Control+k'); await p.waitForTimeout(250);
-  const menu = await p.evaluate(() => ({ groups: [...document.querySelectorAll('.cmdk-group-label')].map((g) => g.textContent), opts: [...document.querySelectorAll('.cmdk [role=option]')].map((o) => o.textContent.replace(/#\w+$/, '')) }));
-  check(`${lang}: menu lists the 5 other projects, no audit here`, menu.groups.length === 3 && menu.opts.filter((o) => ['AccessEU', 'Interdyn Dealer Portal', 'Pro-Ject Audio Systems', 'Exclusive Construction', 'Trimension Studio'].includes(o)).length === 5 && !menu.opts.includes('Pro-Ject Audio Australia') && !menu.opts.some((o) => /audit/i.test(o)), menu.groups.join(', '));
-  await p.keyboard.type(lang === 'fr' ? 'lien' : 'link'); await p.keyboard.press('Enter'); await p.waitForTimeout(300);
-  check(`${lang}: copy link copies this project's public address`, (await p.evaluate(() => navigator.clipboard.readText())) === 'https://mathias-knudsen.vercel.app/projects/pro-ject-audio-australia');
-
   // Next project
   await p.evaluate(() => document.querySelector('.case-next').scrollIntoView({ block: 'center' })); await p.waitForTimeout(400);
   await p.click('.case-next-link');

@@ -61,7 +61,7 @@ for (const [w, h] of [[320, 640], [390, 844], [768, 1024], [1440, 900]]) {
   await p.close();
 }
 
-// unknown post, prerendered pages, sitemap, palette
+// unknown post, prerendered pages, sitemap
 {
   const res = await fetch(`${BASE}/blog/nope`);
   check('unknown post: 404', res.status === 404);
@@ -76,10 +76,6 @@ for (const [w, h] of [[320, 640], [390, 844], [768, 1024], [1440, 900]]) {
   }
   const sitemap = await (await fetch(`${BASE}/sitemap.xml`)).text();
   check(`sitemap lists the blog and its ${SLUGS.length} posts`, ['/blog', ...SLUGS.map((s) => `/blog/${s}`)].every((path) => sitemap.includes(`<loc>https://mathias-knudsen.vercel.app${path}</loc>`)));
-  await p.goto(`${BASE}/`); await p.waitForTimeout(500);
-  await p.keyboard.press('Control+k'); await p.waitForTimeout(300);
-  const cmds = await p.evaluate(() => [...document.querySelectorAll('[role=option]')].map((o) => o.textContent));
-  check('palette: Lab and Blog are there', cmds.some((c) => c.startsWith('Lab')) && cmds.some((c) => c.startsWith('Blog')), cmds.slice(0, 7).join(' | '));
   await p.close();
 }
 console.log(fail ? `${fail} FAILED` : 'all passed');

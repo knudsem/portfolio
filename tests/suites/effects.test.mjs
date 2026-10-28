@@ -12,7 +12,7 @@ for (const [lang, locale, tz] of [['en', 'en-GB', 'Europe/London'], ['fr', 'fr-F
   const logs = []; p.on('console', (m) => logs.push({ type: m.type(), text: m.text() }));
   await p.goto(BASE + '/'); await p.waitForTimeout(2600);
   const notes = logs.filter((l) => l.type === 'log' && /MK/.test(l.text));
-  check(`${lang}: one console note, in the page language`, notes.length === 1 && (lang === 'fr' ? /Bienvenue dans les coulisses/.test(notes[0].text) && /Ctrl K/.test(notes[0].text) : /Welcome backstage/.test(notes[0].text)), notes[0]?.text.slice(0, 60));
+  check(`${lang}: one console note, in the page language`, notes.length === 1 && (lang === 'fr' ? /Bienvenue dans les coulisses/.test(notes[0].text) : /Welcome backstage/.test(notes[0].text)) && !/Ctrl K|⌘|command menu|menu de commandes/.test(notes[0].text), notes[0]?.text.slice(0, 60));
   check(`${lang}: no errors or warnings`, !logs.some((l) => l.type === 'error' || l.type === 'warning'), logs.filter((l) => l.type === 'error' || l.type === 'warning').map((l) => l.text).join(' | '));
   if (lang === 'fr') { await ctx.close(); continue; }
 

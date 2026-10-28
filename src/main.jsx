@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client'
 import './App.css'
 import App from './App.jsx'
 import { detectLanguage } from './language'
-import { SHORTCUT } from './platform'
 import { handlePageReveal, resetNames } from './viewTransitions'
 import { parseRoute } from './projects'
 
@@ -31,18 +30,18 @@ for (const type of INTERACTIONS) window.addEventListener(type, allowSmoothScroll
 const CONSOLE_NOTE = {
   en: [
     'Welcome backstage.',
-    'This site is handmade with React and Vite: no UI kit, no template, no animation library. The physics in the headline, the project illustrations and the command menu ({keys}) are all custom code.',
+    'This site is handmade with React and Vite: no UI kit, no template, no animation library. The physics in the headline and the project illustrations are custom code.',
     "Like what you see? Let's work together: https://mathias-knudsen.vercel.app/#contact",
   ],
   fr: [
     'Bienvenue dans les coulisses.',
-    "Ce site est fait main avec React et Vite : sans kit d'interface, sans template, sans librairie d'animation. La physique du titre, les illustrations des projets et le menu de commandes ({keys}) sont du code sur mesure.",
+    "Ce site est fait main avec React et Vite : sans kit d'interface, sans template, sans librairie d'animation. La physique du titre et les illustrations des projets sont du code sur mesure.",
     'Ça vous plaît ? Travaillons ensemble : https://mathias-knudsen.vercel.app/#contact',
   ],
 }
 const [hello, ...note] = CONSOLE_NOTE[detectLanguage()]
 console.log(
-  `%c MK %c ${hello}\n\n${note.join('\n\n').replace('{keys}', SHORTCUT.join(' '))}`,
+  `%c MK %c ${hello}\n\n${note.join('\n\n')}`,
   'background:#ffd84a;color:#0b0b10;font-weight:700;border-radius:4px;padding:2px 4px',
   'font-weight:600',
 )
