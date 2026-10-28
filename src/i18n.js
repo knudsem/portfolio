@@ -92,7 +92,7 @@ const translations = {
     },
 
     about_1: "I'm a fullstack developer and UI/UX designer based in Toulouse, France, trilingual in French, English, and Danish. I hold a bachelor's in web design and completed the Le Wagon intensive bootcamp in 2019, where I added Ruby, Rails, and a deeper command of JavaScript to a design education that started in 2015. I work independently on projects I genuinely care about, ranging from complex B2B portals to bespoke ecommerce builds.",
-    about_2: "I work at the intersection of design and code. I design in Figma and build in React, TypeScript, Django, and Shopify. My particular focus is <em>motion</em>. The way an interface moves says as much as how it looks, and I carry that obsession into everything, whether it's a Shopify campaign, a B2B ordering system, or a letter animation library I built from scratch because the idea wouldn't leave me alone.",
+    about_2: "I work at the intersection of design and code. I design in Figma and build in React, TypeScript, Django, and Shopify. My particular focus is <em>motion</em>. The way an interface moves says as much as how it looks, and I bring that passion to everything I make, whether it's a Shopify campaign, a B2B ordering system, or a letter animation library I built from scratch because the idea wouldn't leave me alone.",
 
     skills: ['React', 'TypeScript', 'Figma', 'Django', 'Shopify', 'JavaScript', 'SCSS', 'HTML & CSS', 'SVG Animation', 'HTMX', 'PostgreSQL', 'Ruby on Rails'],
 
@@ -585,7 +585,7 @@ const translations = {
     },
 
     about_1: "Je suis développeur fullstack et designer UI/UX basé à Toulouse, trilingue en français, anglais et danois. Titulaire d'un bachelor en web design et diplômé du bootcamp intensif Le Wagon en 2019, j'ai ajouté Ruby, Rails et une maîtrise approfondie de JavaScript à une formation en design commencée en 2015. Je travaille en indépendant sur des projets qui m'intéressent vraiment, du portail B2B complexe à la boutique en ligne sur mesure.",
-    about_2: "Je travaille à la croisée du design et du code. Je conçois dans Figma et je développe en React, TypeScript, Django et Shopify. Ma spécialité, c'est le <em>mouvement</em>. La façon dont une interface s'anime est aussi révélatrice que son apparence, et j'apporte cette obsession à chaque projet, qu'il s'agisse d'une campagne Shopify, d'une plateforme B2B, ou d'une bibliothèque d'animation que j'ai construite de zéro parce que l'idée ne me lâchait pas.",
+    about_2: "Je travaille à la croisée du design et du code. Je conçois dans Figma et je développe en React, TypeScript, Django et Shopify. Ma spécialité, c'est le <em>mouvement</em>. La façon dont une interface s'anime est aussi révélatrice que son apparence, et j'apporte cette passion à chaque projet, qu'il s'agisse d'une campagne Shopify, d'une plateforme B2B, ou d'une bibliothèque d'animation que j'ai construite de zéro parce que l'idée ne me lâchait pas.",
 
     skills: ['React', 'TypeScript', 'Figma', 'Django', 'Shopify', 'JavaScript', 'SCSS', 'HTML & CSS', 'SVG Animation', 'HTMX', 'PostgreSQL', 'Ruby on Rails'],
 
