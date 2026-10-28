@@ -12,11 +12,11 @@ export const POST_META = [
     related: { href: "/lab", en: "Spin the globe in the lab, under Archive", fr: "Faire tourner le globe dans le lab, rubrique Archives" },
     en: {
       title: "A real globe on a canvas",
-      description: "My old globe was a flat map sliding behind a circle. The new one draws real coastlines on a sphere.",
+      description: "How the globe in the lab draws real coastlines on a turning sphere, with a canvas and a little maths.",
     },
     fr: {
       title: "Un vrai globe sur un canvas",
-      description: "Mon ancien globe était une carte plate qui glissait derrière un rond. Le nouveau dessine de vraies côtes sur une sphère.",
+      description: "Comment le globe du lab dessine de vraies côtes sur une sphère qui tourne, avec un canvas et un peu de maths.",
     },
   },
   {
@@ -26,11 +26,11 @@ export const POST_META = [
     related: { href: "/lab", en: "Tilt the test tube in the lab, under Archive", fr: "Pencher le tube à essai dans le lab, rubrique Archives" },
     en: {
       title: "Two springs make water slosh",
-      description: "The test tube in the lab tilts towards your mouse, and the water follows a little late, like real water.",
+      description: "Two springs and a few lines of JavaScript make the water in the lab's test tube feel real.",
     },
     fr: {
       title: "Deux ressorts pour faire clapoter de l'eau",
-      description: "Le tube à essai du lab penche vers la souris, et l'eau suit avec un peu de retard, comme de la vraie eau.",
+      description: "Deux ressorts et quelques lignes de JavaScript pour que l'eau du tube à essai du lab paraisse vraie.",
     },
   },
   {
@@ -40,11 +40,11 @@ export const POST_META = [
     related: { href: "/lab", en: `Open the lab: ${LAB_COUNT} live animations`, fr: `Ouvrir le lab : ${LAB_COUNT} animations en direct` },
     en: {
       title: `${LAB_COUNT} live animations on one page, and still fast`,
-      description: `The lab runs ${LAB_COUNT} animations at once and stays fast. The trick: nothing moves off screen.`,
+      description: `How the lab stays fast with ${LAB_COUNT} animations on one page: skip, pause and stop what nobody sees.`,
     },
     fr: {
       title: `${LAB_COUNT} animations en direct sur une page, et toujours rapide`,
-      description: `Le lab fait tourner ${LAB_COUNT} animations à la fois et reste rapide. L'astuce : rien ne bouge hors de l'écran.`,
+      description: `Comment le lab reste rapide avec ${LAB_COUNT} animations sur une page : ignorer, mettre en pause et arrêter ce qu'on ne voit pas.`,
     },
   },
   {
@@ -68,11 +68,11 @@ export const POST_META = [
     related: { href: "/projects/trimension-studio", en: "See both animations live on the Trimension page", fr: "Voir les deux animations en direct sur la page Trimension" },
     en: {
       title: "Scroll animations without JavaScript",
-      description: "I rebuilt two scroll effects from 2023 in plain CSS. Less code, and smoother.",
+      description: "How I rebuilt a scroll effect from 2023 so the browser plays it by itself, with a fallback for the rest.",
     },
     fr: {
       title: "Des animations au défilement sans JavaScript",
-      description: "J'ai refait deux effets au défilement de 2023 en CSS pur. Moins de code, et plus fluide.",
+      description: "Comment j'ai refait un effet au défilement de 2023 pour que le navigateur le joue tout seul, avec une solution de secours.",
     },
   },
   {
@@ -82,11 +82,11 @@ export const POST_META = [
     related: { href: "/projects/accesseu", en: "Read the AccessEU case study", fr: "Lire l'étude de cas AccessEU" },
     en: {
       title: "AI suggests, people decide",
-      description: "In AccessEU, AI writes photo descriptions for people who use a screen reader, but a person always checks them first.",
+      description: "Why the AI in my Shopify app only suggests, and a person always decides.",
     },
     fr: {
       title: "L'IA propose, l'humain décide",
-      description: "Dans AccessEU, l'IA écrit les descriptions des photos pour les personnes qui utilisent un lecteur d'écran, mais une personne les vérifie toujours avant.",
+      description: "Pourquoi l'IA de mon app Shopify ne fait que proposer, et une personne décide toujours.",
     },
   },
 ]
