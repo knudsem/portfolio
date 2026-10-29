@@ -26,7 +26,10 @@ for (const [lang, locale] of [['fr', 'fr-FR'], ['en', 'en-GB']]) {
     const post = await p.evaluate(() => ({
       title: document.title, h1: document.querySelector('h1')?.textContent,
       codes: document.querySelectorAll('.post-body .case-code').length,
-      words: document.querySelector('.post-body').innerText.split(/\s+/).filter(Boolean).length,
+      spans: document.querySelectorAll('.post-body pre span').length,
+      textOnly: [...document.querySelectorAll('.post-body .case-code-lang')].every((e) => e.textContent === 'Text'),
+      // the words of the text, not of the code
+      words: [...document.querySelectorAll('.post-body > p, .post-body > h2, .post-body li')].map((e) => e.textContent).join(' ').split(/\s+/).filter(Boolean).length,
       related: document.querySelector('.post-related')?.getAttribute('href'),
       others: document.querySelectorAll('.post-more .blog-card').length,
       current: document.querySelector('.header-link[aria-current="page"]')?.textContent,
@@ -35,8 +38,8 @@ for (const [lang, locale] of [['fr', 'fr-FR'], ['en', 'en-GB']]) {
       // plain spaces before French signs, outside code (code is never touched)
       nbsp: [...document.querySelectorAll('.post-body > p, .post-body > h2, .post-body li, .post-body figcaption')].map((e) => e.textContent).join(' ').match(/ [:;?!%»]/g)?.length ?? 0,
     }));
-    check(`${lang} ${slug}: title, related link, ${SLUGS.length - 1} other posts, Blog current`, post.title.replace(/\u00a0/g, ' ') === `${post.h1.replace(/\u00a0/g, ' ')} | Mathias Knudsen` && !!post.related && post.others === SLUGS.length - 1 && post.current === 'Blog' && post.time === POST_META.find((meta) => meta.slug === slug).date, JSON.stringify({ ...post, text: undefined }));
-    check(`${lang} ${slug}: short and plain, a few lines without code (${post.words} words)`, post.words <= 80 && post.codes === 0, String(post.words));
+    check(`${lang} ${slug}: title, code coloured, related link, ${SLUGS.length - 1} other posts, Blog current`, post.title.replace(/\u00a0/g, ' ') === `${post.h1.replace(/\u00a0/g, ' ')} | Mathias Knudsen` && post.codes >= 1 && (post.textOnly || post.spans > 5) && !!post.related && post.others === SLUGS.length - 1 && post.current === 'Blog' && post.time === POST_META.find((meta) => meta.slug === slug).date, JSON.stringify({ ...post, text: undefined }));
+    check(`${lang} ${slug}: short, the details left to the code (${post.words} words of text)`, post.words <= 260, String(post.words));
     if (lang === 'fr') check(`fr ${slug}: no line can start with : ; ? ! % or »`, post.nbsp === 0, `${post.nbsp} plain spaces before signs`);
     check(`${lang} ${slug}: no long dashes`, !/[\u2013\u2014]/.test(post.text));
     if (PRIVATE) check(`${lang} ${slug}: nothing about the location or the team`, !PRIVATE.test(post.text));
