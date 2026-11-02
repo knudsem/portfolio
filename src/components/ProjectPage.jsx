@@ -5,6 +5,7 @@ import { nameFrom, isPlainClick, backToHome } from '../viewTransitions'
 import { EXCERPTS } from '../demos/excerpts'
 import CodeBlock from './CodeBlock'
 import EonsDemos from './EonsDemos'
+import BrandMedia from './BrandMedia'
 
 const Icon = ({ children, size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
@@ -168,6 +169,8 @@ export default function ProjectPage({ t, id }) {
       </div>
 
       {project.gallery && project.gallery.length > 1 && <Gallery c={c} images={project.gallery.filter((img) => img !== hero)} />}
+
+      {project.brand && <BrandMedia c={c} brand={project.brand} />}
 
       {project.highlights && (
         <section className="case-section" aria-labelledby="case-highlights">

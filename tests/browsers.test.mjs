@@ -277,6 +277,20 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   await context.close()
 }
 
+// The project videos play in this engine (WebM, or MP4 where WebM is not
+// supported) once they are in view
+{
+  const { context, page, errors } = await open(desktop)
+  await page.goto(BASE + '/projects/trimension-studio')
+  await page.waitForTimeout(800)
+  await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; document.querySelector('[aria-labelledby="case-brand"] .case-shots').scrollIntoView({ block: 'center' }) })
+  await page.waitForTimeout(2500)
+  const videos = await page.evaluate(() => [...document.querySelectorAll('[aria-labelledby="case-brand"] video')].map((v) => ({ playing: !v.paused, t: Math.round(v.currentTime * 10) / 10, src: v.currentSrc.split('/').pop(), error: v.error?.code ?? 0 })))
+  check('project videos: the three play in view', videos.length === 3 && videos.every((v) => v.playing && v.t > 0.5 && !v.error), JSON.stringify(videos))
+  check('project videos: no script error', errors.length === 0, errors.slice(0, 3).join(' | '))
+  await context.close()
+}
+
 // Reduced motion: the lab shows its demos finished
 {
   const { context, page, errors } = await open({ ...desktop, reducedMotion: 'reduce' })

@@ -137,7 +137,7 @@ for (const [label, opts] of [['phone', { viewport: { width: 390, height: 844 }, 
   const p = await ctx.newPage();
   for (const slug of ['accesseu', 'interdyn-dealer-portal', 'pro-ject-audio-australia', 'pro-ject-audio-systems', 'exclusive-construction', 'trimension-studio']) {
     await p.goto(`${BASE}/projects/${slug}`); await p.waitForTimeout(400);
-    const s = await p.evaluate(() => ({ over: document.documentElement.scrollWidth > innerWidth, button: !!document.querySelector('.case-play'), anim: [...document.querySelectorAll('.case-cover *')].some((el) => getComputedStyle(el).animationName !== 'none'), did: document.querySelectorAll('.case-did li').length, hero: document.querySelector('.case-hero img')?.naturalWidth > 0 }));
+    const s = await p.evaluate(() => ({ over: document.documentElement.scrollWidth > innerWidth, button: !!document.querySelector('.case-cover .case-play'), anim: [...document.querySelectorAll('.case-cover *')].some((el) => getComputedStyle(el).animationName !== 'none'), did: document.querySelectorAll('.case-did li').length, hero: document.querySelector('.case-hero img')?.naturalWidth > 0 }));
     const ax = await axeScan(p);
     // projects with screens lead with their best one (no animation there); the others with the drawing
     const withScreens = true; // every project now leads with screens of the real product
