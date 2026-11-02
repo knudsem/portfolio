@@ -156,7 +156,9 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   await stage('arch-rings').scrollIntoViewIfNeeded()
   // only a quarter of the round button shows, in the corner: a click lands on its word
   await stage('arch-rings').getByRole('button', { name: 'Games' }).locator('span').click()
-  await page.waitForTimeout(800)
+  // the rings come out one after the other; on this busy page a slow engine
+  // can lag behind the clock, so wait for the last one (4 s at most)
+  await page.waitForFunction(() => [...document.querySelectorAll('.lab-card[data-demo="arch-rings"] .lab-stage a')].every((a) => getComputedStyle(a).visibility === 'visible'), null, { timeout: 4000, polling: 100 }).catch(() => {})
   const rings = await stage('arch-rings').evaluate((el) => [...el.querySelectorAll('a')].map((a) => getComputedStyle(a).visibility).join())
   await page.keyboard.press('Escape')
   check('lab: the corner rings open', rings === 'visible,visible,visible', rings)
