@@ -156,7 +156,9 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   await stage('arch-rings').scrollIntoViewIfNeeded()
   // only a quarter of the round button shows, in the corner: a click lands on its word
   await stage('arch-rings').getByRole('button', { name: 'Games' }).locator('span').click()
-  await page.waitForTimeout(800)
+  // the rings come out one after the other; on this busy page a slow engine
+  // can lag behind the clock, so wait for the last one (4 s at most)
+  await page.waitForFunction(() => [...document.querySelectorAll('.lab-card[data-demo="arch-rings"] .lab-stage a')].every((a) => getComputedStyle(a).visibility === 'visible'), null, { timeout: 4000, polling: 100 }).catch(() => {})
   const rings = await stage('arch-rings').evaluate((el) => [...el.querySelectorAll('a')].map((a) => getComputedStyle(a).visibility).join())
   await page.keyboard.press('Escape')
   check('lab: the corner rings open', rings === 'visible,visible,visible', rings)
@@ -274,6 +276,20 @@ for (const [layout, options] of [['desktop', desktop], ['phone', phone]]) {
   const backRan = await ran()
   check('lab: it picks up again when its card comes back', back.onScreen && back.inview && backRan > 300, `${JSON.stringify(back)}, ran ${backRan} ms in 700`)
   check('lab: no script error', errors.length === 0, errors.slice(0, 3).join(' | '))
+  await context.close()
+}
+
+// The project videos play in this engine (WebM, or MP4 where WebM is not
+// supported) once they are in view
+{
+  const { context, page, errors } = await open(desktop)
+  await page.goto(BASE + '/projects/trimension-studio')
+  await page.waitForTimeout(800)
+  await page.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; document.querySelector('[aria-labelledby="case-brand"] .case-shots').scrollIntoView({ block: 'center' }) })
+  await page.waitForTimeout(2500)
+  const videos = await page.evaluate(() => [...document.querySelectorAll('[aria-labelledby="case-brand"] video')].map((v) => ({ playing: !v.paused, t: Math.round(v.currentTime * 10) / 10, src: v.currentSrc.split('/').pop(), error: v.error?.code ?? 0 })))
+  check('project videos: the three play in view', videos.length === 3 && videos.every((v) => v.playing && v.t > 0.5 && !v.error), JSON.stringify(videos))
+  check('project videos: no script error', errors.length === 0, errors.slice(0, 3).join(' | '))
   await context.close()
 }
 

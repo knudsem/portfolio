@@ -10,6 +10,16 @@ const TRIMENSION_MEDIA = [
   { src: '/media/trimension/phone-eons.webp', width: 780, height: 1688, phone: true },
 ]
 
+// Its logos and game videos: the studio logo (SVG, shown in a frame the
+// shape of the Eons logo's), the Eons logo animation, and the two game
+// videos, made light (WebM and MP4, each with a still)
+const TRIMENSION_BRAND = [
+  { kind: 'image', name: 'trimension-logo', width: 831, height: 848, frame: [960, 400] },
+  { kind: 'once', name: 'eons-logo', width: 960, height: 400 },
+  { kind: 'loop', name: 'eons-video', width: 960, height: 540 },
+  { kind: 'loop', name: 'godsent-video', width: 960, height: 540 },
+]
+
 // AccessEU: its sample report (demo data), rendered by the app's own code
 const ACCESSEU_MEDIA = [
   { src: '/media/accesseu/report-score.webp', width: 1440, height: 891 },
@@ -359,6 +369,7 @@ const translations = {
           'Design and development, in plain HTML, CSS and JavaScript, no framework',
           'A home page made of full-screen game videos, with scroll snapping',
           'A page per game: Eons, with scroll-driven animation, and Godsent',
+          'The studio logo and the Eons logo, designed in Illustrator; the Eons logo animated in After Effects',
           'Team and careers pages, with application forms',
           'Responsive, with animations tuned for phones',
         ],
@@ -371,12 +382,21 @@ const translations = {
         gallery: withText(TRIMENSION_MEDIA, [
           { alt: 'Trimension home page: a pastel castle on a floating island, with a Discover Eons button', caption: 'The home page: every section is a full-screen game video.' },
           { alt: 'Second home section: a monster with glowing eyes in blue smoke, with a Discover Godsent button', caption: "Scroll once more and the page snaps to Godsent's world." },
-          { alt: 'Eons page: a dark creature with tentacles next to the story of the Nebulites and a newsletter field', caption: 'The Eons page introduces the game and its characters.' },
+          { alt: 'Eons page: the EONS logo, whose O is a sun, above the story of the Nebulites and a newsletter field, next to a dark creature with tentacles', caption: 'The Eons page opens on its logo, which draws itself, and introduces the game and its characters.' },
           { alt: 'Fragments of terracotta rock floating around a paragraph, under the title The world is shattering', caption: 'Fragments of the world float, each on its own rhythm. The logo\'s eye stands in for the letter\u00a0o.' },
           { alt: 'A low poly hand wearing a glowing gadget, under the title Become Agent Steve', caption: "Agent Steve's hand follows the scroll." },
           { alt: 'The home page on a phone', caption: 'On phones.' },
           { alt: 'The Eons page on a phone', caption: '' },
         ]),
+        brand: {
+          intro: "I designed both logos in Illustrator: the studio's, and the Eons one, whose sun stands in for the O and which I animated in After Effects. The game videos of the home page were made in Blender; they are shown here in a light version, which only loads when you reach it.",
+          items: withText(TRIMENSION_BRAND, [
+            { alt: 'The Trimension logo: a triangle in three parts above the word TRIMENSION', caption: 'The studio logo, designed in Illustrator.' },
+            { label: 'The Eons logo drawing itself: a dot becomes a sun, which becomes the O of EONS', caption: 'The Eons logo, designed in Illustrator and animated in After Effects.' },
+            { label: 'Eons: a pastel castle on a floating island, with pieces of the world drifting around it', caption: 'The Eons video, made in Blender.' },
+            { label: 'Godsent: a glowing ring in blue smoke, then a monster with burning eyes', caption: 'The Godsent video, made in Blender.' },
+          ]),
+        },
         revisited: {
           intro: "In 2026 I rebuilt the two signature animations of the Eons page with today's techniques. They run below, live: scroll to play them.",
           shatter_label: 'Live demo: fragments of a shattered world float around a paragraph, each at its own depth; as you scroll, the near ones drift faster than the far ones.',
@@ -399,7 +419,7 @@ const translations = {
           { file: 'eons.css', lang: 'css', caption: 'Agent Steve: both arms share one canvas, so a single translate brings the fingertip onto the dial. Excerpt.', excerpt: 'eons-hands' },
           { file: 'scrollScenes.js', lang: 'js', caption: 'The only script: rests the loops off screen, and scrubs the keyframes where the browser cannot play them from the scroll.', excerpt: 'scroll-scenes' },
         ],
-        tags: ['JavaScript', 'HTML', 'CSS', 'SVG'],
+        tags: ['JavaScript', 'HTML', 'CSS', 'SVG', 'Illustrator', 'After Effects'],
         link: null,
       },
     ],
@@ -511,6 +531,7 @@ const translations = {
       did: 'What I did',
       highlights: 'Details that matter',
       gallery: 'Screens',
+      brand: 'Logos and videos',
       code: 'In the code',
       revisited: 'The animations, revisited',
       changes: 'What changed',
@@ -523,6 +544,7 @@ const translations = {
       visit: 'Visit the live site',
       pause: 'Pause the animation',
       play: 'Play the animation',
+      replay: 'Play the animation again',
       next: 'Next project',
       cta_title: 'Have a similar project?',
       cta_text: "Tell me about it. I usually reply within 24 hours.",
@@ -824,6 +846,7 @@ const translations = {
           'Design et développement, en HTML, CSS et JavaScript, sans framework',
           'Un accueil fait de vidéos de jeu en plein écran, avec défilement aimanté',
           'Une page par jeu : Eons, avec des animations au défilement, et Godsent',
+          "Le logo du studio et celui d'Eons, dessinés dans Illustrator ; le logo d'Eons animé dans After Effects",
           'Pages équipe et carrières, avec formulaires de candidature',
           'Responsive, avec des animations adaptées au téléphone',
         ],
@@ -836,12 +859,21 @@ const translations = {
         gallery: withText(TRIMENSION_MEDIA, [
           { alt: "Accueil de Trimension : un château pastel sur une île flottante, avec un bouton Discover Eons", caption: "L'accueil : chaque section est une vidéo de jeu en plein écran." },
           { alt: "Deuxième section de l'accueil : un monstre aux yeux lumineux dans une fumée bleue, avec un bouton Discover Godsent", caption: "Un défilement de plus, et la page s'aimante sur l'univers de Godsent." },
-          { alt: "Page Eons : une créature sombre à tentacules à côté de l'histoire des Nebulites et d'un champ d'inscription à la newsletter", caption: 'La page Eons présente le jeu et ses personnages.' },
+          { alt: "Page Eons : le logo EONS, dont le O est un soleil, au-dessus de l'histoire des Nebulites et d'un champ d'inscription à la newsletter, à côté d'une créature sombre à tentacules", caption: "La page Eons s'ouvre sur son logo, qui se dessine, et présente le jeu et ses personnages." },
           { alt: 'Des fragments de roche terre cuite flottent autour d\'un paragraphe, sous le titre The world is shattering', caption: "Les fragments du monde flottent, chacun à son rythme. L'œil du logo remplace la lettre\u00a0o." },
           { alt: "Une main low poly portant un gadget lumineux, sous le titre Become Agent Steve", caption: "La main de l'agent Steve suit le défilement." },
           { alt: "L'accueil sur téléphone", caption: 'Sur téléphone.' },
           { alt: 'La page Eons sur téléphone', caption: '' },
         ]),
+        brand: {
+          intro: "J'ai dessiné les deux logos dans Illustrator : celui du studio, et celui d'Eons, dont le soleil remplace le O et que j'ai animé dans After Effects. Les vidéos de jeu de l'accueil ont été faites avec Blender ; elles sont présentées ici en version légère, qui ne se charge qu'une fois arrivé dessus.",
+          items: withText(TRIMENSION_BRAND, [
+            { alt: 'Le logo de Trimension : un triangle en trois parties au-dessus du mot TRIMENSION', caption: 'Le logo du studio, dessiné dans Illustrator.' },
+            { label: "Le logo d'Eons qui se dessine : un point devient un soleil, qui devient le O d'EONS", caption: "Le logo d'Eons, dessiné dans Illustrator et animé dans After Effects." },
+            { label: "Eons : un château pastel sur une île flottante, avec des morceaux du monde qui dérivent autour", caption: "La vidéo d'Eons, faite avec Blender." },
+            { label: 'Godsent : un anneau lumineux dans une fumée bleue, puis un monstre aux yeux brûlants', caption: 'La vidéo de Godsent, faite avec Blender.' },
+          ]),
+        },
         revisited: {
           intro: "En 2026, j'ai reconstruit les deux animations phares de la page Eons avec les techniques d'aujourd'hui. Elles tournent ci-dessous, en direct : faites défiler pour les jouer.",
           shatter_label: "Démo en direct : les fragments d'un monde brisé flottent autour d'un paragraphe, chacun à sa profondeur ; au défilement, les plus proches dérivent plus vite que les plus lointains.",
@@ -864,7 +896,7 @@ const translations = {
           { file: 'eons.css', lang: 'css', caption: "L'agent Steve : les deux bras partagent une même toile, donc une seule translation amène le bout du doigt sur le cadran. Extrait.", excerpt: 'eons-hands' },
           { file: 'scrollScenes.js', lang: 'js', caption: "Le seul script : il met les boucles au repos hors de l'écran, et fait défiler les keyframes là où le navigateur ne sait pas les jouer au défilement.", excerpt: 'scroll-scenes' },
         ],
-        tags: ['JavaScript', 'HTML', 'CSS', 'SVG'],
+        tags: ['JavaScript', 'HTML', 'CSS', 'SVG', 'Illustrator', 'After Effects'],
         link: null,
       },
     ],
@@ -976,6 +1008,7 @@ const translations = {
       did: "Ce que j'ai fait",
       highlights: 'Les détails qui comptent',
       gallery: 'En images',
+      brand: 'Logos et vidéos',
       code: 'Dans le code',
       revisited: 'Les animations, revisitées',
       changes: 'Ce qui a changé',
@@ -988,6 +1021,7 @@ const translations = {
       visit: 'Voir le site en ligne',
       pause: "Mettre l'animation en pause",
       play: "Lancer l'animation",
+      replay: "Rejouer l'animation",
       next: 'Projet suivant',
       cta_title: 'Un projet similaire ?',
       cta_text: 'Parlez-moi de votre projet. Je réponds en général sous 24 heures.',
